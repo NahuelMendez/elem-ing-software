@@ -95,4 +95,13 @@ describe('Pizzeria registration', () => {
         expect(await userService.existsPizzeriaNamed(pizzeriaWithInvalidPasswordData.name)).toBe(false)
     })
 
+    it('cannot register a new pizzeria with an invalid email', async () => {
+        await expect(userService.registerPizzeria({...bancheroRegistrationData, email: '@domain.com'})).rejects.toThrow('Invalid email')
+        await expect(userService.registerPizzeria({...bancheroRegistrationData, email: 'user@.com'})).rejects.toThrow('Invalid email')
+        await expect(userService.registerPizzeria({...bancheroRegistrationData, email: 'user@domain'})).rejects.toThrow('Invalid email')
+        await expect(userService.registerPizzeria({...bancheroRegistrationData, email: 'user'})).rejects.toThrow('Invalid email')
+
+        expect(await userService.existsPizzeriaNamed(bancheroRegistrationData.name)).toBe(false)
+    })
+
 })
