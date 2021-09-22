@@ -44,55 +44,27 @@ describe('Pizzeria registration', () => {
     })
 
     it('cannot register a new pizzeria with an empty name', async () => {
-        const pizzeriaDataWithBlankName = {
-            ...bancheroRegistrationData,
-            name: ''
-        }
-        
-        await expect(
-            userService.registerPizzeria(pizzeriaDataWithBlankName)
-        ).rejects.toThrow(`Pizzeria's name cannot be blank`)
+        const pizzeriaDataWithBlankName = {...bancheroRegistrationData, name: ''}
 
-        expect(await userService.existsPizzeriaNamed(pizzeriaDataWithBlankName.name)).toBe(false)
+        await expectToFailPizzeriaRegistionWith(pizzeriaDataWithBlankName, "Pizzeria's name cannot be blank")
     })
 
     it('cannot register a new pizzeria with a name containing only spaces', async () => {
-        const pizzeriaDataWithBlankName = {
-            ...bancheroRegistrationData,
-            name: ' '
-        }
-        
-        await expect(
-            userService.registerPizzeria(pizzeriaDataWithBlankName)
-        ).rejects.toThrow(`Pizzeria's name cannot be blank`)
+        const pizzeriaDataWithBlankName = {...bancheroRegistrationData, name: ' '}
 
-        expect(await userService.existsPizzeriaNamed(pizzeriaDataWithBlankName.name)).toBe(false)
+        await expectToFailPizzeriaRegistionWith(pizzeriaDataWithBlankName, "Pizzeria's name cannot be blank")
     })
 
     it('cannot register a new pizzeria with a password of less than 6 characters', async () => {
-        const pizzeriaDataWithInvalidPassword = {
-            ...bancheroRegistrationData,
-            password: '12345'
-        }
-        
-        await expect(
-            userService.registerPizzeria(pizzeriaDataWithInvalidPassword)
-        ).rejects.toThrow('Password must have at least 6 characters and no empty spaces')
+        const pizzeriaDataWithInvalidPassword = {...bancheroRegistrationData, password: '12345'}
 
-        expect(await userService.existsPizzeriaNamed(pizzeriaDataWithInvalidPassword.name)).toBe(false)
+        await expectToFailPizzeriaRegistionWith(pizzeriaDataWithInvalidPassword, 'Password must have at least 6 characters and no empty spaces')
     })
 
     it('cannot register a new pizzeria with a password containing an empty space', async () => {
-        const pizzeriaDataWithInvalidPassword = {
-            ...bancheroRegistrationData,
-            password: 'pass word'
-        }
-        
-        await expect(
-            userService.registerPizzeria(pizzeriaDataWithInvalidPassword)
-        ).rejects.toThrow(`Password must have at least 6 characters and no empty spaces`)
+        const pizzeriaDataWithInvalidPassword = {...bancheroRegistrationData, password: 'pass word'}
 
-        expect(await userService.existsPizzeriaNamed(pizzeriaDataWithInvalidPassword.name)).toBe(false)
+        await expectToFailPizzeriaRegistionWith(pizzeriaDataWithInvalidPassword, 'Password must have at least 6 characters and no empty spaces')
     })
 
     it('cannot register a new pizzeria with an invalid email', async () => {
@@ -104,4 +76,11 @@ describe('Pizzeria registration', () => {
         expect(await userService.existsPizzeriaNamed(bancheroRegistrationData.name)).toBe(false)
     })
 
+    async function expectToFailPizzeriaRegistionWith(pizzeriaRegistrationData, expectedErrorMessage) {
+        await expect(
+            userService.registerPizzeria(pizzeriaRegistrationData)
+        ).rejects.toThrow(expectedErrorMessage)
+
+        expect(await userService.existsPizzeriaNamed(pizzeriaRegistrationData.name)).toBe(false)
+    }
 })
