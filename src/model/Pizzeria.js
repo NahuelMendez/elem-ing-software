@@ -14,6 +14,10 @@ class Pizzeria {
         this.password = password
     }
 
+    isAuthenticatedAs(username, password) {
+        return this.name === username && this.password === password
+    }
+
     getName() { return this.name }
 
     getTelephone() { return this.telephone }

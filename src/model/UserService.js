@@ -18,6 +18,14 @@ class UserService {
         return await this.usersRepository.save(newPizzeria)
     }
 
+    async login({username, password}) {
+        return await this.usersRepository.findAuthenticatedAs({
+            username,
+            password,
+            ifNotFound: () => { throw new ModelException('Invalid username or password') }
+        })
+    }
+
     async assertThereIsNoPizzeriaNamed(name) {
         if (await this.existsPizzeriaNamed(name))
             throw new ModelException(`Pizzeria name ${name} already registered`)
