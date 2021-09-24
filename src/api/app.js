@@ -1,9 +1,14 @@
 const express = require('express')
-const {CosoService} = require("../model/cosoService");
+const bodyParser = require('body-parser')
+const {registerPath} = require("./path")
+const {UserService} = require("../model/UserService");
+const {TransientUsersRepository} = require("../model/TransientUsersRepository");
 
+const usersService = new UserService(new TransientUsersRepository())
 const app = express()
 
-const cosoService = new CosoService()
+app.use(bodyParser.urlencoded({extended: false}))
+app.use(bodyParser.json())
 
 app.get('/api/', (request, response) => {
     response.json({
@@ -11,4 +16,18 @@ app.get('/api/', (request, response) => {
     })
 })
 
-module.exports = { app }
+app.post(registerPath, async (request, response) => {
+    const pizzeria = request.body
+
+    usersService.registerPizzeria(pizzeria)
+        .then( userData => response.status(201).json({
+             name: userData.name
+        }))
+        .catch(
+        error => response.status(404).json({error: error.message})
+        )
+})
+
+
+
+module.exports = {app}
