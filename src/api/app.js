@@ -10,12 +10,6 @@ const app = express()
 app.use(bodyParser.urlencoded({extended: false}))
 app.use(bodyParser.json())
 
-app.get('/api/', (request, response) => {
-    response.json({
-        mensaje: cosoService.algo()
-    })
-})
-
 app.post(registerPath, async (request, response) => {
     const pizzeria = request.body
 

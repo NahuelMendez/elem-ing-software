@@ -24,7 +24,7 @@ describe('API', () => {
         })
     })
 
-    it('cannot register a new pizzeria with an empty name', async () => {
+    it('cannot register a new pizzeria with invalid registration data', async () => {
         const response = await requester.post(registerPath).send({...bancheroRegistrationData, name: ''})
 
         expect(response.status).toBe(404)
@@ -33,8 +33,24 @@ describe('API', () => {
         })
     })
 
+    it('cannot register a new pizzeria with a repeated pizzeria name', async () => {
+        await requester.post(registerPath).send(bancheroRegistrationData)
+    
+        const pizzeriaDataWithRepeatedName = {
+            ...guerrinRegistrationData,
+            name: bancheroRegistrationData.name
+        }
+
+        const response = await requester.post(registerPath).send(pizzeriaDataWithRepeatedName)
+
+        expect(response.status).toBe(404)
+        expect(response.body).toEqual({
+            error: `Pizzeria name ${pizzeriaDataWithRepeatedName.name} already registered`
+        })
+    })
+
     afterAll(() => {
-        //server.close()
+        
     })
 
 })
