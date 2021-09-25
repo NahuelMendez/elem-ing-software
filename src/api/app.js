@@ -1,14 +1,45 @@
 const express = require('express')
-const {CosoService} = require("../model/cosoService");
+const bodyParser = require('body-parser')
+const {registerPath} = require("./path")
+const {pizzeriaSchema} = require("./schemas")
+const {UserService} = require("../model/UserService");
+const {TransientUsersRepository} = require("../model/TransientUsersRepository");
 
-const app = express()
+const createApp = () => {
 
-const cosoService = new CosoService()
+    const usersService = new UserService(new TransientUsersRepository())
+    const app = express()
 
-app.get('/api/', (request, response) => {
-    response.json({
-        mensaje: cosoService.algo()
+    app.use(bodyParser.urlencoded({extended: false}))
+    app.use(bodyParser.json())
+
+    app.post(registerPath, (request, response) => {
+        const pizzeria = request.body
+
+        pizzeriaSchema.validateAsync(pizzeria)
+            .then(
+                () => registerPizzeria(pizzeria, response)
+            )
+            .catch (
+                error => response.status(400).json({error: error.message})
+            )
     })
-})
 
-module.exports = { app }
+    const registerPizzeria = (pizzeria, response) => {
+        usersService.registerPizzeria(pizzeria)
+            .then(
+                user => response.status(201).json({ name: user.getName() })
+            )
+            .catch(
+                error => response.status(400).json({ error: error.message })
+            );
+    }
+
+    return app
+}
+
+
+
+module.exports = {createApp}
+
+
