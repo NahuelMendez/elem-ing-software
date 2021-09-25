@@ -21,17 +21,17 @@ const createApp = () => {
                 () => registerPizzeria(pizzeria, response)
             )
             .catch (
-                error => {return response.status(400).json({error: error.message})}
+                error => response.status(400).json({error: error.message})
             )
     })
 
     const registerPizzeria = (pizzeria, response) => {
         usersService.registerPizzeria(pizzeria)
             .then(
-               userData => response.status(201).json({ name: userData.name })
+                user => response.status(201).json({ name: user.getName() })
             )
             .catch(
-              error => response.status(400).json({ error: error.message })
+                error => response.status(400).json({ error: error.message })
             );
     }
 
