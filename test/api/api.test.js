@@ -1,6 +1,6 @@
 const request = require('supertest')
 const {registerPath} = require("../../src/api/path")
-const {app} = require('../../src/api/app')
+const {createApp} = require('../../src/api/app')
 
 const {
     bancheroRegistrationData,
@@ -11,7 +11,7 @@ describe('Api registration', () => {
     let requester
 
     beforeEach(async () => {
-        requester = request(app)
+        requester = request(createApp())
     })
 
     it('can register a new pizzeria with valid registration data', async () => {
