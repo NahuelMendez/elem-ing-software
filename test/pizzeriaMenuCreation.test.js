@@ -60,14 +60,13 @@ describe("Pizzeria's menu creation", () => {
     })
 
     async function expectHasNoProductsInMenu(pizzeriaName) {
-        const products = await menuService.productsInMenuOf(pizzeriaName)
-        expect(products).toHaveLength(0)
+        await expectHasMenuWith([], pizzeriaName)
     }
 
     async function expectHasMenuWith(expectedProducts, pizzeriaName) {
         const foundProducts = await menuService.productsInMenuOf(pizzeriaName)
 
-        expect(foundProducts).toHaveLength(2)
+        expect(foundProducts).toHaveLength(expectedProducts.length)
         expectedProducts.forEach(expectedProduct =>
             expect(foundProducts).toContain(expectedProduct)
         )
