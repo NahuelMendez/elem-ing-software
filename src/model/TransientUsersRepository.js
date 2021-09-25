@@ -1,3 +1,5 @@
+const {ModelException} = require("./ModelException");
+
 class TransientUsersRepository {
 
     constructor() {
@@ -8,9 +10,25 @@ class TransientUsersRepository {
         return this.users.some(user => user.name === pizzeriaName)
     }
 
+    async findAuthenticatedAs({username, password, ifNotFound}) {
+        const foundUser = this.users.find(user => user.isAuthenticatedAs(username, password))
+        if (!foundUser) ifNotFound()
+        return foundUser
+    }
+
+    async findPizzeriaByName(pizzeriaName) {
+        const foundPizzeria = this.users.find(user => user.getName() === pizzeriaName)
+        if (!foundPizzeria) throw new ModelException(`Pizzeria ${pizzeriaName} not found`)
+        return foundPizzeria
+    }
+
     async save(newUser) {
         this.users.push(newUser)
         return newUser
+    }
+
+    async update(user) {
+
     }
 }
 

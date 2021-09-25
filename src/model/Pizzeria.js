@@ -12,6 +12,11 @@ class Pizzeria {
         this.telephone = telephone
         this.email = email
         this.password = password
+        this.products = []
+    }
+
+    isAuthenticatedAs(username, password) {
+        return this.name === username && this.password === password
     }
 
     getName() { return this.name }
@@ -19,6 +24,14 @@ class Pizzeria {
     getTelephone() { return this.telephone }
 
     getEmail() { return this.email }
+
+    getProductsInMenu() { return this.products }
+
+    registerMenuWith(products) {
+        this.assertHaveDifferentNames(products);
+
+        this.products = products
+    }
 
     assertNameIsNotBlank(name) {
         if (name.trim() === '')
@@ -33,6 +46,13 @@ class Pizzeria {
     assertIsValidEmail(email) {
         if (!emailRegex.test(email))
             throw new ModelException('Invalid email')
+    }
+
+    assertHaveDifferentNames(products) {
+        const differentProductNames = new Set(products.map(product => product.getName()))
+
+        if (differentProductNames.size < products.length)
+            throw new ModelException('A menu cannot have repeated product names')
     }
 }
 
