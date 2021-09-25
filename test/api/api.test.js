@@ -1,11 +1,11 @@
 const request = require('supertest')
-const {registerPath} = require("../src/api/path")
-const {app} = require('../src/api/app')
+const {registerPath} = require("../../src/api/path")
+const {app} = require('../../src/api/app')
 
 const {
     bancheroRegistrationData,
     guerrinRegistrationData
-} = require('./testObjects').pizzeriasRegistrationData
+} = require('../testObjects').pizzeriasRegistrationData
 
 describe('Api registration', () => {
     let requester
@@ -125,10 +125,6 @@ describe('Api registration', () => {
         expect(response.body).toEqual({
             error: '"telephone" is required'
         })
-    })
-
-    afterAll(() => {
-        
     })
 
 })
