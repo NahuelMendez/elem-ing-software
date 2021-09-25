@@ -6,9 +6,10 @@
   "scripts": {
     "client": "cd app && npm start",
     "server": "nodemon ./src/api/start.js",
-    "start": "concurrently --kill-others \"npm run server\" \"npm run client\"",
-    "test": "npx jest",
-    "watch": "npx jest --watchAll"
+    "start": "node ./src/api/start.js",
+    "start-dev": "concurrently --kill-others \"npm run server\" \"npm run client\"",
+    "test": "npx jest --verbose ./test",
+    "watch": "npx jest --watchAll --verbose ./test"
   },
   "keywords": [],
   "author": "",
