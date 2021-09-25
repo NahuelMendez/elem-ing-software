@@ -18,7 +18,7 @@ const createApp = () => {
 
         pizzeriaSchema.validateAsync(pizzeria)
             .then(
-               () => registerPizzeria(pizzeria, response)
+                () => registerPizzeria(pizzeria, response)
             )
             .catch (
                 error => {return response.status(400).json({error: error.message})}
@@ -27,12 +27,12 @@ const createApp = () => {
 
     const registerPizzeria = (pizzeria, response) => {
         usersService.registerPizzeria(pizzeria)
-           .then(
+            .then(
                userData => response.status(201).json({ name: userData.name })
-          )
-         .catch(
+            )
+            .catch(
               error => response.status(400).json({ error: error.message })
-          );
+            );
     }
 
     return app
