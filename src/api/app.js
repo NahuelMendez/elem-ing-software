@@ -1,7 +1,7 @@
 const express = require('express')
 const bodyParser = require('body-parser')
-const {registerPath, menuCreatePath} = require("./path")
-const {pizzeriaSchema, productsSchema} = require("./schemas")
+const {registerPath, loginPath, menuCreatePath} = require("./path")
+const {pizzeriaSchema, loginSchema, productsSchema} = require("./schemas")
 const {UserService} = require("../model/UserService");
 const {MenuService} = require("../model/MenuService");
 const {TransientUsersRepository} = require("../model/TransientUsersRepository");
@@ -29,6 +29,18 @@ const createApp = () => {
             )
     })
 
+    app.post(loginPath, (request, response) => {
+        const loginData = request.body
+
+        loginSchema.validateAsync(loginData)
+            .then( 
+                () => login(usersService, loginData, response)
+            )
+            .catch( 
+                error => response.status(404).json({error: error.message})
+            )
+    })
+    
     app.put(menuCreatePath, (request, response) => {
         const {menu} = request.body
         const {pizzeriaName} = request.params
@@ -53,6 +65,16 @@ const createApp = () => {
             );
     }
 
+    function login(usersService, loginData, response) {
+        usersService.login(loginData)
+            .then(
+                () => response.status(201).json({ message: 'successful operation' })
+            )
+            .catch(
+                error => response.status(404).json({ error: error.message })
+            )
+    }
+    
     function createMenu(menuService, pizzeriaName, menu, response) {
         const products = menu.map ( product => new Product(product) )
 
@@ -70,9 +92,4 @@ const createApp = () => {
 
 
 module.exports = {createApp}
-
-
-
-
-
 
