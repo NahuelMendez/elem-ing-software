@@ -12,4 +12,13 @@ const loginSchema = Joi.object({
     password: Joi.string().required(),
 })
 
-module.exports = {pizzeriaSchema, loginSchema}
+const productsSchema = Joi.array().items(
+    Joi.object({
+        name: Joi.string().required(),
+        description : Joi.string(),
+        price : Joi.number().required(),
+        imageURL : Joi.string().required()
+    })
+)
+
+module.exports = {pizzeriaSchema, productsSchema, loginSchema}

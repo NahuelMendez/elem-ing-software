@@ -14,6 +14,22 @@ const pizzeriasRegistrationData = {
     }
 }
 
+const productsData = {
+    mozzarella: {
+        name : 'mozzarella',
+        description : 'mozzarella description',
+        price : 1,
+        imageURL : 'http://img.com/product.jpg'
+    },
+    bacon: {
+        name : 'bacon',
+        description : 'bacon description',
+        price : 1,
+        imageURL : 'http://img.com/product.jpg'
+    }
+}
+
 module.exports = {
-    pizzeriasRegistrationData
+    pizzeriasRegistrationData,
+    productsData
 }

@@ -1,6 +1,11 @@
 
-registerPath = '/api/register'
+const registerPath = '/api/register'
 
-loginPath = '/api/login'
+const loginPath = '/api/login'
 
-module.exports = {registerPath, loginPath}
+const createMenuCreatePath = (pizzeriaName) => { return `/api/pizzeria/${pizzeriaName}/menu`}
+
+const menuCreatePath = '/api/pizzeria/:pizzeriaName/menu'
+
+
+module.exports = {registerPath, createMenuCreatePath, menuCreatePath, loginPath}

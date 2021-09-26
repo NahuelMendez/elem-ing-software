@@ -11,9 +11,14 @@ class UserService {
         return await this.usersRepository.existsPizzeriaNamed(name)
     }
 
+    async existsUserWithEmail(email) {
+        return await this.usersRepository.existsUserWithEmail(email)
+    }
+
     async registerPizzeria({name, telephone, email, password}) {
         await this.assertThereIsNoPizzeriaNamed(name)
-        
+        await this.assertThereIsNotUserWithEmail(email)
+
         const newPizzeria = new Pizzeria({name, telephone, email, password})
         return await this.usersRepository.save(newPizzeria)
     }
@@ -31,6 +36,10 @@ class UserService {
             throw new ModelException(`Pizzeria name ${name} already registered`)
     }
 
+    async assertThereIsNotUserWithEmail(email) {
+        if (await this.existsUserWithEmail(email))
+            throw new ModelException(`A user with email ${email} is already registered`)
+    }
 }
 
 module.exports = { UserService }

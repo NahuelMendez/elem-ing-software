@@ -5,6 +5,7 @@ import {
 import Login from "./components/Login";
 import MainView from "./components/MainView";
 import Profile from "./components/Profile";
+import RegisterView from "./components/Register/RegisterView";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
       <Route exact path="/" component={MainView}/>
       <Route path="/perfil" component={Profile}/>
       <Route path="/login" component={Login}/>
+      <Route path="/register" component={RegisterView}/>
     </Router>
   );
 }

@@ -7,7 +7,11 @@ class TransientUsersRepository {
     }
 
     async existsPizzeriaNamed(pizzeriaName) {
-        return this.users.some(user => user.name === pizzeriaName)
+        return this.users.some(user => user.getName() === pizzeriaName)
+    }
+
+    async existsUserWithEmail(email) {
+        return this.users.some(user => user.getEmail() === email)
     }
 
     async findAuthenticatedAs({username, password, ifNotFound}) {
