@@ -1,4 +1,5 @@
 const express = require('express')
+const path = require('path')
 const bodyParser = require('body-parser')
 const {registerPath} = require("./path")
 const {pizzeriaSchema} = require("./schemas")
@@ -9,6 +10,8 @@ const createApp = () => {
 
     const usersService = new UserService(new TransientUsersRepository())
     const app = express()
+
+    app.use(express.static(path.join(__dirname, '../../app/build')))
 
     app.use(bodyParser.urlencoded({extended: false}))
     app.use(bodyParser.json())
