@@ -47,9 +47,7 @@ describe('Api registration', () => {
             imageURL : 'http://img.com/product.jpg'
         }
 
-        const response = await requester
-            .put(createMenuCreatePath(bancheroRegistrationData.name))
-            .send({menu: [mozzarella, bacon, badPizza]})
+        const response = await sendRequestPutMenuCreation(requester, badPizza)
 
         expect(response.status).toBe(400)
         expect(response.body).toEqual({
@@ -67,9 +65,7 @@ describe('Api registration', () => {
             imageURL : 'http://img.com/product.jpg'
         }
 
-        const response = await requester
-            .put(createMenuCreatePath(bancheroRegistrationData.name))
-            .send({menu: [mozzarella, bacon, badPizza]})
+        const response = await sendRequestPutMenuCreation(requester, badPizza)
 
         expect(response.status).toBe(400)
         expect(response.body).toEqual({
@@ -87,9 +83,7 @@ describe('Api registration', () => {
             imageURL : 'http://img.com/product.jpg'
         }
 
-        const response = await requester
-            .put(createMenuCreatePath(bancheroRegistrationData.name))
-            .send({menu: [mozzarella, bacon, badPizza]})
+        const response = await sendRequestPutMenuCreation(requester, badPizza)
 
         expect(response.status).toBe(400)
         expect(response.body).toEqual({
@@ -107,9 +101,7 @@ describe('Api registration', () => {
             imageURL : 123
         }
 
-        const response = await requester
-            .put(createMenuCreatePath(bancheroRegistrationData.name))
-            .send({menu: [mozzarella, bacon, badPizza]})
+        const response = await sendRequestPutMenuCreation(requester, badPizza)
 
         expect(response.status).toBe(400)
         expect(response.body).toEqual({
@@ -117,4 +109,61 @@ describe('Api registration', () => {
         })
     })
 
+    it('cannot register a new menu if a name is not provided', async () => {
+        await requester.post(registerPath).send(bancheroRegistrationData)
+
+        const badPizza = {
+            description : 'bad description',
+            price : 1,
+            imageURL : 'http://img.com/product.jpg'
+        }
+
+        const response = await sendRequestPutMenuCreation(requester, badPizza)
+
+        expect(response.status).toBe(400)
+        expect(response.body).toEqual({
+            error: '"[2].name" is required'
+        })
+    })
+
+    it('cannot register a new menu if a imageURL is not provided', async () => {
+        await requester.post(registerPath).send(bancheroRegistrationData)
+
+        const badPizza = {
+            name : 'bad',
+            description : 'bad description',
+            price : 1,
+        }
+
+        const response = await sendRequestPutMenuCreation(requester, badPizza)
+
+        expect(response.status).toBe(400)
+        expect(response.body).toEqual({
+            error: '"[2].imageURL" is required'
+        })
+    })
+
+    it('cannot register a new menu if a price is not provided', async () => {
+        await requester.post(registerPath).send(bancheroRegistrationData)
+
+        const badPizza = {
+            name : 'bad',
+            description : 'bad description',
+            imageURL : 'http://img.com/product.jpg'
+        }
+
+        const response = await sendRequestPutMenuCreation(requester, badPizza)
+
+        expect(response.status).toBe(400)
+        expect(response.body).toEqual({
+            error: '"[2].price" is required'
+        })
+    })
+
 })
+
+async function sendRequestPutMenuCreation(requester, badPizza) {
+    return await requester
+        .put(createMenuCreatePath(bancheroRegistrationData.name))
+        .send({ menu: [mozzarella, bacon, badPizza] })
+}
