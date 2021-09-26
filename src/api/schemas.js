@@ -9,10 +9,10 @@ const pizzeriaSchema = Joi.object({
 
 const productsSchema = Joi.array().items(
     Joi.object({
-        name: Joi.string().required(),
-        description : Joi.string(),
-        price : Joi.number().required(),
-        imageURL : Joi.string().required()
+        name: Joi.string().required().label('product name'),
+        description : Joi.string().label('product description'),
+        price : Joi.number().required().label('product price'),
+        imageURL : Joi.string().required().label('product imageURL')
     })
 )
 

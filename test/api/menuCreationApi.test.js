@@ -51,7 +51,7 @@ describe('Api menu creation', () => {
 
         expect(response.status).toBe(400)
         expect(response.body).toEqual({
-            error: '"[2].name" must be a string'
+            error: '"product name" must be a string'
         })
     })
 
@@ -69,7 +69,7 @@ describe('Api menu creation', () => {
 
         expect(response.status).toBe(400)
         expect(response.body).toEqual({
-            error: '"[2].description" must be a string'
+            error: '"product description" must be a string'
         })
     })
 
@@ -87,7 +87,7 @@ describe('Api menu creation', () => {
 
         expect(response.status).toBe(400)
         expect(response.body).toEqual({
-            error: '"[2].price" must be a number'
+            error: '"product price" must be a number'
         })
     })
 
@@ -105,7 +105,7 @@ describe('Api menu creation', () => {
 
         expect(response.status).toBe(400)
         expect(response.body).toEqual({
-            error: '"[2].imageURL" must be a string'
+            error: '"product imageURL" must be a string'
         })
     })
 
@@ -122,7 +122,7 @@ describe('Api menu creation', () => {
 
         expect(response.status).toBe(400)
         expect(response.body).toEqual({
-            error: '"[2].name" is required'
+            error: '"product name" is required'
         })
     })
 
@@ -139,7 +139,7 @@ describe('Api menu creation', () => {
 
         expect(response.status).toBe(400)
         expect(response.body).toEqual({
-            error: '"[2].imageURL" is required'
+            error: '"product imageURL" is required'
         })
     })
 
@@ -156,7 +156,7 @@ describe('Api menu creation', () => {
 
         expect(response.status).toBe(400)
         expect(response.body).toEqual({
-            error: '"[2].price" is required'
+            error: '"product price" is required'
         })
     })
 
