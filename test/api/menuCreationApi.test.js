@@ -6,7 +6,7 @@ const testObjects = require('../testObjects')
 const { bancheroRegistrationData, guerrinRegistrationData } = testObjects.pizzeriasRegistrationData
 const { mozzarella, bacon } = testObjects.productsData
 
-describe('Api registration', () => {
+describe('Api menu creation', () => {
     let requester
 
     beforeEach(async () => {
