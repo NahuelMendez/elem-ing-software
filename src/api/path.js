@@ -1,4 +1,9 @@
 
-registerPath = '/api/register'
+const registerPath = '/api/register'
 
-module.exports = {registerPath}
+const createMenuCreatePath = (pizzeriaName) => { return `/api/pizzeria/${pizzeriaName}/menu`}
+
+const menuCreatePath = '/api/pizzeria/:pizzeriaName/menu'
+
+
+module.exports = {registerPath, createMenuCreatePath, menuCreatePath}

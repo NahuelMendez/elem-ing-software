@@ -7,4 +7,13 @@ const pizzeriaSchema = Joi.object({
     password: Joi.string().required()
 })
 
-module.exports = {pizzeriaSchema}
+const productsSchema = Joi.array().items(
+    Joi.object({
+        name: Joi.string(),
+        description : Joi.string(),
+        price : Joi.number(),
+        imageURL : Joi.string()
+    })
+)
+
+module.exports = {pizzeriaSchema, productsSchema}
