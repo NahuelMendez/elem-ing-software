@@ -9,7 +9,8 @@
     "start": "node ./src/api/start.js",
     "start-dev": "concurrently --kill-others \"npm run server\" \"npm run client\"",
     "test": "npx jest --verbose ./test",
-    "watch": "npx jest --watchAll --verbose ./test"
+    "watch": "npx jest --watchAll --verbose ./test",
+    "coverage":  "npx jest --collectCoverage --verbose ./test"
   },
   "keywords": [],
   "author": "",
