@@ -1,6 +1,10 @@
+import NavBar from "../Navbar"
+
 const MainView = () => {
   return (
-    <div></div>
+    <div>
+      <NavBar />
+    </div>
   )
 }
 
