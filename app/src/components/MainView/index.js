@@ -1,6 +1,6 @@
 const MainView = () => {
   return (
-    <div></div>
+    <div>MainView</div>
   )
 }
 
