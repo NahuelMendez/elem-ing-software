@@ -9,12 +9,12 @@ import Profile from "./components/Profile";
 
 function App() {
   return (
-      <Router>
-        <Route exact path="/" component={MainView} />
-        <Route exact path="/perfil" component={Profile} />
-        <Route exact path="/login" component={Login} />
-        <Route exact path="/menu" component={MyMenu} />
-      </Router>
+    <Router>
+      <Route exact path="/" component={MainView}/>
+      <Route path="/perfil" component={Profile}/>
+      <Route path="/login" component={Login}/>
+      <Route path="/menu" component={MyMenu} />
+    </Router>
   );
 }
 
