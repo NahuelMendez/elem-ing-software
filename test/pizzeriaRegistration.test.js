@@ -43,6 +43,19 @@ describe('Pizzeria registration', () => {
         ).rejects.toThrow(`Pizzeria name ${pizzeriaDataWithRepeatedName.name} already registered`)
     })
 
+    it('cannot register a new pizzeria with a repeated email', async () => {
+        await userService.registerPizzeria(bancheroRegistrationData)
+
+        const pizzeriaDataWithRepeatedName = {
+            ...guerrinRegistrationData,
+            email: bancheroRegistrationData.email
+        }
+
+        await expect(
+            userService.registerPizzeria(pizzeriaDataWithRepeatedName)
+        ).rejects.toThrow(`A user with email ${bancheroRegistrationData.email} is already registered`)
+    })
+
     it('cannot register a new pizzeria with an empty name', async () => {
         const pizzeriaDataWithBlankName = {...bancheroRegistrationData, name: ''}
 
