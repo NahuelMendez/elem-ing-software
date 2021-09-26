@@ -12,13 +12,13 @@ class Product {
         this.name = name.trim()
         this.description = description
         this.price = price
-        this.imageURL = imageURL
+        //this.imageURL = imageURL
     }
 
     getName() { return this.name }
-    getDescription() { return this.description }
-    getPrice() { return this.price }
-    getimageURL() { return this.imageURL }
+    //getDescription() { return this.description }
+    //getPrice() { return this.price }
+    //getimageURL() { return this.imageURL }
 
     assertNameIsNotBlank(name) {
         if (name.trim() === '')
