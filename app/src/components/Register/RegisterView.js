@@ -1,7 +1,7 @@
 import React, { useState} from "react";
 import { useHistory } from "react-router-dom";
 import { Link } from 'react-router-dom';
-import Api from '../Api/ApiObject';
+import api from '../Api/ApiObject';
 
 const RegisterForm = () =>{
 
@@ -15,8 +15,6 @@ const RegisterForm = () =>{
     const [confirmPassword, setConfirmPassword] = useState("");
     const history = useHistory()
 
-    const api = new Api()
-
     const handleChange = name => event => {
         setData(prevState => ({ ...prevState, [name]: event.target.value }));
     }
@@ -24,8 +22,6 @@ const RegisterForm = () =>{
     const handleConfirmPasswordChange = (event) => {
         setConfirmPassword(event.target.value);
     };
-
-    //encapsular la api en un objeto
 
     const handleSubmit = (event) =>{
         event.preventDefault();
@@ -42,7 +38,7 @@ const RegisterForm = () =>{
                 setConfirmPassword("")
                 history.push("/login");
             })
-            .catch( error => setError(error.response.data.result))
+            .catch( err => setError(err.response.data.error))
         }else {
             setError("Passwords do not match")
         }
@@ -58,62 +54,62 @@ const RegisterForm = () =>{
                 </div>
                 <div className="fields-container">
                 <div className="form-floating mb-3">
-                <input 
-                    className="" 
-                    type="text"
-                    placeholder="Nombre de usuario"
-                    value={data.name}
-                    aria-describedby="validationTooltipUsernamePrepend" required
-                    onChange={handleChange("name")}
-                />
-                <label htmlFor="floatingInput" className ="form-label">Nombre</label>
+                    <label htmlFor="floatingInput" className ="form-label">Nombre</label>
+                    <input 
+                        className="" 
+                        type="text"
+                        placeholder="Nombre de usuario"
+                        value={data.name}
+                        aria-describedby="validationTooltipUsernamePrepend" required
+                        onChange={handleChange("name")}
+                    />
                 </div>
                 <div className="form-floating mb-3">
-                <input 
-                    className="" 
-                    type="text"
-                    placeholder="Telefono"
-                    value={data.telephone}
-                    aria-describedby="validationTooltipUsernamePrepend" required
-                    onChange={handleChange("telephone")}
-                />
-                <label htmlFor="floatingInput" className ="form-label">Telefono</label>
-                </div>
-                <div class="form-floating mb-3">
-                <input 
-                    type="email" 
-                    className="form-control" 
-                    id="floatingInput"
-                    placeholder="E-mail"
-                    value={data.email}
-                    aria-describedby="validationTooltipUsernamePrepend" required
-                    onChange={handleChange("email")}
-                />
-                <label htmlFor="floatingInput">Email</label>
+                    <label htmlFor="floatingInput" className ="form-label">Telefono</label>
+                    <input 
+                        className="" 
+                        type="text"
+                        placeholder="Telefono"
+                        value={data.telephone}
+                        aria-describedby="validationTooltipUsernamePrepend" required
+                        onChange={handleChange("telephone")}
+                    />
                 </div>
                 <div className="form-floating mb-3">
-                <input 
-                    type="password" 
-                    className="form-control" 
-                    id="floatingPassword"
-                    placeholder="Contraseña"
-                    value={data.password}
-                    aria-describedby="validationTooltipUsernamePrepend" required
-                    onChange={handleChange("password")}    
-                />
-                <label htmlFor="floatingPassword">Contraseña</label>
+                    <label htmlFor="floatingInput">Email</label>
+                    <input 
+                        type="email" 
+                        className="form-control" 
+                        id="floatingInput"
+                        placeholder="E-mail"
+                        value={data.email}
+                        aria-describedby="validationTooltipUsernamePrepend" required
+                        onChange={handleChange("email")}
+                    />
                 </div>
                 <div className="form-floating mb-3">
-                <input 
-                    id="floatingConfirmPassword"
-                    className="form-control" 
-                    type="password" 
-                    placeholder="Confirmar contraseña"
-                    value={confirmPassword}
-                    aria-describedby="validationTooltipUsernamePrepend" required
-                    onChange={handleConfirmPasswordChange}
-                />
-                <label htmlFor="floatingConfirmPassword">Confirmar contraseña</label>
+                    <label htmlFor="floatingPassword">Contraseña</label>
+                    <input 
+                        type="password" 
+                        className="form-control" 
+                        id="floatingPassword"
+                        placeholder="Contraseña"
+                        value={data.password}
+                        aria-describedby="validationTooltipUsernamePrepend" required
+                        onChange={handleChange("password")}    
+                    />
+                </div>
+                <div className="form-floating mb-3">
+                    <label htmlFor="floatingConfirmPassword">Confirmar contraseña</label>
+                    <input 
+                        id="floatingConfirmPassword"
+                        className="form-control" 
+                        type="password" 
+                        placeholder="Confirmar contraseña"
+                        value={confirmPassword}
+                        aria-describedby="validationTooltipUsernamePrepend" required
+                        onChange={handleConfirmPasswordChange}
+                    />
                 </div>
                 </div>
                 <div className="d-grid gap-2 col-12 mx-auto">
