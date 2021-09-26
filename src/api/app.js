@@ -1,7 +1,7 @@
 const express = require('express')
 const bodyParser = require('body-parser')
-const {registerPath} = require("./path")
-const {pizzeriaSchema} = require("./schemas")
+const {registerPath, loginPath} = require("./path")
+const {pizzeriaSchema, loginSchema} = require("./schemas")
 const {UserService} = require("../model/UserService");
 const {TransientUsersRepository} = require("../model/TransientUsersRepository");
 
@@ -25,6 +25,18 @@ const createApp = () => {
             )
     })
 
+    app.post(loginPath, (request, response) => {
+        const loginData = request.body
+
+        loginSchema.validateAsync(loginData)
+            .then( 
+                () => login(usersService, loginData, response)
+            )
+            .catch( 
+                error => response.status(404).json({error: error.message})
+            )
+    })
+
     const registerPizzeria = (pizzeria, response) => {
         usersService.registerPizzeria(pizzeria)
             .then(
@@ -35,11 +47,20 @@ const createApp = () => {
             );
     }
 
+    function login(usersService, loginData, response) {
+        usersService.login(loginData)
+            .then(
+                () => response.status(201).json({ message: 'successful operation' })
+            )
+            .catch(
+                error => response.status(404).json({ error: error.message })
+            );
+    }
+
     return app
 }
 
 
 
 module.exports = {createApp}
-
 

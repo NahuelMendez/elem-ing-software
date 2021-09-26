@@ -1,4 +1,6 @@
 
 registerPath = '/api/register'
 
-module.exports = {registerPath}
+loginPath = '/api/login'
+
+module.exports = {registerPath, loginPath}
