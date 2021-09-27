@@ -21,7 +21,7 @@ describe('Api login', () => {
 
         expect(response.status).toBe(201)
         expect(response.body).toEqual({
-            message: 'successful operation'
+            username: bancheroRegistrationData.name
         })
     })
 

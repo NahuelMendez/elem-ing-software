@@ -71,7 +71,7 @@ const createApp = () => {
     function login(usersService, loginData, response) {
         usersService.login(loginData)
             .then(
-                () => response.status(201).json({ message: 'successful operation' })
+                () => response.status(201).json({ username: loginData.username })
             )
             .catch(
                 error => response.status(404).json({ error: error.message })
