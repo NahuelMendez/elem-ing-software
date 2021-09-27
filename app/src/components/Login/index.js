@@ -13,7 +13,7 @@ const Login = () => {
 
   const handleSubmit = (event) =>{
     event.preventDefault()
-    
+    api.login(data);
   }
 
   return (
