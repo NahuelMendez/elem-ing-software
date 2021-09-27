@@ -9,6 +9,7 @@
     "start": "node ./src/api/start.js",
     "start-dev": "concurrently --kill-others \"npm run server\" \"npm run client\"",
     "test": "npx jest --verbose ./test",
+    "e2e-test-dev": "concurrently --kill-others \"npm run server\" \"npm run client\" \"npx cypress run\"",
     "watch": "npx jest --watchAll --verbose ./test"
   },
   "keywords": [],
