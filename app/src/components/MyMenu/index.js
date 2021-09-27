@@ -20,7 +20,7 @@ const MyMenu = () => {
     event.preventDefault();
     api.addProduct({ menu: [productData] }, "pizzeria")
       .then(_ => {
-        setResult({ show: true, message: "No se ha podido ingresar el producto", error: false })
+        setResult({ show: true, message: "Se ha ingresado el producto correctamente", error: false })
       })
       .catch(() => {
         setResult({ show: true, message: "No se ha podido ingresar el producto", error: true })
