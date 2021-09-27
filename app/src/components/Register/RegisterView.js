@@ -15,8 +15,9 @@ const RegisterForm = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const history = useHistory()
 
-  const handleChange = name => event => {
-    setData(prevState => ({ ...prevState, [name]: event.target.value }));
+  const handleChange = event => {
+    const target = event.target
+    setData(prevState => ({ ...prevState, [target.name]: target.value }));
   }
 
   const handleConfirmPasswordChange = (event) => {
@@ -47,82 +48,86 @@ const RegisterForm = () => {
   }
 
   return (
-    <div className="register-container">
-      <form onSubmit={handleSubmit} className="register-form">
-        <div className="text-red-500">
-          <h1>
+    <div className="w-full flex flex-col justify-center items-center">
+      <form onSubmit={handleSubmit} className="mt-8 w-1/5">
+        <div className="flex justify-center">
+          <h1 className="text-lg font-bold">
             Registrarse en PizzApp
           </h1>
         </div>
-        <div className="fields-container">
-          <div className="form-floating mb-3">
+        <div className="fields-container w-full">
+          <div className="flex flex-col w-full mb-2">
+            <label htmlFor="floatingInput">Nombre</label>
             <input
-              className=""
+              className="input w-full"
               type="text"
+              name="name"
               placeholder="Nombre de usuario"
               value={data.name}
               aria-describedby="validationTooltipUsernamePrepend" required
-              onChange={handleChange("name")}
+              onChange={handleChange}
             />
-            <label htmlFor="floatingInput" className="form-label">Nombre</label>
           </div>
-          <div className="form-floating mb-3">
+          <div className="flex flex-col w-full mb-2">
+            <label htmlFor="floatingInput">Telefono</label>
             <input
-              className=""
+              className="input w-full"
               type="text"
               placeholder="Telefono"
+              name="telephone"
               value={data.telephone}
               aria-describedby="validationTooltipUsernamePrepend" required
-              onChange={handleChange("telephone")}
+              onChange={handleChange}
             />
-            <label htmlFor="floatingInput" className="form-label">Telefono</label>
           </div>
-          <div class="form-floating mb-3">
+          <div class="flex flex-col w-full mb-2">
+            <label htmlFor="floatingInput">Email</label>
             <input
               type="email"
-              className="form-control"
+              className="input w-full"
               id="floatingInput"
               placeholder="E-mail"
               value={data.email}
+              name="email"
               aria-describedby="validationTooltipUsernamePrepend" required
-              onChange={handleChange("email")}
+              onChange={handleChange}
             />
-            <label htmlFor="floatingInput">Email</label>
           </div>
-          <div className="form-floating mb-3">
+          <div className="flex flex-col w-full mb-2">
+            <label htmlFor="floatingPassword">Contraseña</label>
             <input
               type="password"
-              className="form-control"
+              className="input w-full"
               id="floatingPassword"
               placeholder="Contraseña"
               value={data.password}
+              name="password"
               aria-describedby="validationTooltipUsernamePrepend" required
-              onChange={handleChange("password")}
+              onChange={handleChange}
             />
-            <label htmlFor="floatingPassword">Contraseña</label>
           </div>
-          <div className="form-floating mb-3">
+          <div className="flex flex-col w-full">
+            <label className="" htmlFor="floatingConfirmPassword">Confirmar contraseña</label>
             <input
               id="floatingConfirmPassword"
-              className="form-control"
+              className="input w-full"
               type="password"
               placeholder="Confirmar contraseña"
               value={confirmPassword}
               aria-describedby="validationTooltipUsernamePrepend" required
               onChange={handleConfirmPasswordChange}
             />
-            <label htmlFor="floatingConfirmPassword">Confirmar contraseña</label>
           </div>
         </div>
-        <div className="d-grid gap-2 col-12 mx-auto">
+        <div className="w-full flex justify-center mt-4">
           <button
             type="submit"
-            className="btn btn-info rounded-pill my-4">
+            className="button-principal">
             Registrarse
           </button>
         </div>
-        <div>
-          <Link to={"/login"}> <p className="text-center">Ya tienes una cuenta? Inicia sesion aqui</p></Link>
+        <div className="mt-2">
+          <Link to={"/login"}> <p className="text-center text-xs">Ya tienes una cuenta? Inicia sesion aqui</p></Link>
         </div>
         <div>
           {error && <div id="alertReg" className="alert alert-danger" role="alert"> {error} </div>}
