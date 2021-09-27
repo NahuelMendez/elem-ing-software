@@ -13,8 +13,8 @@ function App() {
     <Router>
       <Route path="/home" component={MainView}/>
       <Route exact path="/" component={Login}/>
-      <Route exact path="/login" component={Login}/>
       <Route path="/perfil" component={Profile}/>
+      <Route path="/login" component={Login}/>
       <Route path="/menu" component={MyMenu} />
       <Route path="/register" component={RegisterView}/>
     </Router>
