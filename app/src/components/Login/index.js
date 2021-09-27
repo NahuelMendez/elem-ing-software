@@ -1,11 +1,13 @@
 import React, {useState} from "react";
 import api from '../Api/ApiObject';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { useHistory } from "react-router-dom";
 
 const Login = () => {
 
-  const [data, setData] = useState({email: "", password: ""});
+  const [data, setData] = useState({username: "", password: ""});
   const [error, setError] = useState("");
+  const history = useHistory();
 
   const handleChange = name => event => {
     setData(prevState => ({ ...prevState, [name]: event.target.value }));
@@ -13,7 +15,9 @@ const Login = () => {
 
   const handleSubmit = (event) =>{
     event.preventDefault()
-    api.login(data);
+    api.login(data)
+    .then(_ => history.push('/home'))
+    .catch(err => setError(err.response.data.error));
   }
 
   return (
@@ -23,15 +27,15 @@ const Login = () => {
             Iniciar Sesion en PizzApp
         </h1>
         <div className="form-floating mb-3">
-          <label htmlFor="floatingInput">Email</label>
+          <label htmlFor="floatingInput">Nombre de usuario</label>
             <input
-            type="email"
+            type="text"
             id="floatingInput"
             className="form-control"
-            placeholder="name@example.com"
-            value={data.email}
-            aria-describedby="validationTooltipPrependEmail" required
-            onChange={handleChange("email")}
+            placeholder="Nombre de Usuario"
+            value={data.username}
+            aria-describedby="validationTooltipPrepend" required
+            onChange={handleChange("username")}
             />
         </div>
         <div className="form-floating">
@@ -53,7 +57,7 @@ const Login = () => {
         </div>
         <div>
             {error && <div id= "alertReg" className="alert alert-danger" role="alert"> 
-                El email y/o la contraseña no son correctos. Por favor reviselos e intente nuevamente.
+                El nombre de usuario y/o la contraseña no son correctos. Por favor reviselos e intente nuevamente.
             </div>}
         </div>
         <Link to={"/register"}> <p className = "text-center">No tienes una cuenta? Registrate en PizzApp</p> </Link>
