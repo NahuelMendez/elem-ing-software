@@ -11,20 +11,22 @@
     "start-dev": "concurrently --kill-others \"npm run server\" \"npm run client\"",
     "test": "npx jest --verbose ./test",
     "watch": "npx jest --watchAll --verbose ./test",
-    "coverage": "npx jest --collectCoverage --verbose ./test"
+    "coverage": "npx jest --collectCoverage --verbose ./test",
+    "e2e-test-dev": "concurrently --kill-others \"npm run server\" \"npm run client\" \"npx cypress run\""
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "babel-jest": "^26.6.0",
+    "concurrently": "^6.2.1",
+    "cypress": "^8.4.1",
     "jest": "^26.6.0",
     "nodemon": "^2.0.13",
     "supertest": "^6.1.6"
   },
   "dependencies": {
     "body-parser": "^1.19.0",
-    "concurrently": "^6.2.1",
     "express": "^4.17.1",
     "joi": "^17.4.2"
   }
