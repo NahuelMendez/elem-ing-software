@@ -8,6 +8,10 @@ const api = {
 
         login: (data) =>{
                 return axios.post("api/login", data);
+        },
+        
+        addProduct: (data, pizzeriaName) => {
+                return axios.put(`/api/pizzeria/${pizzeriaName}/menu`, data)
         }
             
 };
