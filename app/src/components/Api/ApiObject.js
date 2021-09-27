@@ -1,13 +1,19 @@
 import axios from 'axios';
 
-class Api{
+const api = {
 
-    constructor(){}
+        register: (data) =>{
+                return axios.post("api/register", data);
+        },
 
-    register = (data) =>{
-        return axios.post("api/register", data);
-    }
+        login: (data) =>{
+                return axios.post("api/login", data);
+        },
+        
+        addProduct: (data, pizzeriaName) => {
+                return axios.put(`/api/pizzeria/${pizzeriaName}/menu`, data)
+        }
+            
+};
 
-}
-
-export default Api;
+export default api;

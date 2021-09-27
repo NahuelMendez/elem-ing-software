@@ -6,11 +6,13 @@
   "scripts": {
     "client": "cd app && npm start",
     "server": "nodemon ./src/api/start.js",
-    "start": "node ./src/api/start.js",
+    "build": "cd ./app && npm install && npm run build",
+    "start": "concurrently \"node ./src/api/start.js\" \"npm run build\"",
     "start-dev": "concurrently --kill-others \"npm run server\" \"npm run client\"",
     "test": "npx jest --verbose ./test",
-    "e2e-test-dev": "concurrently --kill-others \"npm run server\" \"npm run client\" \"npx cypress run\"",
-    "watch": "npx jest --watchAll --verbose ./test"
+    "watch": "npx jest --watchAll --verbose ./test",
+    "coverage": "npx jest --collectCoverage --verbose ./test",
+    "e2e-test-dev": "concurrently --kill-others \"npm run server\" \"npm run client\" \"npx cypress run\""
   },
   "keywords": [],
   "author": "",
