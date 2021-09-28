@@ -6,8 +6,7 @@
   "scripts": {
     "client": "cd .. && cd frontend && npm start",
     "server": "nodemon ./src/api/start.js",
-    "build": "cd .. && cd frontend && npm install && npm run build",
-    "start": "concurrently \"node ./src/api/start.js\" \"npm run build\"",
+    "start": "node ./src/api/start.js",
     "start-dev": "concurrently --kill-others \"npm run server\" \"npm run client\"",
     "test": "npx jest --verbose ./test",
     "watch": "npx jest --watchAll --verbose ./test",
