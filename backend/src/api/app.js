@@ -1,4 +1,5 @@
 const express = require('express')
+var cors = require('cors')
 const path = require('path')
 const bodyParser = require('body-parser')
 const {registerPath, loginPath, menuCreatePath} = require("./path")
@@ -15,6 +16,7 @@ const createApp = () => {
     const menuService = new MenuService(usersRepository)
     const app = express()
 
+    app.use(cors())
     app.use(express.static(path.join(__dirname, '../../app/build')))
 
     app.use(bodyParser.urlencoded({extended: false}))
