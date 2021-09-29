@@ -3,29 +3,16 @@ var cors = require('cors')
 const path = require('path')
 const bodyParser = require('body-parser')
 const {registerPath, loginPath, menuCreatePath} = require("./path")
-const {pizzeriaSchema, loginSchema, productsSchema} = require("./schemas")
 const {UserService} = require("../model/UserService");
 const {MenuService} = require("../model/MenuService");
 const {TransientUsersRepository} = require("../model/TransientUsersRepository");
 const {Product} = require('../model/Product')
 
-const registerPizzeriaRequestValidation = (request, response, next) => {
-    pizzeriaSchema.validateAsync(request.body)
-        .then(() => next())
-        .catch (error => response.status(400).json({error: error.message}))
-}
-
-const loginRequestValidation = (request, response, next) => {
-    loginSchema.validateAsync(request.body)
-        .then(() => next())
-        .catch (error => response.status(400).json({error: error.message}))
-}
-
-const productsRequestValidation = (request, response, next) => {
-    productsSchema.validateAsync(request.body)
-        .then(() => next())
-        .catch (error => response.status(400).json({error: error.message}))
-}
+const {
+    registerPizzeriaRequestValidation,
+    loginRequestValidation,
+    productsRequestValidation
+} = require('./requestValidations')
 
 const createApp = () => {
 
