@@ -3,7 +3,7 @@ import axios from 'axios';
 const baseURL =
   process.env.NODE_ENV === 'development'
     ? 'http://localhost:8080'
-    : 'https://g1-eis-backend.herokuapp.com/'
+    : 'https://g1-eis-backend.herokuapp.com'
 
 const api = {
 
