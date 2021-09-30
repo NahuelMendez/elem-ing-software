@@ -4,15 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "client": "cd app && npm start",
+    "client": "cd .. && cd frontend && npm start",
     "server": "nodemon ./src/api/start.js",
-    "build": "cd ./app && npm install && npm run build",
-    "start": "concurrently \"node ./src/api/start.js\" \"npm run build\"",
+    "start": "node ./src/api/start.js",
     "start-dev": "concurrently --kill-others \"npm run server\" \"npm run client\"",
     "test": "npx jest --verbose ./test",
     "watch": "npx jest --watchAll --verbose ./test",
     "coverage": "npx jest --collectCoverage --verbose ./test",
-    "e2e-test-dev": "concurrently --kill-others \"npm run server\" \"npm run client\" \"npx cypress run\""
+    "e2e-dev": "concurrently \"npm run start-dev\" \"npx cypress open\""
   },
   "keywords": [],
   "author": "",
@@ -25,8 +24,9 @@
     "supertest": "^6.1.6"
   },
   "dependencies": {
-    "concurrently": "^6.2.1",
     "body-parser": "^1.19.0",
+    "concurrently": "^6.2.1",
+    "cors": "^2.8.5",
     "express": "^4.17.1",
     "joi": "^17.4.2"
   }
