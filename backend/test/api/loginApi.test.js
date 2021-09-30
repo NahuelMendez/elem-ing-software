@@ -47,7 +47,7 @@ describe('Api login', () => {
             password: bancheroRegistrationData.password
         })
 
-        expect(response.status).toBe(404)
+        expect(response.status).toBe(400)
         expect(response.body).toEqual({
             error: '"username" must be a string'
         })
@@ -61,7 +61,7 @@ describe('Api login', () => {
             password: 1234
         })
 
-        expect(response.status).toBe(404)
+        expect(response.status).toBe(400)
         expect(response.body).toEqual({
             error: '"password" must be a string'
         })
@@ -74,7 +74,7 @@ describe('Api login', () => {
             password: bancheroRegistrationData.password
         })
 
-        expect(response.status).toBe(404)
+        expect(response.status).toBe(400)
         expect(response.body).toEqual({
             error: '"username" is required'
         })
@@ -87,7 +87,7 @@ describe('Api login', () => {
             username: bancheroRegistrationData.name
         })
 
-        expect(response.status).toBe(404)
+        expect(response.status).toBe(400)
         expect(response.body).toEqual({
             error: '"password" is required'
         })
