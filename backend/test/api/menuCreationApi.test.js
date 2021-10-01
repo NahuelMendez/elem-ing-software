@@ -1,6 +1,8 @@
 const request = require('supertest')
 const {createApp} = require('../../src/api/app')
-const {createMenuCreatePath, registerPath} = require("../../src/api/path")
+const {registerPath} = require("../../src/api/path")
+const { createMenuPath } = require('../helpers/pathFactory')
+const {BAD_REQUEST, OK} = require("../../src/api/statusCode")
 const testObjects = require('../testObjects')
 
 const { bancheroRegistrationData, guerrinRegistrationData } = testObjects.pizzeriasRegistrationData
@@ -17,19 +19,19 @@ describe('Api menu creation', () => {
         await requester.post(registerPath).send(bancheroRegistrationData)
 
         const response = await requester
-            .put(createMenuCreatePath(bancheroRegistrationData.name))
+            .put(createMenuPath(bancheroRegistrationData.name))
             .send(mozzarella)
 
-        expect(response.status).toBe(201)
+        expect(response.status).toBe(OK)
         expect(response.body).toEqual(mozzarella)
     })
 
     it('cannot add a product for a not registered pizzeria', async () => {
         const response = await requester
-            .put(createMenuCreatePath(guerrinRegistrationData.name))
+            .put(createMenuPath(guerrinRegistrationData.name))
             .send(mozzarella)
 
-        expect(response.status).toBe(400)
+        expect(response.status).toBe(BAD_REQUEST)
         expect(response.body).toEqual({
             error: `Pizzeria ${guerrinRegistrationData.name} not found`
         })
@@ -42,7 +44,7 @@ describe('Api menu creation', () => {
 
         const response = await sendRequestPutMenuCreation(requester, badPizza)
 
-        expect(response.status).toBe(400)
+        expect(response.status).toBe(BAD_REQUEST)
         expect(response.body).toEqual({
             error: '"product name" must be a string'
         })
@@ -55,7 +57,7 @@ describe('Api menu creation', () => {
 
         const response = await sendRequestPutMenuCreation(requester, badPizza)
 
-        expect(response.status).toBe(400)
+        expect(response.status).toBe(BAD_REQUEST)
         expect(response.body).toEqual({
             error: '"product description" must be a string'
         })
@@ -68,7 +70,7 @@ describe('Api menu creation', () => {
 
         const response = await sendRequestPutMenuCreation(requester, badPizza)
 
-        expect(response.status).toBe(400)
+        expect(response.status).toBe(BAD_REQUEST)
         expect(response.body).toEqual({
             error: '"product price" must be a number'
         })
@@ -81,7 +83,7 @@ describe('Api menu creation', () => {
 
         const response = await sendRequestPutMenuCreation(requester, badPizza)
 
-        expect(response.status).toBe(400)
+        expect(response.status).toBe(BAD_REQUEST)
         expect(response.body).toEqual({
             error: '"product imageURL" must be a string'
         })
@@ -94,7 +96,7 @@ describe('Api menu creation', () => {
 
         const response = await sendRequestPutMenuCreation(requester, badPizza)
 
-        expect(response.status).toBe(400)
+        expect(response.status).toBe(BAD_REQUEST)
         expect(response.body).toEqual({
             error: '"product name" is required'
         })
@@ -107,7 +109,7 @@ describe('Api menu creation', () => {
 
         const response = await sendRequestPutMenuCreation(requester, badPizza)
 
-        expect(response.status).toBe(400)
+        expect(response.status).toBe(BAD_REQUEST)
         expect(response.body).toEqual({
             error: '"product imageURL" is required'
         })
@@ -120,7 +122,7 @@ describe('Api menu creation', () => {
 
         const response = await sendRequestPutMenuCreation(requester, badPizza)
 
-        expect(response.status).toBe(400)
+        expect(response.status).toBe(BAD_REQUEST)
         expect(response.body).toEqual({
             error: '"product price" is required'
         })
@@ -130,6 +132,6 @@ describe('Api menu creation', () => {
 
 async function sendRequestPutMenuCreation(requester, badPizza) {
     return await requester
-        .put(createMenuCreatePath(bancheroRegistrationData.name))
+        .put(createMenuPath(bancheroRegistrationData.name))
         .send(badPizza)
 }

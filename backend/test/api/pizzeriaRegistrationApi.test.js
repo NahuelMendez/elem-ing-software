@@ -1,6 +1,7 @@
 const request = require('supertest')
 const {registerPath} = require("../../src/api/path")
 const {createApp} = require('../../src/api/app')
+const {CREATED, BAD_REQUEST} = require("../../src/api/statusCode")
 
 const {
     bancheroRegistrationData,
@@ -17,7 +18,7 @@ describe('Api registration', () => {
     it('can register a new pizzeria with valid registration data', async () => {
         const response = await requester.post(registerPath).send(bancheroRegistrationData)
 
-        expect(response.status).toBe(201)
+        expect(response.status).toBe(CREATED)
         expect(response.body).toEqual({
             name: bancheroRegistrationData.name
         })
@@ -26,7 +27,7 @@ describe('Api registration', () => {
     it('cannot register a new pizzeria with an empty name', async () => {
         const response = await requester.post(registerPath).send({...bancheroRegistrationData, name: ''})
 
-        expect(response.status).toBe(400)
+        expect(response.status).toBe(BAD_REQUEST)
         expect(response.body).toEqual({
             error: '"name" is not allowed to be empty'
         })
@@ -42,7 +43,7 @@ describe('Api registration', () => {
 
         const response = await requester.post(registerPath).send(pizzeriaDataWithRepeatedName)
 
-        expect(response.status).toBe(400)
+        expect(response.status).toBe(BAD_REQUEST)
         expect(response.body).toEqual({
             error: `Pizzeria name ${pizzeriaDataWithRepeatedName.name} already registered`
         })
@@ -51,7 +52,7 @@ describe('Api registration', () => {
     it('cannot register a new pizzeria if the name is not of string type', async () => {
         const response = await requester.post(registerPath).send({...bancheroRegistrationData, name: 123})
 
-        expect(response.status).toBe(400)
+        expect(response.status).toBe(BAD_REQUEST)
         expect(response.body).toEqual({
             error: '"name" must be a string'
         })
@@ -60,7 +61,7 @@ describe('Api registration', () => {
     it('cannot register a new pizzeria if the email is not of string type', async () => {
         const response = await requester.post(registerPath).send({...bancheroRegistrationData, email: 123})
 
-        expect(response.status).toBe(400)
+        expect(response.status).toBe(BAD_REQUEST)
         expect(response.body).toEqual({
             error: '"email" must be a string'
         })
@@ -69,7 +70,7 @@ describe('Api registration', () => {
     it('cannot register a new pizzeria if the password is not of string type', async () => {
         const response = await requester.post(registerPath).send({...bancheroRegistrationData, password: 123})
 
-        expect(response.status).toBe(400)
+        expect(response.status).toBe(BAD_REQUEST)
         expect(response.body).toEqual({
             error: '"password" must be a string'
         })
@@ -82,7 +83,7 @@ describe('Api registration', () => {
             email: 'barquito@gmail.com'
         })
 
-        expect(response.status).toBe(400)
+        expect(response.status).toBe(BAD_REQUEST)
         expect(response.body).toEqual({
             error: '"password" is required'
         })
@@ -95,7 +96,7 @@ describe('Api registration', () => {
             password: 'password'
         })
 
-        expect(response.status).toBe(400)
+        expect(response.status).toBe(BAD_REQUEST)
         expect(response.body).toEqual({
             error: '"email" is required'
         })
@@ -108,7 +109,7 @@ describe('Api registration', () => {
             password: 'password'
         })
 
-        expect(response.status).toBe(400)
+        expect(response.status).toBe(BAD_REQUEST)
         expect(response.body).toEqual({
             error: '"name" is required'
         })
@@ -121,7 +122,7 @@ describe('Api registration', () => {
             password: 'password'
         })
 
-        expect(response.status).toBe(400)
+        expect(response.status).toBe(BAD_REQUEST)
         expect(response.body).toEqual({
             error: '"telephone" is required'
         })

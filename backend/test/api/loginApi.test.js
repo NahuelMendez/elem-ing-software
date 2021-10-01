@@ -1,6 +1,7 @@
 const request = require('supertest')
 const {createApp} = require('../../src/api/app')
 const {registerPath, loginPath} = require("../../src/api/path")
+const {OK, BAD_REQUEST, NOT_FOUND} = require("../../src/api/statusCode")
 
 const {bancheroRegistrationData} = require('../testObjects').pizzeriasRegistrationData
 
@@ -19,7 +20,7 @@ describe('Api login', () => {
             password: bancheroRegistrationData.password
         })
 
-        expect(response.status).toBe(201)
+        expect(response.status).toBe(OK)
         expect(response.body).toEqual({
             username: bancheroRegistrationData.name
         })
@@ -33,7 +34,7 @@ describe('Api login', () => {
             password: bancheroRegistrationData.password
         })
 
-        expect(response.status).toBe(404)
+        expect(response.status).toBe(NOT_FOUND)
         expect(response.body).toEqual({
             error: 'Invalid username or password'
         })
@@ -47,7 +48,7 @@ describe('Api login', () => {
             password: bancheroRegistrationData.password
         })
 
-        expect(response.status).toBe(400)
+        expect(response.status).toBe(BAD_REQUEST)
         expect(response.body).toEqual({
             error: '"username" must be a string'
         })
@@ -61,7 +62,7 @@ describe('Api login', () => {
             password: 1234
         })
 
-        expect(response.status).toBe(400)
+        expect(response.status).toBe(BAD_REQUEST)
         expect(response.body).toEqual({
             error: '"password" must be a string'
         })
@@ -74,7 +75,7 @@ describe('Api login', () => {
             password: bancheroRegistrationData.password
         })
 
-        expect(response.status).toBe(400)
+        expect(response.status).toBe(BAD_REQUEST)
         expect(response.body).toEqual({
             error: '"username" is required'
         })
@@ -87,7 +88,7 @@ describe('Api login', () => {
             username: bancheroRegistrationData.name
         })
 
-        expect(response.status).toBe(400)
+        expect(response.status).toBe(BAD_REQUEST)
         expect(response.body).toEqual({
             error: '"password" is required'
         })
