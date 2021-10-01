@@ -29,34 +29,41 @@ describe("Pizzeria's menu creation", () => {
         await expectHasNoProductsInMenu(bancheroRegistrationData.name)
     })
 
-    it('a registered pizzeria can create a menu', async () => {
+    it(`a registered pizzeria can add a new product to it's menu`, async () => {
         await userService.registerPizzeria(bancheroRegistrationData)
 
-        await menuService.createMenu(bancheroRegistrationData.name, [pepperoniPizza, meatPizza])
+        await menuService.addToMenuOf(bancheroRegistrationData.name, pepperoniPizza)
+
+        await expectHasMenuWith([pepperoniPizza], bancheroRegistrationData.name)
+    })
+
+    it(`a registered pizzeria can add many products with different names to it's menu`, async () => {
+        await userService.registerPizzeria(bancheroRegistrationData)
+        await menuService.addToMenuOf(bancheroRegistrationData.name, pepperoniPizza)
+
+        await menuService.addToMenuOf(bancheroRegistrationData.name, meatPizza)
 
         await expectHasMenuWith([pepperoniPizza, meatPizza], bancheroRegistrationData.name)
     })
 
-    it('cannot create a menu for a not registered pizzeria', async () => {
+    it('cannot add a product to a menu for a not registered pizzeria', async () => {
         await expect(
-            menuService.createMenu(bancheroRegistrationData.name, [pepperoniPizza])
+            menuService.addToMenuOf(bancheroRegistrationData.name, pepperoniPizza)
         ).rejects.toThrow(`Pizzeria ${bancheroRegistrationData.name} not found`)
     })
 
     it("a pizzeria's menu cannot have products with repeated name", async () => {
+        const firstProduct = productFactory.createProductWith({name: 'RepeatedName'})
+        const productWithRepeatedName = productFactory.createProductWith({name: 'RepeatedName'})
+
         await userService.registerPizzeria(bancheroRegistrationData)
+        await menuService.addToMenuOf(bancheroRegistrationData.name, firstProduct)
 
         await expect(
-            menuService.createMenu(
-                bancheroRegistrationData.name,
-                [
-                    productFactory.createProductWith({name: 'RepeatedName'}),
-                    productFactory.createProductWith({name: 'RepeatedName'})
-                ]
-            )
+            menuService.addToMenuOf(bancheroRegistrationData.name, productWithRepeatedName)
         ).rejects.toThrow('A menu cannot have repeated product names')
 
-        await expectHasNoProductsInMenu(bancheroRegistrationData.name)
+        await expectHasMenuWith([firstProduct], bancheroRegistrationData.name)
     })
 
     async function expectHasNoProductsInMenu(pizzeriaName) {
