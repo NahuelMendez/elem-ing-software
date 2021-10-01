@@ -17,14 +17,6 @@ class MenuService {
 
         await this.usersRepository.update(pizzeria)
     }
-    //addProductToMenu
-    /*async createMenu(pizzeriaName, products) {
-        const pizzeria = await this.usersRepository.findPizzeriaByName(pizzeriaName)
-
-        pizzeria.registerMenuWith(products)
-
-        await this.usersRepository.update(pizzeria)
-    }*/
 
 }
 
