@@ -27,10 +27,10 @@ class Pizzeria {
 
     getProductsInMenu() { return this.products }
 
-    registerMenuWith(products) {
-        this.assertHaveDifferentNames(products);
+    addToMenu(product) {
+        this.assertHasNoProductNamedAs(product);
 
-        this.products = products
+        this.products.push(product)
     }
 
     assertNameIsNotBlank(name) {
@@ -48,10 +48,8 @@ class Pizzeria {
             throw new ModelException('Invalid email')
     }
 
-    assertHaveDifferentNames(products) {
-        const differentProductNames = new Set(products.map(product => product.getName()))
-
-        if (differentProductNames.size < products.length)
+    assertHasNoProductNamedAs(productToCheck) {
+        if (this.products.some(product => product.getName() === productToCheck.getName()))
             throw new ModelException('A menu cannot have repeated product names')
     }
 }

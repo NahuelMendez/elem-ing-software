@@ -1,4 +1,4 @@
-const {pizzeriaSchema, loginSchema, productsSchema} = require("./schemas")
+const {pizzeriaSchema, loginSchema, productSchema} = require("./schemas")
 const {BAD_REQUEST} = require("./statusCode")
 
 const createRequestBodyValidation = bodySchema =>
@@ -12,5 +12,5 @@ module.exports = {
 
     loginRequestValidation: createRequestBodyValidation(loginSchema),
 
-    productsRequestValidation: createRequestBodyValidation(productsSchema)
+    productRequestValidation: createRequestBodyValidation(productSchema)
 }

@@ -28,12 +28,12 @@ describe('Api menu recovery', () => {
         await requester.post(registerPath).send(bancheroRegistrationData)
         await requester
             .put(createMenuPath(bancheroRegistrationData.name))
-            .send({menu: [mozzarella, bacon]})
+            .send(mozzarella)
 
         const response = await requester.get(createMenuPath(bancheroRegistrationData.name))
 
         expect(response.status).toBe(OK)
-        expect(response.body).toEqual([mozzarella, bacon])
+        expect(response.body).toEqual([mozzarella])
     })
 
     it('get the menu of a unregistered pizzeria', async () => {

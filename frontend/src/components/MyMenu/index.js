@@ -18,7 +18,7 @@ const MyMenu = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    api.addProduct({ menu: [productData] }, "pizzeria")
+    api.addProduct(productData, "pizzeria") // TODO: sacar pizzeria hardcodeada
       .then(_ => {
         setResult({ show: true, message: "Se ha ingresado el producto correctamente", error: false })
       })

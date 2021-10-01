@@ -2,7 +2,7 @@ const request = require('supertest')
 const {createApp} = require('../../src/api/app')
 const {registerPath} = require("../../src/api/path")
 const { createMenuPath } = require('../helpers/pathFactory')
-const {CREATED, BAD_REQUEST} = require("../../src/api/statusCode")
+const {BAD_REQUEST, OK} = require("../../src/api/statusCode")
 const testObjects = require('../testObjects')
 
 const { bancheroRegistrationData, guerrinRegistrationData } = testObjects.pizzeriasRegistrationData
@@ -15,23 +15,21 @@ describe('Api menu creation', () => {
         requester = request(createApp())
     })
 
-    it('a registered pizzeria can create a menu', async () => {
+    it(`a registered pizzeria can add a product to it's menu`, async () => {
         await requester.post(registerPath).send(bancheroRegistrationData)
 
         const response = await requester
             .put(createMenuPath(bancheroRegistrationData.name))
-            .send({menu: [mozzarella, bacon]})
+            .send(mozzarella)
 
-        expect(response.status).toBe(CREATED)
-        expect(response.body).toEqual({
-            message: 'successful operation'
-        })
+        expect(response.status).toBe(OK)
+        expect(response.body).toEqual(mozzarella)
     })
 
-    it('cannot create a menu for a not registered pizzeria', async () => {
+    it('cannot add a product for a not registered pizzeria', async () => {
         const response = await requester
             .put(createMenuPath(guerrinRegistrationData.name))
-            .send({menu: [mozzarella, bacon]})
+            .send(mozzarella)
 
         expect(response.status).toBe(BAD_REQUEST)
         expect(response.body).toEqual({
@@ -39,15 +37,10 @@ describe('Api menu creation', () => {
         })
     })
 
-    it('cannot register a new menu if the name is not of string type', async () => {
+    it('cannot add a product if the name is not of type string', async () => {
         await requester.post(registerPath).send(bancheroRegistrationData)
 
-        const badPizza = {
-            name : 123,
-            description : 'bacon description',
-            price : 1,
-            imageURL : 'http://img.com/product.jpg'
-        }
+        const badPizza = { ...mozzarella, name: 123 }
 
         const response = await sendRequestPutMenuCreation(requester, badPizza)
 
@@ -57,15 +50,10 @@ describe('Api menu creation', () => {
         })
     })
 
-    it('cannot register a new menu if the description is not of string type', async () => {
+    it('cannot add a product if the description is not of type string', async () => {
         await requester.post(registerPath).send(bancheroRegistrationData)
 
-        const badPizza = {
-            name : 'bad',
-            description : 123,
-            price : 1,
-            imageURL : 'http://img.com/product.jpg'
-        }
+        const badPizza = { ...mozzarella, description: 123 }
 
         const response = await sendRequestPutMenuCreation(requester, badPizza)
 
@@ -75,15 +63,10 @@ describe('Api menu creation', () => {
         })
     })
 
-    it('cannot register a new menu if the price is not of number type', async () => {
+    it('cannot add a product if the price is not of type number', async () => {
         await requester.post(registerPath).send(bancheroRegistrationData)
 
-        const badPizza = {
-            name : 'bad',
-            description : 'bad description',
-            price : 'sadasd',
-            imageURL : 'http://img.com/product.jpg'
-        }
+        const badPizza = { ...mozzarella, price: 'not a number' }
 
         const response = await sendRequestPutMenuCreation(requester, badPizza)
 
@@ -93,15 +76,10 @@ describe('Api menu creation', () => {
         })
     })
 
-    it('cannot register a new menu if the imageURL is not of number type', async () => {
+    it('cannot add a product if the imageURL is not of type String', async () => {
         await requester.post(registerPath).send(bancheroRegistrationData)
 
-        const badPizza = {
-            name : 'bad',
-            description : 'bad description',
-            price : 1,
-            imageURL : 123
-        }
+        const badPizza = { ...mozzarella, imageURL: 123 }
 
         const response = await sendRequestPutMenuCreation(requester, badPizza)
 
@@ -111,14 +89,10 @@ describe('Api menu creation', () => {
         })
     })
 
-    it('cannot register a new menu if a name is not provided', async () => {
+    it('cannot add a product if a name is not provided', async () => {
         await requester.post(registerPath).send(bancheroRegistrationData)
 
-        const badPizza = {
-            description : 'bad description',
-            price : 1,
-            imageURL : 'http://img.com/product.jpg'
-        }
+        const badPizza = { ...mozzarella, name: undefined }
 
         const response = await sendRequestPutMenuCreation(requester, badPizza)
 
@@ -128,14 +102,10 @@ describe('Api menu creation', () => {
         })
     })
 
-    it('cannot register a new menu if a imageURL is not provided', async () => {
+    it('cannot add a product if a imageURL is not provided', async () => {
         await requester.post(registerPath).send(bancheroRegistrationData)
 
-        const badPizza = {
-            name : 'bad',
-            description : 'bad description',
-            price : 1,
-        }
+        const badPizza = { ...mozzarella, imageURL: undefined }
 
         const response = await sendRequestPutMenuCreation(requester, badPizza)
 
@@ -145,14 +115,10 @@ describe('Api menu creation', () => {
         })
     })
 
-    it('cannot register a new menu if a price is not provided', async () => {
+    it('cannot add a product if a price is not provided', async () => {
         await requester.post(registerPath).send(bancheroRegistrationData)
 
-        const badPizza = {
-            name : 'bad',
-            description : 'bad description',
-            imageURL : 'http://img.com/product.jpg'
-        }
+        const badPizza = { ...mozzarella, price: undefined }
 
         const response = await sendRequestPutMenuCreation(requester, badPizza)
 
@@ -167,5 +133,5 @@ describe('Api menu creation', () => {
 async function sendRequestPutMenuCreation(requester, badPizza) {
     return await requester
         .put(createMenuPath(bancheroRegistrationData.name))
-        .send({ menu: [mozzarella, bacon, badPizza] })
+        .send(badPizza)
 }

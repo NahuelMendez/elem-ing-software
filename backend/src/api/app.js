@@ -12,7 +12,7 @@ const {OK, CREATED, BAD_REQUEST, NOT_FOUND} = require("./statusCode")
 const {
     registerPizzeriaRequestValidation,
     loginRequestValidation,
-    productsRequestValidation
+    productRequestValidation
 } = require('./requestValidations')
 
 const createApp = () => {
@@ -44,14 +44,14 @@ const createApp = () => {
             .catch(error => response.status(NOT_FOUND).json({error: error.message}))
     })
     
-    app.put(menuPath, productsRequestValidation, (request, response) => {
-        const {menu} = request.body
+    app.put(menuPath, productRequestValidation, (request, response) => {
+        const productData = request.body
         const {pizzeriaName} = request.params
 
-        const products = menu.map(product => new Product(product))
+        const product = new Product(productData)
 
-        menuService.createMenu(pizzeriaName, products)
-            .then(() => response.status(CREATED).json({message: 'successful operation'}))
+        menuService.addToMenuOf(pizzeriaName, product)
+            .then(() => response.status(OK).json(productData))
             .catch(error => response.status(BAD_REQUEST).json({error: error.message}))
     })
 
