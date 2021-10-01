@@ -114,6 +114,7 @@ const RegisterForm = () => {
               type="password"
               placeholder="Confirmar contraseña"
               value={confirmPassword}
+              name="confirmPassword"
               aria-describedby="validationTooltipUsernamePrepend" required
               onChange={handleConfirmPasswordChange}
             />

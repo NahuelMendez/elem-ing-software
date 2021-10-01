@@ -37,7 +37,7 @@ const MyMenu = () => {
         <input placeholder="URL imágen" required className="input" value={productData.imageURL} name={"imageURL"} type={"text"} onChange={handleChange} />
         <button className="mt-4 button-principal" type="submit">Agregar producto</button>
       </form>
-      {result.show && <p className={`text-center mt-4 ${result.error ? "text-red-500" : "text-green-500"}`}>{result.message}</p>}
+      {result.show && <p name="product-submition-message" className={`text-center mt-4 ${result.error ? "text-red-500" : "text-green-500"}`}>{result.message}</p>}
     </div>
   )
 }

@@ -1,40 +1,62 @@
-// ***********************************************
-// This example commands.js shows you how to
-// create various custom commands and overwrite
-// existing commands.
-//
-// For more comprehensive examples of custom
-// commands please read more here:
-// https://on.cypress.io/custom-commands
-// ***********************************************
-//
-//
-// -- This is a parent command --
-// Cypress.Commands.add('login', (email, password) => { ... })
-//
-//
-// -- This is a child command --
-// Cypress.Commands.add('drag', { prevSubject: 'element'}, (subject, options) => { ... })
-//
-//
-// -- This is a dual command --
-// Cypress.Commands.add('dismiss', { prevSubject: 'optional'}, (subject, options) => { ... })
-//
-//
-// -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
 Cypress.Commands.add('visitRegister', () => {
     cy.visit('http://localhost:3000/register')
 })
 
-Cypress.Commands.add('registerPizzeria', ({ name, telephone, email, password, confirmPassword }) => {
-    cy.get('input[placeholder="Nombre de usuario"]').type(name)
-    cy.get('input[placeholder="Telefono"]').type(telephone)
-    cy.get('input[placeholder="E-mail"]').type(email)
-    cy.get('input[placeholder="Contraseña"]').type(password)
-    cy.get('input[placeholder="Confirmar contraseña"]').type(password)
+Cypress.Commands.add('visitLogin', () => {
+    cy.visit('http://localhost:3000/login')
+})
+
+Cypress.Commands.add('registerPizzeria', pizzeriaRegistrationData => {
+    cy.visitRegister()
+    cy.submitPizzeriaRegistration(pizzeriaRegistrationData)
+})
+
+Cypress.Commands.add('submitPizzeriaRegistration', ({ name, telephone, email, password, confirmPassword }) => {
+    cy.get('input[name="name"]').type(name)
+    cy.get('input[name="telephone"]').type(telephone)
+    cy.get('input[name="email"]').type(email)
+    cy.get('input[name="password"]').type(password)
+    cy.get('input[name="confirmPassword"]').type(confirmPassword)
     cy.get('button[type="submit"]').click()
+})
+
+Cypress.Commands.add('submitLogin', ({ username, password, name }) => {
+    cy.get('input[name="username"]').type(username || name) // TODO: emprolijar test
+    cy.get('input[name="password"]').type(password)
+    cy.get('button[type="submit"]').click()
+})
+
+Cypress.Commands.add('registerAndLoginPizzeria', pizzeriaRegistrationData => {
+    cy.registerPizzeria(pizzeriaRegistrationData)
+    cy.submitLogin(pizzeriaRegistrationData)
+})
+
+Cypress.Commands.add('clickHomeCircularThing', () => {
+    cy.get('*[name="circular-thing"]').click()  // TODO: buscar buen nombre
+})
+
+Cypress.Commands.add('clickRegisterLink', () => {
+    cy.contains('No tienes una cuenta? Registrate en PizzApp').click() // TODO: buscar con otro criterio
+})
+
+Cypress.Commands.add('logout', () => {
+    cy.clickHomeCircularThing()
+    cy.get('*[name="logout-button"]').click()
+})
+
+Cypress.Commands.add('goToEditMenu', () => {
+    cy.clickHomeCircularThing()
+    cy.get('*[name="edit-menu-button"]').click()
+})
+
+Cypress.Commands.add('addProduct', ({name, description,price, imageURL}) => {
+    cy.get('input[name="name"]').type(name)
+    cy.get('input[name="description"]').type(description)
+    cy.get('input[name="price"]').type(price)
+    cy.get('input[name="imageURL"]').type(imageURL)
+    cy.get('*[type="submit"]').click()
 })
 
 Cypress.Commands.add('pathShouldBe', expectedPath => {

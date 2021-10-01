@@ -16,8 +16,8 @@ const Login = () => {
   const handleSubmit = (event) =>{
     event.preventDefault()
     api.login(data)
-    .then(_ => history.push('/home'))
-    .catch(err => setError(err.response.data.error));
+        .then(_ => history.push('/home'))
+        .catch(err => setError(err.response.data.error));
   }
 
   return (
@@ -34,6 +34,7 @@ const Login = () => {
             className="form-control"
             placeholder="Nombre de Usuario"
             value={data.username}
+            name="username"
             aria-describedby="validationTooltipPrepend" required
             onChange={handleChange("username")}
             />
@@ -46,6 +47,7 @@ const Login = () => {
             id="floatingPasword"
             placeholder="Contraseña"
             value={data.password}
+            name="password"
             aria-describedby="validationTooltipPrependPass" required
             onChange={handleChange("password")}
             />

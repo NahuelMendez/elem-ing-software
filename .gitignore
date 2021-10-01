@@ -105,5 +105,5 @@ dist
 
 .idea
 
-cypress/videos
-cypress/screenshots
+backend/cypress/videos
+backend/cypress/screenshots

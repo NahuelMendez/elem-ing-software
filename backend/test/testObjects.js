@@ -1,3 +1,15 @@
+let counter = 0
+const nextCounter = () => counter++
+const generatePizzeriaName = () => `P${nextCounter()}`
+
+function createPizzeriaRegistrationData({name, telephone = 1112345678, email, password = 'pass123', confirmPassword}) {
+    if (!name) name = generatePizzeriaName()
+    if (!email) email = `${name}@d.c`
+    if (!confirmPassword) confirmPassword = password
+
+    return ({ name, telephone, email, password, confirmPassword })
+}
+
 const pizzeriasRegistrationData = {
     bancheroRegistrationData: {
         name: 'Banchero',
@@ -31,5 +43,6 @@ const productsData = {
 
 module.exports = {
     pizzeriasRegistrationData,
-    productsData
+    productsData,
+    createPizzeriaRegistrationData
 }
