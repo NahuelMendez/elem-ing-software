@@ -7,6 +7,7 @@ const {UserService} = require("../model/UserService");
 const {MenuService} = require("../model/MenuService");
 const {TransientUsersRepository} = require("../model/TransientUsersRepository");
 const {Product} = require('../model/Product')
+const {OK, CREATED, BAD_REQUEST, NOT_FOUND} = require("./statusCode")
 
 const {
     registerPizzeriaRequestValidation,
@@ -31,16 +32,16 @@ const createApp = () => {
         const pizzeria = request.body
 
         usersService.registerPizzeria(pizzeria)
-            .then(user => response.status(201).json({name: user.getName()}))
-            .catch(error => response.status(400).json({error: error.message}))
+            .then(user => response.status(CREATED).json({name: user.getName()}))
+            .catch(error => response.status(BAD_REQUEST).json({error: error.message}))
     })
 
     app.post(loginPath, loginRequestValidation, (request, response) => {
         const loginData = request.body
 
         usersService.login(loginData)
-            .then(() => response.status(201).json({username: loginData.username}))
-            .catch(error => response.status(404).json({error: error.message}))
+            .then(() => response.status(OK).json({username: loginData.username}))
+            .catch(error => response.status(NOT_FOUND).json({error: error.message}))
     })
     
     app.put(menuPath, productsRequestValidation, (request, response) => {
@@ -50,8 +51,8 @@ const createApp = () => {
         const products = menu.map(product => new Product(product))
 
         menuService.createMenu(pizzeriaName, products)
-            .then(() => response.status(201).json({message: 'successful operation'}))
-            .catch(error => response.status(400).json({error: error.message}))
+            .then(() => response.status(CREATED).json({message: 'successful operation'}))
+            .catch(error => response.status(BAD_REQUEST).json({error: error.message}))
     })
 
     app.get(menuPath, (request, response) => {
@@ -59,8 +60,8 @@ const createApp = () => {
 
         menuService.productsInMenuOf(pizzeriaName)
             .then(menuToJson)
-            .then( menu => response.status(200).json(menu) )
-            .catch( error => response.status(404).json({error : error.message}) )
+            .then( menu => response.status(OK).json(menu) )
+            .catch( error => response.status(NOT_FOUND).json({error : error.message}) )
         
     })
 

@@ -2,6 +2,7 @@ const request = require('supertest')
 const {createApp} = require('../../src/api/app')
 const {registerPath} = require("../../src/api/path")
 const { createMenuPath } = require('../helpers/pathFactory')
+const {OK, NOT_FOUND} = require("../../src/api/statusCode")
 const testObjects = require('../testObjects')
 
 const {bancheroRegistrationData, guerrinRegistrationData} = testObjects.pizzeriasRegistrationData
@@ -19,7 +20,7 @@ describe('Api menu recovery', () => {
 
         const response = await requester.get(createMenuPath(bancheroRegistrationData.name))
 
-        expect(response.status).toBe(200)
+        expect(response.status).toBe(OK)
         expect(response.body).toEqual([])
     })
 
@@ -31,14 +32,14 @@ describe('Api menu recovery', () => {
 
         const response = await requester.get(createMenuPath(bancheroRegistrationData.name))
 
-        expect(response.status).toBe(200)
+        expect(response.status).toBe(OK)
         expect(response.body).toEqual([mozzarella, bacon])
     })
 
     it('get the menu of a unregistered pizzeria', async () => {
         const response = await requester.get(createMenuPath(guerrinRegistrationData.name))
 
-        expect(response.status).toBe(404)
+        expect(response.status).toBe(NOT_FOUND)
         expect(response.body).toEqual({
             error: `Pizzeria ${guerrinRegistrationData.name} not found`
         })

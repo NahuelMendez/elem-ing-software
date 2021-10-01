@@ -2,6 +2,7 @@ const request = require('supertest')
 const {createApp} = require('../../src/api/app')
 const {registerPath} = require("../../src/api/path")
 const { createMenuPath } = require('../helpers/pathFactory')
+const {CREATED, BAD_REQUEST} = require("../../src/api/statusCode")
 const testObjects = require('../testObjects')
 
 const { bancheroRegistrationData, guerrinRegistrationData } = testObjects.pizzeriasRegistrationData
@@ -21,7 +22,7 @@ describe('Api menu creation', () => {
             .put(createMenuPath(bancheroRegistrationData.name))
             .send({menu: [mozzarella, bacon]})
 
-        expect(response.status).toBe(201)
+        expect(response.status).toBe(CREATED)
         expect(response.body).toEqual({
             message: 'successful operation'
         })
@@ -32,7 +33,7 @@ describe('Api menu creation', () => {
             .put(createMenuPath(guerrinRegistrationData.name))
             .send({menu: [mozzarella, bacon]})
 
-        expect(response.status).toBe(400)
+        expect(response.status).toBe(BAD_REQUEST)
         expect(response.body).toEqual({
             error: `Pizzeria ${guerrinRegistrationData.name} not found`
         })
@@ -50,7 +51,7 @@ describe('Api menu creation', () => {
 
         const response = await sendRequestPutMenuCreation(requester, badPizza)
 
-        expect(response.status).toBe(400)
+        expect(response.status).toBe(BAD_REQUEST)
         expect(response.body).toEqual({
             error: '"product name" must be a string'
         })
@@ -68,7 +69,7 @@ describe('Api menu creation', () => {
 
         const response = await sendRequestPutMenuCreation(requester, badPizza)
 
-        expect(response.status).toBe(400)
+        expect(response.status).toBe(BAD_REQUEST)
         expect(response.body).toEqual({
             error: '"product description" must be a string'
         })
@@ -86,7 +87,7 @@ describe('Api menu creation', () => {
 
         const response = await sendRequestPutMenuCreation(requester, badPizza)
 
-        expect(response.status).toBe(400)
+        expect(response.status).toBe(BAD_REQUEST)
         expect(response.body).toEqual({
             error: '"product price" must be a number'
         })
@@ -104,7 +105,7 @@ describe('Api menu creation', () => {
 
         const response = await sendRequestPutMenuCreation(requester, badPizza)
 
-        expect(response.status).toBe(400)
+        expect(response.status).toBe(BAD_REQUEST)
         expect(response.body).toEqual({
             error: '"product imageURL" must be a string'
         })
@@ -121,7 +122,7 @@ describe('Api menu creation', () => {
 
         const response = await sendRequestPutMenuCreation(requester, badPizza)
 
-        expect(response.status).toBe(400)
+        expect(response.status).toBe(BAD_REQUEST)
         expect(response.body).toEqual({
             error: '"product name" is required'
         })
@@ -138,7 +139,7 @@ describe('Api menu creation', () => {
 
         const response = await sendRequestPutMenuCreation(requester, badPizza)
 
-        expect(response.status).toBe(400)
+        expect(response.status).toBe(BAD_REQUEST)
         expect(response.body).toEqual({
             error: '"product imageURL" is required'
         })
@@ -155,7 +156,7 @@ describe('Api menu creation', () => {
 
         const response = await sendRequestPutMenuCreation(requester, badPizza)
 
-        expect(response.status).toBe(400)
+        expect(response.status).toBe(BAD_REQUEST)
         expect(response.body).toEqual({
             error: '"product price" is required'
         })
