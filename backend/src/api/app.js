@@ -13,7 +13,6 @@ const {
     loginRequestValidation,
     productsRequestValidation
 } = require('./requestValidations')
-const { response } = require('express')
 
 const createApp = () => {
 
@@ -60,8 +59,8 @@ const createApp = () => {
 
         menuService.productsInMenuOf(pizzeriaName)
             .then(menuToJson)
-            .then( menu => response.status(201).json(menu) )
-            .catch( error => response.status(400).json({error : error.message}) )
+            .then( menu => response.status(200).json(menu) )
+            .catch( error => response.status(404).json({error : error.message}) )
         
     })
 

@@ -1,6 +1,7 @@
 const request = require('supertest')
 const {createApp} = require('../../src/api/app')
-const {createMenuPath, registerPath} = require("../../src/api/path")
+const {registerPath} = require("../../src/api/path")
+const { createMenuPath } = require('../helpers/pathFactory')
 const testObjects = require('../testObjects')
 
 const { bancheroRegistrationData, guerrinRegistrationData } = testObjects.pizzeriasRegistrationData
