@@ -11,7 +11,7 @@ const {Product} = require('../model/Product')
 const {
     registerPizzeriaRequestValidation,
     loginRequestValidation,
-    productsRequestValidation
+    productRequestValidation
 } = require('./requestValidations')
 
 const createApp = () => {
@@ -43,14 +43,14 @@ const createApp = () => {
             .catch(error => response.status(404).json({error: error.message}))
     })
     
-    app.put(menuCreatePath, productsRequestValidation, (request, response) => {
-        const {menu} = request.body
+    app.put(menuCreatePath, productRequestValidation, (request, response) => {
+        const productData = request.body
         const {pizzeriaName} = request.params
 
-        const products = menu.map(product => new Product(product))
+        const product = new Product(productData)
 
-        menuService.addToMenuOf(pizzeriaName, products)
-            .then(() => response.status(201).json({message: 'successful operation'}))
+        menuService.addToMenuOf(pizzeriaName, product)
+            .then(() => response.status(201).json(productData))
             .catch(error => response.status(400).json({error: error.message}))
     })
 
