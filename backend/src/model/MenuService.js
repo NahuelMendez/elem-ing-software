@@ -10,13 +10,21 @@ class MenuService {
         return pizzeria.getProductsInMenu()
     }
 
-    async createMenu(pizzeriaName, products) {
+    async addToMenuOf(pizzeriaName, productToAdd) {
+        const pizzeria = await this.usersRepository.findPizzeriaByName(pizzeriaName)
+
+        pizzeria.addToMenu(productToAdd)
+
+        await this.usersRepository.update(pizzeria)
+    }
+    //addProductToMenu
+    /*async createMenu(pizzeriaName, products) {
         const pizzeria = await this.usersRepository.findPizzeriaByName(pizzeriaName)
 
         pizzeria.registerMenuWith(products)
 
         await this.usersRepository.update(pizzeria)
-    }
+    }*/
 
 }
 

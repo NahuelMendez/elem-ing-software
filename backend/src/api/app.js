@@ -49,7 +49,7 @@ const createApp = () => {
 
         const products = menu.map(product => new Product(product))
 
-        menuService.createMenu(pizzeriaName, products)
+        menuService.addToMenuOf(pizzeriaName, products)
             .then(() => response.status(201).json({message: 'successful operation'}))
             .catch(error => response.status(400).json({error: error.message}))
     })
