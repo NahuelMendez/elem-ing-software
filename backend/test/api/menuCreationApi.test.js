@@ -1,6 +1,6 @@
 const request = require('supertest')
 const {createApp} = require('../../src/api/app')
-const {createMenuCreatePath, registerPath} = require("../../src/api/path")
+const {createMenuPath, registerPath} = require("../../src/api/path")
 const testObjects = require('../testObjects')
 
 const { bancheroRegistrationData, guerrinRegistrationData } = testObjects.pizzeriasRegistrationData
@@ -17,7 +17,7 @@ describe('Api menu creation', () => {
         await requester.post(registerPath).send(bancheroRegistrationData)
 
         const response = await requester
-            .put(createMenuCreatePath(bancheroRegistrationData.name))
+            .put(createMenuPath(bancheroRegistrationData.name))
             .send({menu: [mozzarella, bacon]})
 
         expect(response.status).toBe(201)
@@ -28,7 +28,7 @@ describe('Api menu creation', () => {
 
     it('cannot create a menu for a not registered pizzeria', async () => {
         const response = await requester
-            .put(createMenuCreatePath(guerrinRegistrationData.name))
+            .put(createMenuPath(guerrinRegistrationData.name))
             .send({menu: [mozzarella, bacon]})
 
         expect(response.status).toBe(400)
@@ -164,6 +164,6 @@ describe('Api menu creation', () => {
 
 async function sendRequestPutMenuCreation(requester, badPizza) {
     return await requester
-        .put(createMenuCreatePath(bancheroRegistrationData.name))
+        .put(createMenuPath(bancheroRegistrationData.name))
         .send({ menu: [mozzarella, bacon, badPizza] })
 }
