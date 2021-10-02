@@ -14,6 +14,22 @@ const pizzeriasRegistrationData = {
     }
 }
 
+const consumersRegistrationData = {
+    kentRegistrationData: {
+        name: 'Kent Beck',
+        telephone: 1112345678,
+        email: 'kent@gmail.com',
+        password: 'password'
+    },
+
+    martinRegistrationData: {
+        name: 'Martin Fowler',
+        telephone: 1112345678,
+        email: 'martin@gmail.com',
+        password: 'password'
+    }
+}
+
 const productsData = {
     mozzarella: {
         name : 'mozzarella',
@@ -31,5 +47,6 @@ const productsData = {
 
 module.exports = {
     pizzeriasRegistrationData,
+    consumersRegistrationData,
     productsData
 }
