@@ -4,6 +4,7 @@ const {registerPath, loginPath} = require("../../src/api/path")
 const {OK, BAD_REQUEST, NOT_FOUND} = require("../../src/api/statusCode")
 
 const {bancheroRegistrationData} = require('../testObjects').pizzeriasRegistrationData
+const {kentRegistrationData} = require('../testObjects').consumersRegistrationData
 
 describe('Api login', () => {
     let requester
@@ -22,7 +23,23 @@ describe('Api login', () => {
 
         expect(response.status).toBe(OK)
         expect(response.body).toEqual({
-            email: bancheroRegistrationData.email
+            email: bancheroRegistrationData.email,
+            rol: 'pizzeria'
+        })
+    })
+
+    it('can login a registered consumer with valid email and password', async () => {
+        await requester.post(registerPath).send({...kentRegistrationData, rol: 'consumer'})
+
+        const response = await requester.post(loginPath).send({
+            email: kentRegistrationData.email,
+            password: kentRegistrationData.password
+        })
+
+        expect(response.status).toBe(OK)
+        expect(response.body).toEqual({
+            email: kentRegistrationData.email,
+            rol: 'consumer'
         })
     })
 
