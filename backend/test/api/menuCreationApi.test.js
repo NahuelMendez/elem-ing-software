@@ -16,7 +16,7 @@ describe('Api menu creation', () => {
     })
 
     it(`a registered pizzeria can add a product to it's menu`, async () => {
-        await requester.post(registerPath).send(bancheroRegistrationData)
+        await requester.post(registerPath).send({...bancheroRegistrationData, rol: 'pizzeria'})
 
         const response = await requester
             .put(createMenuPath(bancheroRegistrationData.name))
@@ -38,7 +38,7 @@ describe('Api menu creation', () => {
     })
 
     it('cannot add a product if the name is not of type string', async () => {
-        await requester.post(registerPath).send(bancheroRegistrationData)
+        await requester.post(registerPath).send({...bancheroRegistrationData, rol: 'pizzeria'})
 
         const badPizza = { ...mozzarella, name: 123 }
 
@@ -51,7 +51,7 @@ describe('Api menu creation', () => {
     })
 
     it('cannot add a product if the description is not of type string', async () => {
-        await requester.post(registerPath).send(bancheroRegistrationData)
+        await requester.post(registerPath).send({...bancheroRegistrationData, rol: 'pizzeria'})
 
         const badPizza = { ...mozzarella, description: 123 }
 
@@ -64,7 +64,7 @@ describe('Api menu creation', () => {
     })
 
     it('cannot add a product if the price is not of type number', async () => {
-        await requester.post(registerPath).send(bancheroRegistrationData)
+        await requester.post(registerPath).send({...bancheroRegistrationData, rol: 'pizzeria'})
 
         const badPizza = { ...mozzarella, price: 'not a number' }
 
@@ -77,7 +77,7 @@ describe('Api menu creation', () => {
     })
 
     it('cannot add a product if the imageURL is not of type String', async () => {
-        await requester.post(registerPath).send(bancheroRegistrationData)
+        await requester.post(registerPath).send({...bancheroRegistrationData, rol: 'pizzeria'})
 
         const badPizza = { ...mozzarella, imageURL: 123 }
 
@@ -90,7 +90,7 @@ describe('Api menu creation', () => {
     })
 
     it('cannot add a product if a name is not provided', async () => {
-        await requester.post(registerPath).send(bancheroRegistrationData)
+        await requester.post(registerPath).send({...bancheroRegistrationData, rol: 'pizzeria'})
 
         const badPizza = { ...mozzarella, name: undefined }
 
@@ -103,7 +103,7 @@ describe('Api menu creation', () => {
     })
 
     it('cannot add a product if a imageURL is not provided', async () => {
-        await requester.post(registerPath).send(bancheroRegistrationData)
+        await requester.post(registerPath).send({...bancheroRegistrationData, rol: 'pizzeria'})
 
         const badPizza = { ...mozzarella, imageURL: undefined }
 
@@ -116,7 +116,7 @@ describe('Api menu creation', () => {
     })
 
     it('cannot add a product if a price is not provided', async () => {
-        await requester.post(registerPath).send(bancheroRegistrationData)
+        await requester.post(registerPath).send({...bancheroRegistrationData, rol: 'pizzeria'})
 
         const badPizza = { ...mozzarella, price: undefined }
 

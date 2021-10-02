@@ -13,7 +13,7 @@ describe('Api login', () => {
     })
 
     it('can login a registered pizzeria with valid email and password', async () => {
-        await requester.post(registerPath).send(bancheroRegistrationData)
+        await requester.post(registerPath).send({...bancheroRegistrationData, rol: 'pizzeria'})
 
         const response = await requester.post(loginPath).send({
             email: bancheroRegistrationData.email,
@@ -27,7 +27,7 @@ describe('Api login', () => {
     })
 
     it('cannot login with invalid email', async () => {
-        await requester.post(registerPath).send(bancheroRegistrationData)
+        await requester.post(registerPath).send({...bancheroRegistrationData, rol: 'pizzeria'})
 
         const response = await requester.post(loginPath).send({
             email: 'invalid email',
@@ -41,7 +41,7 @@ describe('Api login', () => {
     })
 
     it('cannot login if the email is not of string type', async () => {
-        await requester.post(registerPath).send(bancheroRegistrationData)
+        await requester.post(registerPath).send({...bancheroRegistrationData, rol: 'pizzeria'})
 
         const response = await requester.post(loginPath).send({
             email: 1234,
@@ -55,7 +55,7 @@ describe('Api login', () => {
     })
 
     it('cannot login if the password is not of string type', async () => {
-        await requester.post(registerPath).send(bancheroRegistrationData)
+        await requester.post(registerPath).send({...bancheroRegistrationData, rol: 'pizzeria'})
 
         const response = await requester.post(loginPath).send({
             email: bancheroRegistrationData.email,
@@ -69,7 +69,7 @@ describe('Api login', () => {
     })
 
     it('cannot login if a email is not provided', async () => {
-        await requester.post(registerPath).send(bancheroRegistrationData)
+        await requester.post(registerPath).send({...bancheroRegistrationData, rol: 'pizzeria'})
 
         const response = await requester.post(loginPath).send({
             password: bancheroRegistrationData.password
@@ -82,7 +82,7 @@ describe('Api login', () => {
     })
 
     it('cannot login if a password is not provided', async () => {
-        await requester.post(registerPath).send(bancheroRegistrationData)
+        await requester.post(registerPath).send({...bancheroRegistrationData, rol: 'pizzeria'})
 
         const response = await requester.post(loginPath).send({
             email: bancheroRegistrationData.email

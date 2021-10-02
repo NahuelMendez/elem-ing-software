@@ -16,7 +16,7 @@ describe('Api menu recovery', () => {
     })
 
     it('get the empty menu of a registered pizzeria', async () => {
-        await requester.post(registerPath).send(bancheroRegistrationData)
+        await requester.post(registerPath).send({...bancheroRegistrationData, rol: 'pizzeria'})
 
         const response = await requester.get(createMenuPath(bancheroRegistrationData.name))
 
@@ -25,7 +25,7 @@ describe('Api menu recovery', () => {
     })
 
     it('get the menu of a registered pizzeria with added products', async () => {
-        await requester.post(registerPath).send(bancheroRegistrationData)
+        await requester.post(registerPath).send({...bancheroRegistrationData, rol: 'pizzeria'})
         await requester
             .put(createMenuPath(bancheroRegistrationData.name))
             .send(mozzarella)

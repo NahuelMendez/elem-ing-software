@@ -29,10 +29,10 @@ const createApp = () => {
     app.use(bodyParser.json())
 
     app.post(registerPath, registerPizzeriaRequestValidation, (request, response) => {
-        const pizzeria = request.body
+        const userData = request.body
 
-        usersService.registerPizzeria(pizzeria)
-            .then(user => response.status(CREATED).json({name: user.getName()}))
+        register(userData)
+            .then(user => response.status(CREATED).json({name: user.getName(), rol: user.getRoleName()}))
             .catch(error => response.status(BAD_REQUEST).json({error: error.message}))
     })
 
@@ -72,6 +72,16 @@ const createApp = () => {
                 description: product.getDescription(),
                 price: product.getPrice(),
                 imageURL: product.getImageURL()}))
+    }
+
+    const register = ({name, telephone, email, password, rol}) => {
+        const user = {name: name, telephone: telephone, email: email, password: password}
+        
+        if (rol === 'pizzeria') {
+            return usersService.registerPizzeria(user)
+        }else if (rol === 'consumer') {
+            return usersService.registerConsumer(user)
+        }   
     }
 
     return app
