@@ -23,11 +23,11 @@ class UserService {
         return await this.usersRepository.save(newPizzeria)
     }
 
-    async login({username, password}) {
+    async login({email, password}) {
         return await this.usersRepository.findAuthenticatedAs({
-            username,
+            email,
             password,
-            ifNotFound: () => { throw new ModelException('Invalid username or password') }
+            ifNotFound: () => { throw new ModelException('Invalid email or password') }
         })
     }
 

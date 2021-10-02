@@ -13,11 +13,11 @@ describe('Pizzeria login', () => {
         userService = new UserService(new TransientUsersRepository())
     })
 
-    it('can login a registered pizzeria with valid username and password', async () => {
+    it('can login a registered pizzeria with valid credentials', async () => {
         await userService.registerPizzeria(bancheroRegistrationData)
 
         const loggedInPizzeria = await userService.login({
-            username: bancheroRegistrationData.name,
+            email: bancheroRegistrationData.email,
             password: bancheroRegistrationData.password
         })
 
@@ -26,12 +26,12 @@ describe('Pizzeria login', () => {
         expect(loggedInPizzeria.getEmail()).toEqual(bancheroRegistrationData.email)
     })
 
-    it('can login another registered pizzeria with valid username and password', async () => {
+    it('can login another registered pizzeria with valid credentials', async () => {
         await userService.registerPizzeria(bancheroRegistrationData)
         await userService.registerPizzeria(guerrinRegistrationData)
 
         const loggedInPizzeria = await userService.login({
-            username: guerrinRegistrationData.name,
+            email: guerrinRegistrationData.email,
             password: guerrinRegistrationData.password
         })
 
@@ -40,15 +40,15 @@ describe('Pizzeria login', () => {
         expect(loggedInPizzeria.getEmail()).toEqual(guerrinRegistrationData.email)
     })
 
-    it('cannot login with invalid username', async () => {
+    it('cannot login with invalid email', async () => {
         await userService.registerPizzeria(bancheroRegistrationData)
 
         await expect(
             userService.login({
-                username: 'invalid username',
+                email: 'invalid@email.com',
                 password: guerrinRegistrationData.password
             })
-        ).rejects.toThrow('Invalid username or password')
+        ).rejects.toThrow('Invalid email or password')
     })
 
     it('cannot login with invalid password', async () => {
@@ -59,7 +59,7 @@ describe('Pizzeria login', () => {
                 username: bancheroRegistrationData.name,
                 password: 'invalid password'
             })
-        ).rejects.toThrow('Invalid username or password')
+        ).rejects.toThrow('Invalid email or password')
     })
 
 })
