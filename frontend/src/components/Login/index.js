@@ -5,12 +5,12 @@ import { useHistory } from "react-router-dom";
 
 const Login = () => {
 
-  const [data, setData] = useState({ username: "", password: "" });
+  const [data, setData] = useState({email: "", password: ""});
   const [error, setError] = useState("");
   const history = useHistory();
 
-  const handleChange = name => event => {
-    setData(prevState => ({ ...prevState, [name]: event.target.value }));
+  const handleChange = email => event => {
+    setData(prevState => ({ ...prevState, [email]: event.target.value }));
   }
 
   const handleSubmit = (event) => {
@@ -32,11 +32,11 @@ const Login = () => {
             type="text"
             id="floatingInput"
             className="input w-full"
-            placeholder="Nombre de Usuario"
-            value={data.username}
+            placeholder="E-mail"
+            value={data.email}
             aria-describedby="validationTooltipPrepend" required
-            onChange={handleChange("username")}
-          />
+            onChange={handleChange("email")}
+            />
         </div>
         <div className="flex w-full flex-col mb-3">
           <label htmlFor="password">Contraseña</label>
