@@ -40,7 +40,7 @@ const createApp = () => {
         const loginData = request.body
 
         usersService.login(loginData)
-            .then(() => response.status(OK).json({username: loginData.username}))
+            .then(() => response.status(OK).json({email: loginData.email}))
             .catch(error => response.status(NOT_FOUND).json({error: error.message}))
     })
     
