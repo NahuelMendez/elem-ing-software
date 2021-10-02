@@ -12,45 +12,45 @@ describe('Api login', () => {
         requester = request(createApp())
     })
 
-    it('can login a registered pizzeria with valid username and password', async () => {
+    it('can login a registered pizzeria with valid email and password', async () => {
         await requester.post(registerPath).send(bancheroRegistrationData)
 
         const response = await requester.post(loginPath).send({
-            username: bancheroRegistrationData.name,
+            email: bancheroRegistrationData.email,
             password: bancheroRegistrationData.password
         })
 
         expect(response.status).toBe(OK)
         expect(response.body).toEqual({
-            username: bancheroRegistrationData.name
+            email: bancheroRegistrationData.email
         })
     })
 
-    it('cannot login with invalid username', async () => {
+    it('cannot login with invalid email', async () => {
         await requester.post(registerPath).send(bancheroRegistrationData)
 
         const response = await requester.post(loginPath).send({
-            username: 'invalid username',
+            email: 'invalid email',
             password: bancheroRegistrationData.password
         })
 
         expect(response.status).toBe(NOT_FOUND)
         expect(response.body).toEqual({
-            error: 'Invalid username or password'
+            error: 'Invalid email or password'
         })
     })
 
-    it('cannot login if the username is not of string type', async () => {
+    it('cannot login if the email is not of string type', async () => {
         await requester.post(registerPath).send(bancheroRegistrationData)
 
         const response = await requester.post(loginPath).send({
-            username: 1234,
+            email: 1234,
             password: bancheroRegistrationData.password
         })
 
         expect(response.status).toBe(BAD_REQUEST)
         expect(response.body).toEqual({
-            error: '"username" must be a string'
+            error: '"email" must be a string'
         })
     })
 
@@ -58,7 +58,7 @@ describe('Api login', () => {
         await requester.post(registerPath).send(bancheroRegistrationData)
 
         const response = await requester.post(loginPath).send({
-            username: bancheroRegistrationData.name,
+            email: bancheroRegistrationData.email,
             password: 1234
         })
 
@@ -68,7 +68,7 @@ describe('Api login', () => {
         })
     })
 
-    it('cannot login if a username is not provided', async () => {
+    it('cannot login if a email is not provided', async () => {
         await requester.post(registerPath).send(bancheroRegistrationData)
 
         const response = await requester.post(loginPath).send({
@@ -77,7 +77,7 @@ describe('Api login', () => {
 
         expect(response.status).toBe(BAD_REQUEST)
         expect(response.body).toEqual({
-            error: '"username" is required'
+            error: '"email" is required'
         })
     })
 
@@ -85,7 +85,7 @@ describe('Api login', () => {
         await requester.post(registerPath).send(bancheroRegistrationData)
 
         const response = await requester.post(loginPath).send({
-            username: bancheroRegistrationData.name
+            email: bancheroRegistrationData.email
         })
 
         expect(response.status).toBe(BAD_REQUEST)

@@ -15,8 +15,8 @@ class Pizzeria {
         this.products = []
     }
 
-    isAuthenticatedAs(username, password) {
-        return this.name === username && this.password === password
+    isAuthenticatedAs(email, password) {
+        return this.email === email && this.password === password
     }
 
     getName() { return this.name }
