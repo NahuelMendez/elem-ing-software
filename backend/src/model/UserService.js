@@ -1,5 +1,6 @@
 const {ModelException} = require('./ModelException')
 const {Pizzeria} = require('./Pizzeria')
+const {Consumer} = require("./Consumer");
 
 class UserService {
 
@@ -23,6 +24,14 @@ class UserService {
         return await this.usersRepository.save(newPizzeria)
     }
 
+    async registerConsumer({name, telephone, email, password}) {
+        await this.assertThereIsNoConsumerNamed(name)
+        await this.assertThereIsNotUserWithEmail(email)
+
+        const newConsumer = new Consumer({name, telephone, email, password})
+        return await this.usersRepository.save(newConsumer)
+    }
+
     async login({email, password}) {
         return await this.usersRepository.findAuthenticatedAs({
             email,
@@ -34,6 +43,11 @@ class UserService {
     async assertThereIsNoPizzeriaNamed(name) {
         if (await this.existsPizzeriaNamed(name))
             throw new ModelException(`Pizzeria name ${name} already registered`)
+    }
+
+    async assertThereIsNoConsumerNamed(name) {
+        if (await this.existsPizzeriaNamed(name))
+            throw new ModelException(`Consumer name ${name} already registered`)
     }
 
     async assertThereIsNotUserWithEmail(email) {
