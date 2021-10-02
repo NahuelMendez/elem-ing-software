@@ -58,7 +58,7 @@ describe('Api login', () => {
         await requester.post(registerPath).send(bancheroRegistrationData)
 
         const response = await requester.post(loginPath).send({
-            email: bancheroRegistrationData.name,
+            email: bancheroRegistrationData.email,
             password: 1234
         })
 
@@ -85,7 +85,7 @@ describe('Api login', () => {
         await requester.post(registerPath).send(bancheroRegistrationData)
 
         const response = await requester.post(loginPath).send({
-            email: bancheroRegistrationData.name
+            email: bancheroRegistrationData.email
         })
 
         expect(response.status).toBe(BAD_REQUEST)
