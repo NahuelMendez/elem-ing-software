@@ -1,3 +1,4 @@
+const {submitPizzeriaRegistration} = require("../e2e-test/helpers/helpers");
 const generatePizzeriaName = () => `P${Date.now()}`
 
 function createPizzeriaRegistrationData({name, telephone = 1112345678, email, password = 'pass123', confirmPassword}) {
@@ -7,6 +8,8 @@ function createPizzeriaRegistrationData({name, telephone = 1112345678, email, pa
 
     return ({ name, telephone, email, password, confirmPassword })
 }
+
+const createConsumerRegistrationData = createPizzeriaRegistrationData
 
 const generatePizzaName = () => `Pizza${Date.now()}`
 
@@ -65,6 +68,7 @@ const productsData = {
 
 module.exports = {
     createPizzeriaRegistrationData,
+    createConsumerRegistrationData,
     createPizzaData,
     pizzeriasRegistrationData,
     consumersRegistrationData,

@@ -3,7 +3,9 @@ const {
     goto,
     expectPath,
     submitPizzeriaRegistration,
+    submitConsumerRegistration,
     fillPizzeriaRegistrationForm,
+    fillConsumerRegistrationForm,
     clickLink,
     chooseToRegisterAsPizzeria,
     chooseToRegisterAsConsumer,
@@ -12,9 +14,9 @@ const {
     expectTextContents
 } = require('./helpers/helpers')
 
-const { createPizzeriaRegistrationData } = require('../test/testObjects')
+const { createPizzeriaRegistrationData, createConsumerRegistrationData } = require('../test/testObjects')
 
-describe('Pizzeria registration page', () => {
+describe('Pizzeria registration', () => {
     let browser
     let page
 
@@ -28,7 +30,7 @@ describe('Pizzeria registration page', () => {
         await browser.close()
     })
 
-    it('provides two alternatives for registration', async () => {
+    it('there are two alternatives for registration', async () => {
         await goto(page, '/register')
 
         await expectTextContents(page, 'button', ['Como pizzeria', 'Como consumidor'])
@@ -39,13 +41,6 @@ describe('Pizzeria registration page', () => {
         await chooseToRegisterAsPizzeria(page)
 
         await expectH1(page, 'Registrarse en PizzApp como pizzeria')
-    })
-
-    it('when a user choose to register as a consumer, appears a consumer registration page', async () => {
-        await goto(page, '/register')
-        await chooseToRegisterAsConsumer(page)
-
-        await expectH1(page, 'Registrarse en PizzApp como consumidor')
     })
 
     it('when a not registered pizzeria submits valid pizzeria registration data, it is redirected to the login page', async () => {
@@ -67,15 +62,6 @@ describe('Pizzeria registration page', () => {
         expectPath(page, '/login')
     })
 
-    it('when the user click the login link in the consumer registration page, the browser is redirected to the login page', async () => {
-        await goto(page, '/register')
-        await chooseToRegisterAsConsumer(page)
-
-        await clickLink(page, '/login')
-
-        expectPath(page, '/login')
-    })
-
     it(`when a pizzeria's password and confirmation password does not match, an error message is shown in the current page`, async () => {
         const pizzeriaData = createPizzeriaRegistrationData({})
         await goto(page, '/register')
@@ -90,17 +76,39 @@ describe('Pizzeria registration page', () => {
         expectPath(page, '/register')
     })
 
-    it(`when a consumers's password and confirmation password does not match, an error message is shown in the current page`, async () => {
-        const consumerData = createPizzeriaRegistrationData({})
+    it(`a pizzeria cannot be registered with an email registered by another pizzeria`, async () => {
+        const firstPizzeriaData = createPizzeriaRegistrationData({})
         await goto(page, '/register')
-        await chooseToRegisterAsConsumer(page)
+        await chooseToRegisterAsPizzeria(page)
+        await submitPizzeriaRegistration(page, firstPizzeriaData)
 
-        await fillPizzeriaRegistrationForm(page, {...consumerData, confirmPassword: 'asdasdads'})
+        const secondPizzeriaData = createPizzeriaRegistrationData({ email: firstPizzeriaData.email })
+        await goto(page, '/register')
+        await chooseToRegisterAsPizzeria(page)
+        await submitConsumerRegistration(page, secondPizzeriaData)
 
         await page.click('[type="submit"]', )
         await page.waitForSelector('#alertReg')
 
-        await expectTextContent(page, '#alertReg', 'Passwords do not match')
+        await expectTextContent(page, '#alertReg', 'Error message missing') // TODO: falta que el front muestre el mensaje de error
+        expectPath(page, '/register')
+    })
+
+    it(`a pizzeria cannot be registered with an email registered by a consumer`, async () => {
+        const consumerData = createConsumerRegistrationData({})
+        await goto(page, '/register')
+        await chooseToRegisterAsConsumer(page)
+        await submitConsumerRegistration(page, consumerData)
+
+        const pizzeriaData = createPizzeriaRegistrationData({ email: consumerData.email })
+        await goto(page, '/register')
+        await chooseToRegisterAsPizzeria(page)
+        await submitConsumerRegistration(page, pizzeriaData)
+
+        await page.click('[type="submit"]', )
+        await page.waitForSelector('#alertReg')
+
+        await expectTextContent(page, '#alertReg', 'Error message missing') // TODO: falta que el front muestre el mensaje de error
         expectPath(page, '/register')
     })
 

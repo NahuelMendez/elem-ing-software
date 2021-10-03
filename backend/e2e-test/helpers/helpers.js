@@ -20,6 +20,8 @@ async function submitPizzeriaRegistration(page, formData) {
     await clickSubmit(page)
 }
 
+const submitConsumerRegistration = submitPizzeriaRegistration
+
 async function fillPizzeriaRegistrationForm(page, { name, telephone, email, password, confirmPassword }) {
     await page.type('input[name="name"]', name)
     await page.type('input[name="telephone"]', `${telephone}`)
@@ -27,6 +29,8 @@ async function fillPizzeriaRegistrationForm(page, { name, telephone, email, pass
     await page.type('input[name="password"]', password)
     await page.type('input[name="confirmPassword"]', confirmPassword)
 }
+
+const fillConsumerRegistrationForm = fillPizzeriaRegistrationForm
 
 async function submitLogin(page, { email, password }) {
     await page.type('input[placeholder="E-mail"]', email) // TODO: arreglar cuando se corrija el frontend
@@ -115,10 +119,12 @@ module.exports = {
     submitLogin,
     expectPath,
     submitPizzeriaRegistration,
+    submitConsumerRegistration,
     clickHomeCircularThing,
     registerPizzeria,
     registerAndLoginPizzeria,
     fillPizzeriaRegistrationForm,
+    fillConsumerRegistrationForm,
     logoutPizzeria,
     goToMenuForPizzeria,
     registerAsPizzeriaAndGoToMenu,
