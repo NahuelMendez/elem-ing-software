@@ -1,7 +1,8 @@
 const puppeteer = require('puppeteer')
 const {
     registerAsPizzeriaAndGoToMenu,
-    addProduct
+    addProduct,
+    expectTextContent
 } = require('./helpers/helpers')
 
 const { createPizzeriaRegistrationData, createPizzaData } = require('../test/testObjects')
@@ -28,9 +29,7 @@ describe('Pizzeria registration', () => {
 
         await addProduct(page, pizzaData)
 
-        const content = await page.$eval('[name="submited-product-message"]', element => element.textContent)
-
-        expect(content).toContain('Se ha ingresado el producto correctamente')
+        await expectTextContent(page, '[name="submited-product-message"]', 'Se ha ingresado el producto correctamente')
     })
 
 })
