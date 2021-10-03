@@ -18,12 +18,45 @@ describe('Pizzeria registration page', () => {
     })
 
     afterEach(async () => {
-        await browser.close()
+        //await browser.close()
+    })
+
+    it('provides two alternatives for registration', async () => {
+        await goto(page, '/register')
+
+        const buttonsText = await page.$$eval('button', buttons => buttons.map(button => button.textContent))
+
+        expect(buttonsText).toHaveLength(2)
+        expect(buttonsText).toContain('Como pizzeria')
+        expect(buttonsText).toContain('Como consumidor')
+    })
+
+    it('when a user choose to register as a pizzeria, appears a pizzeria registration page', async () => {
+        await goto(page, '/register')
+        await page.click('button:nth-child(1)')
+        await page.waitForSelector('h1')
+
+        const titleText = await page.$eval('h1', h1 => h1.textContent)
+
+        expect(titleText).toBe('Registrarse en PizzApp como pizzeria')
+    })
+
+    it('when a user choose to register as a consumer, appears a consumer registration page', async () => {
+        await goto(page, '/register')
+        await page.click('button:nth-child(2)')
+        await page.waitForSelector('h1')
+
+        const titleText = await page.$eval('h1', h1 => h1.textContent)
+
+        expect(titleText).toBe('Registrarse en PizzApp como consumidor')
     })
 
     it('when a not registered pizzeria submits valid registration data, it is redirected to the login page', async () => {
+        jest.setTimeout(12000)
         const pizzeriaData = createPizzeriaRegistrationData({})
         await goto(page, '/register')
+        await page.click('button:nth-child(1)')
+        await page.waitForSelector('h1')
 
         await submitPizzeriaRegistration(page, pizzeriaData)
 
