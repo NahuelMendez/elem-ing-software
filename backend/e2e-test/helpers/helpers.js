@@ -14,14 +14,18 @@ async function clickSubmit(page) {
     await clickAndWait(page, 'button[type="submit"]')
 }
 
-async function submitPizzeriaRegistration(page, { name, telephone, email, password, confirmPassword }) {
+async function submitPizzeriaRegistration(page, formData) {
+    await fillPizzeriaRegistrationForm(page, formData)
+
+    await clickSubmit(page)
+}
+
+async function fillPizzeriaRegistrationForm(page, { name, telephone, email, password, confirmPassword }) {
     await page.type('input[name="name"]', name)
     await page.type('input[name="telephone"]', `${telephone}`)
     await page.type('input[name="email"]', email)
     await page.type('input[name="password"]', password)
     await page.type('input[name="confirmPassword"]', confirmPassword)
-
-    await clickSubmit(page)
 }
 
 async function submitLogin(page, { email, password }) {
@@ -77,6 +81,32 @@ async function addProduct(page, { name, description, price, imageURL }) {
     await page.waitForSelector('[name="submited-product-message"]')
 }
 
+async function chooseToRegisterAsPizzeria(page) {
+    await page.click('button:nth-child(1)')
+    await page.waitForSelector('h1')
+}
+
+async function chooseToRegisterAsConsumer(page) {
+    await page.click('button:nth-child(2)')
+    await page.waitForSelector('h1')
+}
+
+async function expectH1(page, expectedText) {
+    const titleText = await page.$eval('h1', h1 => h1.textContent)
+
+    expect(titleText).toBe(expectedText)
+}
+
+async function expectTextContent(page, selector, expectedTextContent) {
+    const message = await page.$eval(selector, element => element.textContent)
+    expect(message).toContain(expectedTextContent)
+}
+
+async function expectTextContents(page, selector, expectedTextContents) {
+    const textContents = await page.$$eval(selector, elements => elements.map(element => element.textContent))
+    expect(textContents).toEqual(expectedTextContents)
+}
+
 module.exports = {
     goto,
     clickAndWait,
@@ -87,8 +117,14 @@ module.exports = {
     clickHomeCircularThing,
     registerPizzeria,
     registerAndLoginPizzeria,
+    fillPizzeriaRegistrationForm,
     logoutPizzeria,
     goToMenuForPizzeria,
     registerAsPizzeriaAndGoToMenu,
-    addProduct
+    addProduct,
+    chooseToRegisterAsPizzeria,
+    chooseToRegisterAsConsumer,
+    expectH1,
+    expectTextContent,
+    expectTextContents
 }
