@@ -1,7 +1,9 @@
 import { useContext, useState } from "react";
+import api from "../../Api/ApiObject";
 
 const MenuContainer = () =>{
 
+    const [data, setData] = useState({name: '', password: ''})
     const [products, setProducts] = useState([]);
 
     useContext(() =>{
@@ -9,12 +11,19 @@ const MenuContainer = () =>{
     })
 
     const getMenu = () =>{
-        setProducts([1, 2, 3, 4, 5, 6])
+        api.getMenu(data, 'pizzeria')
+        .then(response => {
+            setProducts(response.body)
+        })
+        .catch(err => {
+            console.log(err.message)
+        })
     }
 
     const handleClick = (event) =>{
         event.preventDefault()
         setProducts(prevstate => [...prevstate, 1])
+        getMenu()
     }
 
     return (
