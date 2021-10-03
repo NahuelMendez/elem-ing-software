@@ -1,5 +1,6 @@
 import { useContext, useState } from "react";
 import api from "../../Api/ApiObject";
+import Product from "../Product/Product";
 
 const MenuContainer = () =>{
 
@@ -14,6 +15,7 @@ const MenuContainer = () =>{
         api.getMenu(data, 'pizzeria')
         .then(response => {
             setProducts(response.body)
+            console.log(response)
         })
         .catch(err => {
             console.log(err.message)
@@ -30,6 +32,13 @@ const MenuContainer = () =>{
         <div>
             <button onClick={handleClick}> aumentar producto </button>
             Soy el contenedor de productos, {products}
+            {products.map( product => {
+                <Product 
+                    name={product.name}
+                    description={product.description}
+                    price={product.price}
+                    imageURL={product.imageURL}/>
+            })}
         </div>
     );
 
