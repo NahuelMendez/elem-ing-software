@@ -1,20 +1,14 @@
 const puppeteer = require('puppeteer')
 const {
-    goto,
-    clickAndWait,
-    clickLink,
-    submitLogin,
     expectPath,
-    submitPizzeriaRegistration,
-    registerPizzeria,
     registerAndLoginPizzeria,
     logoutPizzeria,
-    goToMenuForPizzeria,
-    registerAsPizzeriaAndGoToMenu,
-    addProduct
+    goToMenuForPizzeria
 } = require('./helpers/helpers')
 
 const { createPizzeriaRegistrationData, createPizzaData } = require('../test/testObjects')
+
+//jest.setTimeout(20000)
 
 describe('Pizzeria registration', () => {
     let browser
@@ -25,9 +19,9 @@ describe('Pizzeria registration', () => {
         //browser = await puppeteer.launch()
         page = await browser.newPage()
     })
-
+    
     afterEach(async () => {
-        browser.close()
+        await browser.close()
     })
 
     it('when an authenticated pizzeria click on "editar menu", it is redirected to its menu edition page', async () => {
@@ -39,21 +33,12 @@ describe('Pizzeria registration', () => {
         expectPath(page, '/menu')
     })
 
-    it('when an authenticated pizzeria add a new product to its menu, the user sees a notification text', async () => {
-        //const pizzeriaData = createPizzeriaRegistrationData({})
-        //await registerAsPizzeriaAndGoToMenu(page, pizzeriaData)
+    it('when an authenticated pizzeria logout it is redirected to the login page', async () => {
         const pizzeriaData = createPizzeriaRegistrationData({})
-        const pizzaData = createPizzaData({})
-        pizzeriaData.name = 'pizzeria'
         await registerAndLoginPizzeria(page, pizzeriaData)
-        await goToMenuForPizzeria(page)
 
-        await addProduct(page, pizzaData)
+        await logoutPizzeria(page)
 
-        // cy.get('p[name="product-submition-message"]').should(($div) =>
-        //     expect($div).to.have.text('Se ha ingresado el producto correctamente')
-        // )
-        //await expect(page.content()).resolves.toContain('Se ha ingresado el producto correctamente')
+        expectPath(page, '/login')
     })
-
 })

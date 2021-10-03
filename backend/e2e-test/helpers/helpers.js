@@ -31,7 +31,7 @@ async function submitLogin(page, { email, password }) {
     await clickSubmit(page)
 }
 
-async function expectPath(page, path) {
+function expectPath(page, path) {
     expect(page.url()).toEqual('http://localhost:3000' + path)
 }
 
@@ -73,7 +73,12 @@ async function addProduct(page, { name, description, price, imageURL }) {
     await page.type('input[name="price"]', `${price}`)
     await page.type('input[name="imageURL"]', imageURL)
 
-    await page.click('*[type="submit"]')
+    // await Promise.all([
+    //     page.click('*[type="submit"]'),
+    //     page.waitForResponse()
+    // ])
+    await page.click('[type="submit"]')
+    await page.waitForSelector('[name="submited-product-message"]')
 }
 
 module.exports = {
