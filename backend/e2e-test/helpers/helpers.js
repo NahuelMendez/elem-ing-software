@@ -46,6 +46,7 @@ async function clickHomeCircularThing(page) {
 // Complex tasks
 async function registerPizzeria(page, pizzeriaRegistrationData) {
     await goto(page, '/register')
+    await chooseToRegisterAsPizzeria(page)
     await submitPizzeriaRegistration(page, pizzeriaRegistrationData)
 }
 

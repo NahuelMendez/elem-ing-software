@@ -8,7 +8,7 @@ const {
 
 const { createPizzeriaRegistrationData, createPizzaData } = require('../test/testObjects')
 
-describe('Pizzeria registration', () => {
+describe('Pizzeria home', () => {
     let browser
     let page
 
