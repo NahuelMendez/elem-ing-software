@@ -10,8 +10,6 @@ const {
 
 const { createPizzeriaRegistrationData } = require('../test/testObjects')
 
-jest.setTimeout(20000)
-
 describe('Login page', () => {
     let browser
     let page

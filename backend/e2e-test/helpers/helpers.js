@@ -73,10 +73,6 @@ async function addProduct(page, { name, description, price, imageURL }) {
     await page.type('input[name="price"]', `${price}`)
     await page.type('input[name="imageURL"]', imageURL)
 
-    // await Promise.all([
-    //     page.click('*[type="submit"]'),
-    //     page.waitForResponse()
-    // ])
     await page.click('[type="submit"]')
     await page.waitForSelector('[name="submited-product-message"]')
 }
