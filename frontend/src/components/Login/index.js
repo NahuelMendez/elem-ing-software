@@ -16,7 +16,11 @@ const Login = () => {
   const handleSubmit = (event) => {
     event.preventDefault()
     api.login(data)
-      .then(_ => history.push('/home'))
+      .then((res)=> {
+        const role = res.data.rol
+        localStorage.setItem("role", role)
+        history.push('/home')
+      })
       .catch(err => setError(err.response.data.error));
   }
 
@@ -27,10 +31,11 @@ const Login = () => {
       </h1>
       <form onSubmit={handleSubmit} className="w-1/5">
         <div className="flex w-full flex-col mb-3">
-          <label className="mb-2" htmlFor="floatingInput">Nombre de usuario</label>
+          <label className="mb-2" htmlFor="email">Nombre de usuario</label>
           <input
             type="text"
-            id="floatingInput"
+            id="email"
+            name="email"
             className="input w-full"
             placeholder="E-mail"
             value={data.email}
@@ -43,7 +48,8 @@ const Login = () => {
           <input
             type="password"
             className="input w-full"
-            id="floatingPasword"
+            name="password"
+            id="password"
             placeholder="Contraseña"
             value={data.password}
             aria-describedby="validationTooltipPrependPass" required
@@ -51,7 +57,7 @@ const Login = () => {
           />
         </div>
         <div className="w-full flex justify-center mt-4">
-          <button type="submit" className="button-principal">
+          <button name="login-button" type="submit" className="button-principal">
             Iniciar Sesion
           </button>
         </div>
