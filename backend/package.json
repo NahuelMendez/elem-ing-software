@@ -21,6 +21,7 @@
     "cypress": "^8.4.1",
     "jest": "^26.6.0",
     "nodemon": "^2.0.13",
+    "puppeteer": "^10.4.0",
     "supertest": "^6.1.6"
   },
   "dependencies": {
