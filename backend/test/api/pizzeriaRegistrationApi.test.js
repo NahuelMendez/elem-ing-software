@@ -51,7 +51,7 @@ describe('Api pizzeria registration', () => {
         })
     })
 
-    it('cannot register a new pizzeria if the name is not of string type', async () => {
+    it('cannot register a new pizzeria if the name is not of type string', async () => {
         const response = await requester.post(registerPath).send({...bancheroRegistrationData, name: 123, rol: 'pizzeria'})
 
         expect(response.status).toBe(BAD_REQUEST)
@@ -60,7 +60,7 @@ describe('Api pizzeria registration', () => {
         })
     })
 
-    it('cannot register a new pizzeria if the email is not of string type', async () => {
+    it('cannot register a new pizzeria if the email is not of type string ', async () => {
         const response = await requester.post(registerPath).send({...bancheroRegistrationData, email: 123, rol: 'pizzeria'})
 
         expect(response.status).toBe(BAD_REQUEST)
@@ -69,7 +69,7 @@ describe('Api pizzeria registration', () => {
         })
     })
 
-    it('cannot register a new pizzeria if the password is not of string type', async () => {
+    it('cannot register a new pizzeria if the password is not of type string ', async () => {
         const response = await requester.post(registerPath).send({...bancheroRegistrationData, password: 123, rol: 'pizzeria'})
 
         expect(response.status).toBe(BAD_REQUEST)
@@ -131,6 +131,29 @@ describe('Api pizzeria registration', () => {
         expect(response.status).toBe(BAD_REQUEST)
         expect(response.body).toEqual({
             error: '"telephone" is required'
+        })
+    })
+
+    it('cannot register a new pizzeria if a rol is not provided', async () => {
+        const response = await requester.post(registerPath).send({
+            name: 'Barquito',
+            telephone: 1112345678,
+            email: 'barquito@gmail.com',
+            password: 'password'
+        })
+
+        expect(response.status).toBe(BAD_REQUEST)
+        expect(response.body).toEqual({
+            error: '"rol" is required'
+        })
+    })
+
+    it('cannot register a new pizzeria if the rol is not of type string ', async () => {
+        const response = await requester.post(registerPath).send({...bancheroRegistrationData, rol: 123})
+
+        expect(response.status).toBe(BAD_REQUEST)
+        expect(response.body).toEqual({
+            error: '"rol" must be a string'
         })
     })
 

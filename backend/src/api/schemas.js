@@ -1,11 +1,11 @@
 const Joi = require('joi')
 
-const pizzeriaSchema = Joi.object({
+const userSchema = Joi.object({
     name: Joi.string().required(),
     telephone: Joi.required(),
     email: Joi.string().required(),
     password: Joi.string().required(),
-    rol: Joi.required()
+    rol: Joi.string().required()
 })
 
 const loginSchema = Joi.object({
@@ -21,4 +21,4 @@ const productSchema =
         imageURL: Joi.string().required().label('product imageURL')
     })
 
-module.exports = {pizzeriaSchema, productSchema, loginSchema}
+module.exports = {userSchema, productSchema, loginSchema}

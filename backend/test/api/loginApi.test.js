@@ -57,7 +57,7 @@ describe('Api login', () => {
         })
     })
 
-    it('cannot login if the email is not of string type', async () => {
+    it('cannot login if the email is not of type string', async () => {
         await requester.post(registerPath).send({...bancheroRegistrationData, rol: 'pizzeria'})
 
         const response = await requester.post(loginPath).send({
@@ -71,7 +71,7 @@ describe('Api login', () => {
         })
     })
 
-    it('cannot login if the password is not of string type', async () => {
+    it('cannot login if the password is not of type string', async () => {
         await requester.post(registerPath).send({...bancheroRegistrationData, rol: 'pizzeria'})
 
         const response = await requester.post(loginPath).send({

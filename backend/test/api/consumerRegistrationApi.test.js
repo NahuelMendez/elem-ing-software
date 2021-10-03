@@ -50,7 +50,7 @@ describe('Api consumer registration', () => {
         })
     })
 
-    it('cannot register a new consumer if the name is not of string type', async () => {
+    it('cannot register a new consumer if the name is not of type string', async () => {
         const response = await requester.post(registerPath).send({...kentRegistrationData, name: 123, rol: 'consumer'})
 
         expect(response.status).toBe(BAD_REQUEST)
@@ -59,7 +59,7 @@ describe('Api consumer registration', () => {
         })
     })
 
-    it('cannot register a new consumer if the email is not of string type', async () => {
+    it('cannot register a new consumer if the email is not of type string', async () => {
         const response = await requester.post(registerPath).send({...kentRegistrationData, email: 123, rol: 'consumer'})
 
         expect(response.status).toBe(BAD_REQUEST)
@@ -68,7 +68,7 @@ describe('Api consumer registration', () => {
         })
     })
 
-    it('cannot register a new consumer if the password is not of string type', async () => {
+    it('cannot register a new consumer if the password is not of type string', async () => {
         const response = await requester.post(registerPath).send({...kentRegistrationData, password: 123, rol: 'consumer'})
 
         expect(response.status).toBe(BAD_REQUEST)
