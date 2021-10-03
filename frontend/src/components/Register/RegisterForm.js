@@ -78,7 +78,7 @@ const RegisterForm = ({ role }) => {
               onChange={handleChange}
             />
           </div>
-          <div class="flex flex-col w-full mb-2">
+          <div className="flex flex-col w-full mb-2">
             <label htmlFor="floatingInput">Email</label>
             <input
               type="email"
@@ -121,7 +121,8 @@ const RegisterForm = ({ role }) => {
         <div className="w-full flex justify-center mt-4">
           <button
             type="submit"
-            className="button-principal">
+            className="button-principal"
+            name="register-button">
             Registrarse
           </button>
         </div>
