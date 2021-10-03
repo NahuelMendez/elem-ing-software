@@ -1,15 +1,16 @@
-const {pizzeriaSchema, loginSchema, productsSchema} = require("./schemas")
+const {userSchema, loginSchema, productSchema} = require("./schemas")
+const {BAD_REQUEST} = require("./statusCode")
 
 const createRequestBodyValidation = bodySchema =>
     (request, response, next) =>
         bodySchema.validateAsync(request.body)
             .then(() => next())
-            .catch (error => response.status(400).json({error: error.message}))
+            .catch (error => response.status(BAD_REQUEST).json({error: error.message}))
 
 module.exports = {
-    registerPizzeriaRequestValidation: createRequestBodyValidation(pizzeriaSchema),
+    registerPizzeriaRequestValidation: createRequestBodyValidation(userSchema),
 
     loginRequestValidation: createRequestBodyValidation(loginSchema),
 
-    productsRequestValidation: createRequestBodyValidation(productsSchema)
+    productRequestValidation: createRequestBodyValidation(productSchema)
 }

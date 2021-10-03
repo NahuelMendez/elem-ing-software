@@ -14,8 +14,8 @@ class TransientUsersRepository {
         return this.users.some(user => user.getEmail() === email)
     }
 
-    async findAuthenticatedAs({username, password, ifNotFound}) {
-        const foundUser = this.users.find(user => user.isAuthenticatedAs(username, password))
+    async findAuthenticatedAs({email, password, ifNotFound}) {
+        const foundUser = this.users.find(user => user.isAuthenticatedAs(email, password))
         if (!foundUser) ifNotFound()
         return foundUser
     }

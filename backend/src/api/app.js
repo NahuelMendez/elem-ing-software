@@ -2,16 +2,17 @@ const express = require('express')
 var cors = require('cors')
 const path = require('path')
 const bodyParser = require('body-parser')
-const {registerPath, loginPath, menuCreatePath} = require("./path")
+const {registerPath, loginPath, menuPath} = require("./path")
 const {UserService} = require("../model/UserService");
 const {MenuService} = require("../model/MenuService");
 const {TransientUsersRepository} = require("../model/TransientUsersRepository");
 const {Product} = require('../model/Product')
+const {OK, CREATED, BAD_REQUEST, NOT_FOUND} = require("./statusCode")
 
 const {
     registerPizzeriaRequestValidation,
     loginRequestValidation,
-    productsRequestValidation
+    productRequestValidation
 } = require('./requestValidations')
 
 const createApp = () => {
@@ -28,31 +29,60 @@ const createApp = () => {
     app.use(bodyParser.json())
 
     app.post(registerPath, registerPizzeriaRequestValidation, (request, response) => {
-        const pizzeria = request.body
+        const userData = request.body
 
-        usersService.registerPizzeria(pizzeria)
-            .then(user => response.status(201).json({name: user.getName()}))
-            .catch(error => response.status(400).json({error: error.message}))
+        register(userData)
+            .then(user => response.status(CREATED).json({name: user.getName(), rol: user.getRoleName()}))
+            .catch(error => response.status(BAD_REQUEST).json({error: error.message}))
     })
 
     app.post(loginPath, loginRequestValidation, (request, response) => {
         const loginData = request.body
 
         usersService.login(loginData)
-            .then(() => response.status(201).json({username: loginData.username}))
-            .catch(error => response.status(404).json({error: error.message}))
+            .then(user => response.status(OK).json({email: user.getEmail(), rol: user.getRoleName()}))
+            .catch(error => response.status(NOT_FOUND).json({error: error.message}))
     })
     
-    app.put(menuCreatePath, productsRequestValidation, (request, response) => {
-        const {menu} = request.body
+    app.put(menuPath, productRequestValidation, (request, response) => {
+        const productData = request.body
         const {pizzeriaName} = request.params
 
-        const products = menu.map(product => new Product(product))
+        const product = new Product(productData)
 
-        menuService.createMenu(pizzeriaName, products)
-            .then(() => response.status(201).json({message: 'successful operation'}))
-            .catch(error => response.status(400).json({error: error.message}))
+        menuService.addToMenuOf(pizzeriaName, product)
+            .then(() => response.status(OK).json(productData))
+            .catch(error => response.status(BAD_REQUEST).json({error: error.message}))
     })
+
+    app.get(menuPath, (request, response) => {
+        const {pizzeriaName} = request.params
+
+        menuService.productsInMenuOf(pizzeriaName)
+            .then(menuToJson)
+            .then( menu => response.status(OK).json(menu) )
+            .catch( error => response.status(NOT_FOUND).json({error : error.message}) )
+        
+    })
+
+    const menuToJson = (menu) => {
+
+        return menu.map (product => ({
+                name: product.getName(),
+                description: product.getDescription(),
+                price: product.getPrice(),
+                imageURL: product.getImageURL()}))
+    }
+
+    const register = ({name, telephone, email, password, rol}) => {
+        const user = {name: name, telephone: telephone, email: email, password: password}
+        
+        if (rol === 'pizzeria') {
+            return usersService.registerPizzeria(user)
+        }else if (rol === 'consumer') {
+            return usersService.registerConsumer(user)
+        }   
+    }
 
     return app
 }

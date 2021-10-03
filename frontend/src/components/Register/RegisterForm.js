@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom";
 import { Link } from 'react-router-dom';
 import api from '../../Api/ApiObject';
 
-const RegisterForm = () => {
+const RegisterForm = ({ role }) => {
 
   const [data, setData] = useState({
     name: "",
@@ -23,8 +23,6 @@ const RegisterForm = () => {
   const handleConfirmPasswordChange = (event) => {
     setConfirmPassword(event.target.value);
   };
-
-  //encapsular la api en un objeto
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -49,13 +47,13 @@ const RegisterForm = () => {
 
   return (
     <div className="w-full flex flex-col justify-center items-center">
-      <form onSubmit={handleSubmit} className="mt-8 w-1/5">
-        <div className="flex justify-center">
-          <h1 className="text-lg font-bold">
-            Registrarse en PizzApp
-          </h1>
-        </div>
-        <div className="fields-container w-full">
+      <div className="flex mt-8 justify-center">
+        <h1 className="text-lg font-bold">
+          Registrarse en PizzApp como {role}
+        </h1>
+      </div>
+      <form onSubmit={handleSubmit} className="mt-4 w-1/5">
+        <div className="w-full">
           <div className="flex flex-col w-full mb-2">
             <label htmlFor="floatingInput">Nombre</label>
             <input
@@ -114,6 +112,7 @@ const RegisterForm = () => {
               type="password"
               placeholder="Confirmar contraseña"
               value={confirmPassword}
+              name="confirmPassword"
               aria-describedby="validationTooltipUsernamePrepend" required
               onChange={handleConfirmPasswordChange}
             />

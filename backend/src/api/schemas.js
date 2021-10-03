@@ -1,36 +1,24 @@
 const Joi = require('joi')
 
-const pizzeriaSchema = Joi.object({
+const userSchema = Joi.object({
     name: Joi.string().required(),
     telephone: Joi.required(),
     email: Joi.string().required(),
-    password: Joi.string().required()
+    password: Joi.string().required(),
+    rol: Joi.string().required()
 })
 
 const loginSchema = Joi.object({
-    username: Joi.string().required(),
+    email: Joi.string().required(),
     password: Joi.string().required(),
 })
 
-/*const productsSchema = Joi.array().items(
+const productSchema =
     Joi.object({
         name: Joi.string().required().label('product name'),
-        description : Joi.string().label('product description'),
-        price : Joi.number().required().label('product price'),
-        imageURL : Joi.string().required().label('product imageURL')
-    })
-)*/
-
-const productsSchema =
-    Joi.object({
-        menu: Joi.array().items(
-                Joi.object({
-                    name: Joi.string().required().label('product name'),
-                    description: Joi.string().label('product description'),
-                    price: Joi.number().required().label('product price'),
-                    imageURL: Joi.string().required().label('product imageURL')
-                })
-            )
+        description: Joi.string().label('product description'),
+        price: Joi.number().required().label('product price'),
+        imageURL: Joi.string().required().label('product imageURL')
     })
 
-module.exports = {pizzeriaSchema, productsSchema, loginSchema}
+module.exports = {userSchema, productSchema, loginSchema}

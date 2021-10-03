@@ -1,68 +1,68 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import api from '../../Api/ApiObject';
 import { Link } from 'react-router-dom';
 import { useHistory } from "react-router-dom";
 
 const Login = () => {
 
-  const [data, setData] = useState({username: "", password: ""});
+  const [data, setData] = useState({email: "", password: ""});
   const [error, setError] = useState("");
   const history = useHistory();
 
-  const handleChange = name => event => {
-    setData(prevState => ({ ...prevState, [name]: event.target.value }));
+  const handleChange = email => event => {
+    setData(prevState => ({ ...prevState, [email]: event.target.value }));
   }
 
-  const handleSubmit = (event) =>{
+  const handleSubmit = (event) => {
     event.preventDefault()
     api.login(data)
-    .then(_ => history.push('/home'))
-    .catch(err => setError(err.response.data.error));
+      .then(_ => history.push('/home'))
+      .catch(err => setError(err.response.data.error));
   }
 
   return (
-    <div className = "border border-secondary rounded p-4 m-4 h-100">
-        <form onSubmit={handleSubmit}>
-        <h1 className = "mb-4 text-center">
-            Iniciar Sesion en PizzApp
-        </h1>
-        <div className="form-floating mb-3">
-          <label htmlFor="floatingInput">Nombre de usuario</label>
-            <input
+    <div className="w-full mt-8 flex flex-col justify-center items-center">
+      <h1 className="mb-4 text-center text-lg font-bold">
+        Iniciar Sesion en PizzApp
+      </h1>
+      <form onSubmit={handleSubmit} className="w-1/5">
+        <div className="flex w-full flex-col mb-3">
+          <label className="mb-2" htmlFor="floatingInput">Nombre de usuario</label>
+          <input
             type="text"
             id="floatingInput"
-            className="form-control"
-            placeholder="Nombre de Usuario"
-            value={data.username}
+            className="input w-full"
+            placeholder="E-mail"
+            value={data.email}
             aria-describedby="validationTooltipPrepend" required
-            onChange={handleChange("username")}
+            onChange={handleChange("email")}
             />
         </div>
-        <div className="form-floating">
+        <div className="flex w-full flex-col mb-3">
           <label htmlFor="password">Contraseña</label>
-            <input
+          <input
             type="password"
-            className="form-control"
+            className="input w-full"
             id="floatingPasword"
             placeholder="Contraseña"
             value={data.password}
             aria-describedby="validationTooltipPrependPass" required
             onChange={handleChange("password")}
-            />
+          />
         </div>
-        <div className="d-grid gap-2 col-12 mx-auto">
-        <button type="submit" className="btn btn-info rounded-pill my-4">
+        <div className="w-full flex justify-center mt-4">
+          <button type="submit" className="button-principal">
             Iniciar Sesion
-        </button>
+          </button>
         </div>
         <div>
-            {error && <div id= "alertReg" className="alert alert-danger" role="alert"> 
-                El nombre de usuario y/o la contraseña no son correctos. Por favor reviselos e intente nuevamente.
-            </div>}
+          {error && <div id="alertReg" className="alert alert-danger" role="alert">
+            El nombre de usuario y/o la contraseña no son correctos. Por favor reviselos e intente nuevamente.
+          </div>}
         </div>
-        <Link to={"/register"}> <p className = "text-center">No tienes una cuenta? Registrate en PizzApp</p> </Link>
-        </form>
-  </div>
+        <Link to={"/register"}> <p className="text-center text-xs mt-4">No tienes una cuenta? Registrate en PizzApp</p> </Link>
+      </form>
+    </div>
   )
 }
 

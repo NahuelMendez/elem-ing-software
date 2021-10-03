@@ -6,7 +6,7 @@ import Login from "./components/Login";
 import MyMenu from "./components/MyMenu";
 import MainView from "./components/MainView";
 import Profile from "./components/Profile";
-import RegisterView from "./components/Register/RegisterView";
+import RegisterView from "./components/Register";
 
 function App() {
   return (
