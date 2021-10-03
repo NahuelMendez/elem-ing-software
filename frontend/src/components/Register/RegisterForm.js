@@ -28,13 +28,13 @@ const RegisterForm = ({ role }) => {
     event.preventDefault();
     if (data.password === confirmPassword) {
       setError("")
-      api.register(data)
+      api.register({...data, rol: role === "consumidor" ? "consumer" : role})
         .then(_ => {
           setData({
             name: "",
             telephone: "",
             email: "",
-            password: "",
+            password: ""
           })
           setConfirmPassword("")
           history.push("/login");
