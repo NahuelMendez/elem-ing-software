@@ -2,12 +2,21 @@ const puppeteer = require('puppeteer')
 const {
     goto,
     expectPath,
-    submitPizzeriaRegistration, clickLink
+    submitPizzeriaRegistration,
+    submitConsumerRegistration,
+    fillPizzeriaRegistrationForm,
+    fillConsumerRegistrationForm,
+    clickLink,
+    chooseToRegisterAsPizzeria,
+    chooseToRegisterAsConsumer,
+    expectH1,
+    expectTextContent,
+    expectTextContents
 } = require('./helpers/helpers')
 
-const { createPizzeriaRegistrationData } = require('../test/testObjects')
+const { createPizzeriaRegistrationData, createConsumerRegistrationData } = require('../test/testObjects')
 
-describe('Pizzeria registration page', () => {
+describe('Pizzeria registration', () => {
     let browser
     let page
 
@@ -21,39 +30,85 @@ describe('Pizzeria registration page', () => {
         await browser.close()
     })
 
-    it('when a not registered pizzeria submits valid registration data, it is redirected to the login page', async () => {
+    it('there are two alternatives for registration', async () => {
+        await goto(page, '/register')
+
+        await expectTextContents(page, 'button', ['Como pizzeria', 'Como consumidor'])
+    })
+
+    it('when a user choose to register as a pizzeria, appears a pizzeria registration page', async () => {
+        await goto(page, '/register')
+        await chooseToRegisterAsPizzeria(page)
+
+        await expectH1(page, 'Registrarse en PizzApp como pizzeria')
+    })
+
+    it('when a not registered pizzeria submits valid pizzeria registration data, it is redirected to the login page', async () => {
         const pizzeriaData = createPizzeriaRegistrationData({})
         await goto(page, '/register')
+        await chooseToRegisterAsPizzeria(page)
 
         await submitPizzeriaRegistration(page, pizzeriaData)
 
         expectPath(page, '/login')
     })
 
-    it('when the user click the login link, the browser is redirected to the login page', async () => {
+    it('when the user click the login link in the pizzeria registration page, the browser is redirected to the login page', async () => {
         await goto(page, '/register')
+        await chooseToRegisterAsPizzeria(page)
 
         await clickLink(page, '/login')
 
         expectPath(page, '/login')
     })
 
-    it('when the password and confirmation password does not match, an error message is shown in the current page', async () => {
+    it(`when a pizzeria's password and confirmation password does not match, an error message is shown in the current page`, async () => {
         const pizzeriaData = createPizzeriaRegistrationData({})
         await goto(page, '/register')
+        await chooseToRegisterAsPizzeria(page)
 
-        await page.type('input[name="name"]', pizzeriaData.name)
-        await page.type('input[name="telephone"]', `${pizzeriaData.telephone}`)
-        await page.type('input[name="email"]', pizzeriaData.email)
-        await page.type('input[name="password"]', pizzeriaData.password)
-        await page.type('input[name="confirmPassword"]', pizzeriaData.password + "!")
+        await fillPizzeriaRegistrationForm(page, {...pizzeriaData, confirmPassword: 'asdasdads'})
 
         await page.click('[type="submit"]', )
         await page.waitForSelector('#alertReg')
 
-        const message = await page.$eval('#alertReg', element => element.textContent)
+        await expectTextContent(page, '#alertReg', 'Passwords do not match')
+        expectPath(page, '/register')
+    })
 
-        expect(message).toContain('Passwords do not match')
+    it(`a pizzeria cannot be registered with an email registered by another pizzeria`, async () => {
+        const firstPizzeriaData = createPizzeriaRegistrationData({})
+        await goto(page, '/register')
+        await chooseToRegisterAsPizzeria(page)
+        await submitPizzeriaRegistration(page, firstPizzeriaData)
+
+        const secondPizzeriaData = createPizzeriaRegistrationData({ email: firstPizzeriaData.email })
+        await goto(page, '/register')
+        await chooseToRegisterAsPizzeria(page)
+        await submitConsumerRegistration(page, secondPizzeriaData)
+
+        await page.click('[type="submit"]', )
+        await page.waitForSelector('#alertReg')
+
+        await expectTextContent(page, '#alertReg', 'Error message missing') // TODO: falta que el front muestre el mensaje de error
+        expectPath(page, '/register')
+    })
+
+    it(`a pizzeria cannot be registered with an email registered by a consumer`, async () => {
+        const consumerData = createConsumerRegistrationData({})
+        await goto(page, '/register')
+        await chooseToRegisterAsConsumer(page)
+        await submitConsumerRegistration(page, consumerData)
+
+        const pizzeriaData = createPizzeriaRegistrationData({ email: consumerData.email })
+        await goto(page, '/register')
+        await chooseToRegisterAsPizzeria(page)
+        await submitConsumerRegistration(page, pizzeriaData)
+
+        await page.click('[type="submit"]', )
+        await page.waitForSelector('#alertReg')
+
+        await expectTextContent(page, '#alertReg', 'Error message missing') // TODO: falta que el front muestre el mensaje de error
         expectPath(page, '/register')
     })
 
