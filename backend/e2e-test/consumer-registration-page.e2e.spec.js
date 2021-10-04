@@ -16,6 +16,7 @@ const {
 
 const { createPizzeriaRegistrationData, createConsumerRegistrationData } = require('../test/testObjects')
 
+jest.setTimeout(10000)
 describe('Consumer registration', () => {
     let browser
     let page
@@ -27,7 +28,7 @@ describe('Consumer registration', () => {
     })
 
     afterEach(async () => {
-        await browser.close()
+        //await browser.close()
     })
 
     it('when a user choose to register as a consumer, appears a consumer registration page', async () => {
@@ -84,7 +85,7 @@ describe('Consumer registration', () => {
         await page.click('[type="submit"]', )
         await page.waitForSelector('#alertReg')
 
-        await expectTextContent(page, '#alertReg', 'Error message missing') // TODO: falta que el front muestre el mensaje de error
+        await expectTextContent(page, '#alertReg', `A user with email ${consumerData.email} is already registered`)
         expectPath(page, '/register')
     })
 
@@ -102,7 +103,7 @@ describe('Consumer registration', () => {
         await page.click('[type="submit"]', )
         await page.waitForSelector('#alertReg')
 
-        await expectTextContent(page, '#alertReg', 'Error message missing') // TODO: falta que el front muestre el mensaje de error
+        await expectTextContent(page, '#alertReg', `A user with email ${consumerData.email} is already registered`)
         expectPath(page, '/register')
     })
 

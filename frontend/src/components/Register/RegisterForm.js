@@ -39,7 +39,9 @@ const RegisterForm = ({ role }) => {
           setConfirmPassword("")
           history.push("/login");
         })
-        .catch(error => setError(error.response.data.result))
+        .catch(error => {
+          setError(error.response.data.error)
+        })
     } else {
       setError("Passwords do not match")
     }
