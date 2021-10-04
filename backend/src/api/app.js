@@ -79,9 +79,9 @@ const createApp = () => {
         
         if (rol === 'pizzeria') {
             return usersService.registerPizzeria(user)
-        }else if (rol === 'consumer') {
+        } else {
             return usersService.registerConsumer(user)
-        }   
+        }
     }
 
     return app

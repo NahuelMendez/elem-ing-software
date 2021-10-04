@@ -1,10 +1,10 @@
-const {UserService} = require('../src/model/UserService')
-const {TransientUsersRepository} = require("../src/model/TransientUsersRepository");
+const {UserService} = require('../../src/model/UserService')
+const {TransientUsersRepository} = require("../../src/model/TransientUsersRepository");
 
 const {
     bancheroRegistrationData,
     guerrinRegistrationData
-} = require('./testObjects').pizzeriasRegistrationData
+} = require('../testObjects').pizzeriasRegistrationData
 
 describe('Pizzeria registration', () => {
     let userService

@@ -1,4 +1,4 @@
-const {CosoService} = require('../src/model/cosoService')
+const {CosoService} = require('../../src/model/cosoService')
 
 describe('Coso', () => {
 
