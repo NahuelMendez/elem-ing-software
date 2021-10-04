@@ -1,44 +1,32 @@
-import { useContext, useState } from "react";
+import { useEffect, useState } from "react";
 import api from "../../Api/ApiObject";
-import Product from "../Product/Product";
+import ViewProducts from "../Product/ViewProducts";
 
 const MenuContainer = () =>{
 
-    const [data, setData] = useState({name: '', password: ''})
     const [products, setProducts] = useState([]);
+    const [error, setError] = useState("");
 
-    useContext(() =>{
+    useEffect(() =>{
         getMenu();
-    })
+    }, [])
 
-    const getMenu = () =>{
-        api.getMenu(data, 'pizzeria')
+    const getMenu = () => {
+        api.getMenu('pizzeria')
         .then(response => {
-            setProducts(response.body)
-            console.log(response)
+            setProducts(response.data)
+            setError("")
         })
-        .catch(err => {
-            console.log(err.message)
+        .catch(_ => {
+            setError("Error")
         })
-    }
-
-    const handleClick = (event) =>{
-        event.preventDefault()
-        setProducts(prevstate => [...prevstate, 1])
-        getMenu()
     }
 
     return (
         <div>
-            <button onClick={handleClick}> aumentar producto </button>
-            Soy el contenedor de productos, {products}
-            {products.map( product => {
-                <Product 
-                    name={product.name}
-                    description={product.description}
-                    price={product.price}
-                    imageURL={product.imageURL}/>
-            })}
+            { error? <h3>Ocurrio un error al cargar los productos</h3>:
+            <ViewProducts products={products}/>  
+            }
         </div>
     );
 
@@ -46,3 +34,5 @@ const MenuContainer = () =>{
 }
 
 export default MenuContainer;
+
+/**/ 

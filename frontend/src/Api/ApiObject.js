@@ -19,8 +19,8 @@ const api = {
     return axios.put(`${baseURL}/api/pizzeria/${pizzeriaName}/menu`, data)
   },
 
-  getMenu: (data, pizzeriaName) => {
-    return axios.get(`${baseURL}/api/pizzeria/${pizzeriaName}/menu`, data)
+  getMenu: (pizzeriaName) => {
+    return axios.get(`${baseURL}/api/pizzeria/${pizzeriaName}/menu`)
   },
 
 };

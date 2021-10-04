@@ -24,3 +24,34 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.card-img-cont {
+  maxi-width: 250px;
+  max-height: 200px;
+  min-height: 200px;
+}
+
+.product-img {
+  maxi-width: 250px;
+  max-height: 200px;
+  min-height: 200px;
+}
+
+.card-container {
+  width: 250px;
+  height: 400px;
+  -webkit-box-shadow: 10px 10px 18px 3px rgba(0,0,0,0.22);
+  -moz-box-shadow: 10px 10px 18px 3px rgba(0,0,0,0.22);
+  box-shadow: 10px 10px 18px 3px rgba(0,0,0,0.22);
+  margin-top: 20px;
+  margin-right: 20px;
+}
+
+.card-container:hover{
+  transition: all 0.3s;
+  transform: scale(1.05);
+}
+
+.card-container:active{
+  transform: scale(0.95);
+}
