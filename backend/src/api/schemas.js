@@ -5,7 +5,7 @@ const userSchema = Joi.object({
     telephone: Joi.required(),
     email: Joi.string().required(),
     password: Joi.string().required(),
-    rol: Joi.string().required()
+    rol: Joi.valid('consumer', 'pizzeria').required()
 })
 
 const loginSchema = Joi.object({

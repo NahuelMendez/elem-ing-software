@@ -8,6 +8,10 @@ const {
     guerrinRegistrationData
 } = require('../testObjects').pizzeriasRegistrationData
 
+const {
+    kentRegistrationData
+} = require('../testObjects').consumersRegistrationData
+
 describe('Api pizzeria registration', () => {
     let requester
 
@@ -16,12 +20,12 @@ describe('Api pizzeria registration', () => {
     })
 
     it('can register a new pizzeria with valid registration data', async () => {
-        const response = await requester.post(registerPath).send({...bancheroRegistrationData, rol: 'pizzeria'})
+        const response = await requester.post(registerPath).send({...kentRegistrationData, rol: 'consumer'})
 
         expect(response.status).toBe(CREATED)
         expect(response.body).toEqual({
-            name: bancheroRegistrationData.name,
-            rol: 'pizzeria'
+            name: kentRegistrationData.name,
+            rol: 'consumer'
         })
     })
 
@@ -148,12 +152,12 @@ describe('Api pizzeria registration', () => {
         })
     })
 
-    it('cannot register a new pizzeria if the rol is not of type string ', async () => {
-        const response = await requester.post(registerPath).send({...bancheroRegistrationData, rol: 123})
+    it('cannot register a user with an invalid rol', async () => {
+        const response = await requester.post(registerPath).send({...kentRegistrationData, rol: 'invalid_rol'})
 
         expect(response.status).toBe(BAD_REQUEST)
         expect(response.body).toEqual({
-            error: '"rol" must be a string'
+            error: `"rol" must be one of [consumer, pizzeria]`
         })
     })
 

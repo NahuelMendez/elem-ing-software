@@ -40,14 +40,16 @@ const consumersRegistrationData = {
         name: 'Kent Beck',
         telephone: 1112345678,
         email: 'kent@gmail.com',
-        password: 'password'
+        password: 'password',
+        rol: 'consumer'
     },
 
     martinRegistrationData: {
         name: 'Martin Fowler',
         telephone: 1112345678,
         email: 'martin@gmail.com',
-        password: 'password'
+        password: 'password',
+        rol: 'consumer'
     }
 }
 
