@@ -17,7 +17,11 @@ const api = {
 
   addProduct: (data, pizzeriaName) => {
     return axios.put(`${baseURL}/api/pizzeria/${pizzeriaName}/menu`, data)
-  }
+  },
+
+  getMenu: (pizzeriaName) => {
+    return axios.get(`${baseURL}/api/pizzeria/${pizzeriaName}/menu`)
+  },
 
 };
 
