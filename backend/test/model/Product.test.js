@@ -1,4 +1,4 @@
-const { createProductWith } = require('./helpers/productFactory')
+const { createProductWith } = require('../helpers/productFactory')
 
 describe('Product', () => {
 

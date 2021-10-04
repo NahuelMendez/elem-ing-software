@@ -1,9 +1,9 @@
-const { TransientUsersRepository } = require("../src/model/TransientUsersRepository");
-const { UserService } = require('../src/model/UserService')
-const { MenuService } = require("../src/model/MenuService");
+const { TransientUsersRepository } = require("../../src/model/TransientUsersRepository");
+const { UserService } = require('../../src/model/UserService')
+const { MenuService } = require("../../src/model/MenuService");
 
-const testObjects = require('./testObjects')
-const productFactory = require('./helpers/productFactory')
+const testObjects = require('../testObjects')
+const productFactory = require('../helpers/productFactory')
 
 const { bancheroRegistrationData } = testObjects.pizzeriasRegistrationData
 
