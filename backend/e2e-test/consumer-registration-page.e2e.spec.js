@@ -28,7 +28,7 @@ describe('Consumer registration', () => {
     })
 
     afterEach(async () => {
-        //await browser.close()
+        await browser.close()
     })
 
     it('when a user choose to register as a consumer, appears a consumer registration page', async () => {
