@@ -6,13 +6,13 @@ const authenticate = role => (request, response, next) => {
     if (authHeader) {
         jwt.verify(authHeader,'secret', (error, user) => {
             if (error || role !== user.role) {
-                return response.sendStatus(403)
+                return response.status(403).json({error: 'invalid token or unauthorized user'})
             }
             request.user = user
             next()
         })   
     } else {
-        response.sendStatus(401);
+        response.status(401).json({error: 'token missing'});
     }
 }
 

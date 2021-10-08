@@ -32,7 +32,7 @@ describe('Api menu creation', () => {
         expect(response.body).toEqual(mozzarella)
     })
 
-    it('cannot add a product for a not registered pizzeria', async () => {
+    /*it('cannot add a product for a not registered pizzeria', async () => {
         const response = await requester
             .put(createMenuPath(guerrinRegistrationData.name))
             .send(mozzarella)
@@ -40,6 +40,29 @@ describe('Api menu creation', () => {
         expect(response.status).toBe(BAD_REQUEST)
         expect(response.body).toEqual({
             error: `Pizzeria ${guerrinRegistrationData.name} not found`
+        })
+    })*/
+
+    it('cannot add a product when the token is missing', async () => {
+        const response = await requester
+            .put(createMenuPath(guerrinRegistrationData.name))
+            .send(mozzarella)
+
+        expect(response.status).toBe(401)
+        expect(response.body).toEqual({
+            error: 'token missing'
+        })
+    })
+
+    it('cannot add a product for a unauthorized pizzeria', async () => {
+        const response = await requester
+            .put(createMenuPath(guerrinRegistrationData.name))
+            .send(mozzarella)
+            .set('Authorization', 'token incorrecto')
+
+        expect(response.status).toBe(403)
+        expect(response.body).toEqual({
+            error: 'invalid token or unauthorized user'
         })
     })
 
