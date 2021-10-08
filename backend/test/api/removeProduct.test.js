@@ -1,7 +1,7 @@
 const request = require('supertest')
 const {createApp} = require('../../src/api/app')
 const {registerPath, menuPath} = require("../../src/api/path")
-const { createMenuPath } = require('../helpers/pathFactory')
+const { createMenuPath, deleteProductPath } = require('../helpers/pathFactory')
 const {BAD_REQUEST, OK, NOT_FOUND} = require("../../src/api/statusCode")
 const testObjects = require('../testObjects')
 
@@ -19,7 +19,7 @@ describe('Api remove product from menu', () => {
         await requester.post(registerPath).send(bancheroRegistrationData)
         await requester.put(createMenuPath(bancheroRegistrationData.name)).send(mozzarella)
 
-        await requester.delete(createMenuPath(bancheroRegistrationData.name)).send({productName: mozzarella.name})
+        await requester.delete(deleteProductPath(bancheroRegistrationData.name, mozzarella.name)).send()
 
         const getMenuResponse = await requester.get(createMenuPath(bancheroRegistrationData.name))
         await expect(getMenuResponse.body).toEqual([])
@@ -29,7 +29,7 @@ describe('Api remove product from menu', () => {
         await requester.post(registerPath).send(bancheroRegistrationData)
         await requester.put(createMenuPath(bancheroRegistrationData.name)).send(mozzarella)
 
-        const response = await requester.delete(createMenuPath(bancheroRegistrationData.name)).send({productName: mozzarella.name})
+        const response = await requester.delete(deleteProductPath(bancheroRegistrationData.name, mozzarella.name)).send()
 
         expect(response.status).toBe(OK)
         expect(response.body).toEqual({removed: mozzarella.name})
@@ -40,7 +40,7 @@ describe('Api remove product from menu', () => {
         await requester.put(createMenuPath(bancheroRegistrationData.name)).send(mozzarella)
 
         const missingProductName = 'MISSING_PRODUCT_NAME'
-        const response = await requester.delete(createMenuPath(bancheroRegistrationData.name)).send({productName: missingProductName})
+        const response = await requester.delete(deleteProductPath(bancheroRegistrationData.name, missingProductName)).send()
 
         expect(response.status).toBe(NOT_FOUND)
         expect(response.body).toEqual({error: `Product ${missingProductName} not found` })
