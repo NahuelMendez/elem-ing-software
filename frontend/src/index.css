@@ -55,3 +55,9 @@ code {
 .card-container:active{
   transform: scale(0.95);
 }
+
+.delete-product-btn {
+  align-self: flex-end;
+  width: 65px;
+  height: 65px;
+}
