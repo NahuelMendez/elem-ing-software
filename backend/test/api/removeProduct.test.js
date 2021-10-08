@@ -2,7 +2,7 @@ const request = require('supertest')
 const {createApp} = require('../../src/api/app')
 const {registerPath, menuPath} = require("../../src/api/path")
 const { createMenuPath } = require('../helpers/pathFactory')
-const {BAD_REQUEST, OK} = require("../../src/api/statusCode")
+const {BAD_REQUEST, OK, NOT_FOUND} = require("../../src/api/statusCode")
 const testObjects = require('../testObjects')
 
 const { bancheroRegistrationData, guerrinRegistrationData } = testObjects.pizzeriasRegistrationData
@@ -35,7 +35,16 @@ describe('Api remove product from menu', () => {
         expect(response.body).toEqual({removed: mozzarella.name})
     })
 
-    
+    it(`given a registered pizzeria when it ask to remove a product missing from it's menu it fails`, async () => {
+        await requester.post(registerPath).send(bancheroRegistrationData)
+        await requester.put(createMenuPath(bancheroRegistrationData.name)).send(mozzarella)
+
+        const missingProductName = 'MISSING_PRODUCT_NAME'
+        const response = await requester.delete(createMenuPath(bancheroRegistrationData.name)).send({productName: missingProductName})
+
+        expect(response.status).toBe(NOT_FOUND)
+        expect(response.body).toEqual({error: `Product ${missingProductName} not found` })
+    })
 
 })
 
