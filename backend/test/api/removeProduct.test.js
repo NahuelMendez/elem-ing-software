@@ -15,7 +15,7 @@ describe('Api remove product from menu', () => {
         requester = request(createApp())
     })
 
-    it(`a registered pizzeria can remove one product from it's menu`, async () => {
+    it(`given a registered pizzeria when a product is removed from it's menu the product is no longer on it's menu`, async () => {
         await requester.post(registerPath).send(bancheroRegistrationData)
         await requester.put(createMenuPath(bancheroRegistrationData.name)).send(mozzarella)
 
