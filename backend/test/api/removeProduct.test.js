@@ -25,6 +25,16 @@ describe('Api remove product from menu', () => {
         await expect(getMenuResponse.body).toEqual([])
     })
 
+    it(`given a registered pizzeria when a product is removed from it's menu the response has the removed product name`, async () => {
+        await requester.post(registerPath).send(bancheroRegistrationData)
+        await requester.put(createMenuPath(bancheroRegistrationData.name)).send(mozzarella)
+
+        const response = await requester.delete(createMenuPath(bancheroRegistrationData.name)).send({productName: mozzarella.name})
+
+        expect(response.status).toBe(OK)
+        expect(response.body).toEqual({removed: mozzarella.name})
+    })
+
     
 
 })
