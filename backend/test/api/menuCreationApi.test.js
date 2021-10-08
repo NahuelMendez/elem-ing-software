@@ -1,6 +1,6 @@
 const request = require('supertest')
 const {createApp} = require('../../src/api/app')
-const {registerPath} = require("../../src/api/path")
+const {registerPath, loginPath} = require("../../src/api/path")
 const { createMenuPath } = require('../helpers/pathFactory')
 const {BAD_REQUEST, OK} = require("../../src/api/statusCode")
 const testObjects = require('../testObjects')
@@ -17,10 +17,16 @@ describe('Api menu creation', () => {
 
     it(`a registered pizzeria can add a product to it's menu`, async () => {
         await requester.post(registerPath).send({...bancheroRegistrationData, rol: 'pizzeria'})
+        const responseLogin = await requester.post(loginPath).send({
+            email: bancheroRegistrationData.email,
+            password: bancheroRegistrationData.password
+        })
+        const token = responseLogin.get('Authorization')
 
         const response = await requester
             .put(createMenuPath(bancheroRegistrationData.name))
             .send(mozzarella)
+            .set('Authorization', token)
 
         expect(response.status).toBe(OK)
         expect(response.body).toEqual(mozzarella)
