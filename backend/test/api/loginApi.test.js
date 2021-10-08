@@ -24,6 +24,7 @@ describe('Api login', () => {
         expect(response.status).toBe(OK)
         expect(response.body).toEqual({
             email: bancheroRegistrationData.email,
+            username: bancheroRegistrationData.name,
             rol: 'pizzeria'
         })
     })
@@ -39,6 +40,7 @@ describe('Api login', () => {
         expect(response.status).toBe(OK)
         expect(response.body).toEqual({
             email: kentRegistrationData.email,
+            username: kentRegistrationData.name,
             rol: 'consumer'
         })
     })
