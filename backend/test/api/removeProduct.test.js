@@ -11,7 +11,8 @@ const {
     registerPizzeria,
     addProduct,
     deleteProduct,
-    getMenu
+    getMenu,
+    login
 } = require('../helpers/apiHelperFunctions')
 
 describe('Api remove product from menu', () => {
@@ -23,7 +24,9 @@ describe('Api remove product from menu', () => {
 
     it(`given a registered pizzeria when a product is removed from it's menu the product is no longer on it's menu`, async () => {
         await registerPizzeria(requester, bancheroRegistrationData)
-        await addProduct(requester, bancheroRegistrationData, mozzarella)
+        const responseLogin = await login(requester, bancheroRegistrationData)
+        const token = responseLogin.get('Authorization')
+        await addProduct(requester, bancheroRegistrationData, mozzarella, token)
 
         await deleteProduct(requester, bancheroRegistrationData, mozzarella)
 
@@ -33,7 +36,9 @@ describe('Api remove product from menu', () => {
 
     it(`given a registered pizzeria when a product is removed from it's menu the response has the removed product name`, async () => {
         await registerPizzeria(requester, bancheroRegistrationData)
-        await addProduct(requester, bancheroRegistrationData, mozzarella)
+        const responseLogin = await login(requester, bancheroRegistrationData)
+        const token = responseLogin.get('Authorization')
+        await addProduct(requester, bancheroRegistrationData, mozzarella, token)
 
         const response = await deleteProduct(requester, bancheroRegistrationData, mozzarella)
 
@@ -43,7 +48,10 @@ describe('Api remove product from menu', () => {
 
     it(`given a registered pizzeria when it ask to remove a product missing from it's menu it fails`, async () => {
         await registerPizzeria(requester, bancheroRegistrationData)
-        await addProduct(requester, bancheroRegistrationData, mozzarella)
+        const responseLogin = await login(requester, bancheroRegistrationData)
+        const token = responseLogin.get('Authorization')
+        await addProduct(requester, bancheroRegistrationData, mozzarella, token)
+        await addProduct(requester, bancheroRegistrationData, mozzarella, token)
 
         const missingProductName = 'MISSING_PRODUCT_NAME'
         const response = await deleteProduct(requester, bancheroRegistrationData, {name: missingProductName})

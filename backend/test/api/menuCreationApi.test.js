@@ -1,6 +1,6 @@
 const request = require('supertest')
 const {createApp} = require('../../src/api/app')
-const {registerPath} = require("../../src/api/path")
+const {registerPath, loginPath} = require("../../src/api/path")
 const { createMenuPath } = require('../helpers/pathFactory')
 const {BAD_REQUEST, OK} = require("../../src/api/statusCode")
 const testObjects = require('../testObjects')
@@ -16,24 +16,56 @@ describe('Api menu creation', () => {
     })
 
     it(`a registered pizzeria can add a product to it's menu`, async () => {
-        await requester.post(registerPath).send({...bancheroRegistrationData, rol: 'pizzeria'})
+        const token = await loginToken(bancheroRegistrationData)
 
         const response = await requester
             .put(createMenuPath(bancheroRegistrationData.name))
             .send(mozzarella)
+            .set('Authorization', token)
 
         expect(response.status).toBe(OK)
         expect(response.body).toEqual(mozzarella)
     })
 
-    it('cannot add a product for a not registered pizzeria', async () => {
+    it("a pizzeria's menu cannot have products with repeated name", async () => {
+        const token = await loginToken(guerrinRegistrationData)
+
+        await requester
+            .put(createMenuPath(guerrinRegistrationData.name))
+            .send(mozzarella)
+            .set('Authorization', token)
+        
+        const response = await requester
+            .put(createMenuPath(guerrinRegistrationData.name))
+            .send({...bacon, name: mozzarella.name})
+            .set('Authorization', token)
+
+        expect(response.status).toBe(BAD_REQUEST)
+        expect(response.body).toEqual({
+            error: 'A menu cannot have repeated product names'
+        })
+    })
+
+    it('cannot add a product when the token is missing', async () => {
         const response = await requester
             .put(createMenuPath(guerrinRegistrationData.name))
             .send(mozzarella)
 
-        expect(response.status).toBe(BAD_REQUEST)
+        expect(response.status).toBe(401)
         expect(response.body).toEqual({
-            error: `Pizzeria ${guerrinRegistrationData.name} not found`
+            error: 'token missing'
+        })
+    })
+
+    it('cannot add a product for a unauthorized pizzeria', async () => {
+        const response = await requester
+            .put(createMenuPath(guerrinRegistrationData.name))
+            .send(mozzarella)
+            .set('Authorization', 'incorrect token')
+
+        expect(response.status).toBe(403)
+        expect(response.body).toEqual({
+            error: 'invalid token or unauthorized user'
         })
     })
 
@@ -127,6 +159,15 @@ describe('Api menu creation', () => {
             error: '"product price" is required'
         })
     })
+
+    async function loginToken(user) {
+        await requester.post(registerPath).send({...user, rol: 'pizzeria'})
+        const responseLogin = await requester.post(loginPath).send({
+            email: user.email,
+            password: user.password
+        })
+        return responseLogin.get('Authorization')
+    }
 
 })
 
