@@ -18,11 +18,17 @@ class User {
         return this.email === email && this.password === password
     }
 
+    isNamed(aName) { return this.getName() === aName }
+
+    isPizzeria() { return this.getRoleName() === 'pizzeria' }
+
     getName() { return this.name }
 
     getTelephone() { return this.telephone }
 
     getEmail() { return this.email }
+
+    getRoleName() { throw new Error('Subclass responsibility') }
 
     assertNameIsNotBlank(name) {
         if (name.trim() === '')

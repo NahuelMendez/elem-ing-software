@@ -24,14 +24,16 @@ const pizzeriasRegistrationData = {
         name: 'Banchero',
         telephone: 1112345678,
         email: 'banchero@gmail.com',
-        password: 'password'
+        password: 'password',
+        rol: 'pizzeria'
     },
 
     guerrinRegistrationData: {
         name: 'Guerrin',
         telephone: 1112345678,
         email: 'guerrin@gmail.com',
-        password: 'password'
+        password: 'password',
+        rol: 'pizzeria'
     }
 }
 
