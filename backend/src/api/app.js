@@ -1,3 +1,4 @@
+const jwt = require('jsonwebtoken')
 const express = require('express')
 var cors = require('cors')
 const path = require('path')
@@ -8,6 +9,7 @@ const {MenuService} = require("../model/MenuService");
 const {TransientUsersRepository} = require("../model/TransientUsersRepository");
 const {Product} = require('../model/Product')
 const {OK, CREATED, BAD_REQUEST, NOT_FOUND} = require("./statusCode")
+const {authenticatePizzeria} = require("./authenticate")
 
 const {
     registerPizzeriaRequestValidation,
@@ -40,15 +42,18 @@ const createApp = () => {
         const loginData = request.body
 
         usersService.login(loginData)
-            .then(user => response.status(OK).json({
-                email: user.getEmail(), 
-                username: user.getName(), 
-                rol: user.getRoleName()
-            }))
+            .then(user => 
+                response
+                .header("Authorization", jwt.sign({email: user.getEmail(), role: user.getRoleName()}, 'secret'))
+                .status(OK).json({
+                    email: user.getEmail(), 
+                    username: user.getName(), 
+                    rol: user.getRoleName()
+                }))
             .catch(error => response.status(NOT_FOUND).json({error: error.message}))
     })
     
-    app.put(menuPath, productRequestValidation, (request, response) => {
+    app.put(menuPath, productRequestValidation, authenticatePizzeria, (request, response) => {
         const productData = request.body
         const {pizzeriaName} = request.params
 
@@ -79,7 +84,14 @@ const createApp = () => {
                 email: pizzeria.email
             }))
             .catch( error => response.status(NOT_FOUND).json({error : error.message}) )
+    })
         
+    app.delete(menuPath + '/:productName', (request, response) => {
+        const {pizzeriaName, productName} = request.params
+
+        menuService.removeProduct(pizzeriaName, productName)
+            .then(() => response.status(OK).json({removed: productName}))
+            .catch(error => response.status(NOT_FOUND).json({error : error.message}))
     })
 
     const menuToJson = (menu) => {
