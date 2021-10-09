@@ -78,6 +78,7 @@ const createApp = () => {
                 telephone: pizzeria.telephone,
                 email: pizzeria.email
             }))
+            .catch( error => response.status(NOT_FOUND).json({error : error.message}) )
         
     })
 
