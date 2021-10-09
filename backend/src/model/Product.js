@@ -15,6 +15,10 @@ class Product {
         this.imageURL = imageURL
     }
 
+    isNamed(productName) {
+        return this.name === productName.trim()
+    }
+
     getName() { return this.name }
     getDescription() { return this.description }
     getPrice() { return this.price }
