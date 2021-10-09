@@ -1,9 +1,9 @@
 const {UserService} = require('../../src/model/UserService')
 const {TransientUsersRepository} = require("../../src/model/TransientUsersRepository");
+const testObjects = require('../testObjects')
 
-const {
-    bancheroRegistrationData
-} = require('../testObjects').pizzeriasRegistrationData
+const { bancheroRegistrationData } = testObjects.pizzeriasRegistrationData
+const { kentRegistrationData } = testObjects.consumersRegistrationData
 
 describe('Find Pizzeria', () => {
     let userService
@@ -27,6 +27,14 @@ describe('Find Pizzeria', () => {
         await expect(
             userService.findPizzeriaByName(bancheroRegistrationData.name)
         ).rejects.toThrow(`Pizzeria ${bancheroRegistrationData.name} not found`)
+    })
+
+    it("cannot find pizzeria by name when is a consumer name", async () => {
+        await userService.registerConsumer(kentRegistrationData)
+
+        await expect(
+            userService.findPizzeriaByName(kentRegistrationData.name)
+        ).rejects.toThrow(`Pizzeria ${kentRegistrationData.name} not found`)
     })
 
 })
