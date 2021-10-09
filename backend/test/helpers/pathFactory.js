@@ -1,4 +1,6 @@
 
 const createMenuPath = (pizzeriaName) => { return `/api/pizzeria/${pizzeriaName}/menu`}
 
-module.exports = {createMenuPath}
+const createPizzeriaPath = (pizzeriaName) => { return `/api/pizzeria/${pizzeriaName}`}
+
+module.exports = {createMenuPath, createPizzeriaPath}
