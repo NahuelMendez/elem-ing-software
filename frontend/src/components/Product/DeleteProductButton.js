@@ -1,6 +1,6 @@
 import deleteIMG from '../../assets/delete-product-btn.png';
 
-const DeleteProduct = ({ productName, deleteProduct }) => {
+const DeleteProductButton = ({ productName, deleteProduct }) => {
 
     const handleClick = (event) => {
         event.preventDefault();
@@ -9,10 +9,10 @@ const DeleteProduct = ({ productName, deleteProduct }) => {
 
     return (
         <button type="btn" className="delete-product-btn btn" onClick={handleClick}>
-        <img src={deleteIMG} />
+            <img src={deleteIMG} />
         </button>
     );
 
 }
 
-export default DeleteProduct;
+export default DeleteProductButton;
