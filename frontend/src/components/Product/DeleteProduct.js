@@ -1,16 +1,15 @@
 import deleteIMG from '../../assets/delete-product-btn.png';
 
-const DeleteProduct = ({ productName }) => {
+const DeleteProduct = ({ productName, deleteProduct }) => {
 
-    const deleteProduct = (event) => {
+    const handleClick = (productName) = (event) => {
         event.preventDefault();
-        // api borrar productName
-        console.log("Se borra producto");
+        deleteProduct(productName)
     }
 
     return (
         <button type="btn" className="delete-product-btn btn">
-            <img src={deleteIMG} onClick={deleteProduct}/>
+            <img src={deleteIMG} onClick={handleClick}/>
         </button>
     );
 

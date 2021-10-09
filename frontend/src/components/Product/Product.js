@@ -1,10 +1,10 @@
 import React from 'react';
 import DeleteProduct from './DeleteProduct';
 
-const Product = ({ name, description, price, imageURL }) => {
+const Product = ({ name, description, price, imageURL, deleteProduct }) => {
     return (
         <div className="card card-container">
-            <DeleteProduct productName={name} />
+            <DeleteProduct productName={name} deleteProduct={deleteProduct}/>
             <div className="card-img-cont">
                 <img src={imageURL} alt="" className="product-img"></img>
             </div>

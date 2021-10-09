@@ -1,7 +1,8 @@
-import React from "react";
 import Product from "./Product";
 
-const ViewProducts = ({ products }) => {
+const ViewProducts = ({ products, deleteProduct }) => {
+
+    
 
     return(
         <div className="container pizza-menu">
@@ -12,7 +13,8 @@ const ViewProducts = ({ products }) => {
                             name={product.name}
                             description={product.description}
                             price={product.price}
-                            imageURL={product.imageURL}/>
+                            imageURL={product.imageURL}
+                            deleteProduct={deleteProduct}/>
                     </div>
                 )}
             </div>
