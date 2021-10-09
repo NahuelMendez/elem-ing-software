@@ -40,6 +40,10 @@ class UserService {
         })
     }
 
+    async findPizzeriaByName(name) {
+        return await this.usersRepository.findPizzeriaByName(name)
+    }
+
     async assertThereIsNoPizzeriaNamed(name) {
         if (await this.existsPizzeriaNamed(name))
             throw new ModelException(`Pizzeria name ${name} already registered`)
