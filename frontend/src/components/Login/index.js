@@ -18,7 +18,9 @@ const Login = () => {
     api.login(data)
       .then((res)=> {
         const role = res.data.rol
+        const username = res.data.username
         localStorage.setItem("role", role)
+        localStorage.setItem("username", username)
         history.push('/home')
       })
       .catch(err => setError(err.response.data.error));
