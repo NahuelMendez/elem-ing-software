@@ -26,13 +26,13 @@ code {
 }
 
 .card-img-cont {
-  maxi-width: 250px;
-  max-height: 200px;
+  max-width: 250px;
+  max-height: 200px; 
   min-height: 200px;
 }
 
 .product-img {
-  maxi-width: 250px;
+  max-width: 250px;
   max-height: 200px;
   min-height: 200px;
 }
