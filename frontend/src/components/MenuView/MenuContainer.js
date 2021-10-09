@@ -23,10 +23,9 @@ const MenuContainer = () =>{
     }
 
     const deleteProduct = (productName) => {
+        api.deleteProduct('pizzeria', productName);
         const newProducts = products.filter((product) => product.name !== productName);
         setProducts(newProducts);
-        console.log("DELETE PRODUCT");
-        console.log(productName)
     }
 
     return (
