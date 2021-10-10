@@ -24,7 +24,7 @@ const createApp = () => {
     const menuService = new MenuService(usersRepository)
     const app = express()
 
-    app.use(cors())
+    app.use(cors({ exposedHeaders: 'Authorization' }))
     app.use(express.static(path.join(__dirname, '../../app/build')))
 
     app.use(bodyParser.urlencoded({extended: false}))

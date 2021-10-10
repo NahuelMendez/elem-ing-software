@@ -5,6 +5,11 @@ const baseURL =
     ? 'http://localhost:8080'
     : 'https://g1-eis-backend.herokuapp.com'
 
+const headers = {
+  'Content-Type': 'application/json',
+  'Authorization': localStorage.getItem("token")
+}
+
 const api = {
 
   register: (data) => {
@@ -16,7 +21,7 @@ const api = {
   },
 
   addProduct: (data, pizzeriaName) => {
-    return axios.put(`${baseURL}/api/pizzeria/${pizzeriaName}/menu`, data)
+    return axios.put(`${baseURL}/api/pizzeria/${pizzeriaName}/menu`, data, {headers})
   },
 
   getMenu: (pizzeriaName) => {
