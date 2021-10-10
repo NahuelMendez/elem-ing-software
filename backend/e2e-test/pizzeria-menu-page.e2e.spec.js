@@ -13,8 +13,8 @@ describe('Pizzeria menu', () => {
     let page
 
     beforeEach(async () => {
-        //browser = await puppeteer.launch({headless: false})
-        browser = await puppeteer.launch()
+        browser = await puppeteer.launch({headless: false})
+        //browser = await puppeteer.launch()
         page = await browser.newPage()
     })
 
