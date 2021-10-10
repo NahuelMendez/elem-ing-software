@@ -3,7 +3,7 @@ const { createSearchPizzeriaPath } = require('../helpers/pathFactory')
 const {createApp} = require('../../src/api/app')
 const {OK} = require("../../src/api/statusCode")
 
-const { createPizzeriaRegistrationData } = require('../testObjects')
+const { createPizzeriaRegistrationAPIData } = require('../testObjects')
 
 const {
     registerPizzeria
@@ -19,9 +19,9 @@ describe('Api find Pizzeria matching partial name', () => {
     beforeEach(async () => {
         requester = request(createApp())
 
-        kentuckyPizzeriaData = createPizzeriaRegistrationData({name: 'Kentucky'})
-        kePizzaPizzeriaData = createPizzeriaRegistrationData({name: 'Ke Pizza'})
-        muchaPizzaPizzeriaData = createPizzeriaRegistrationData({name: 'Mucha Pizza'})
+        kentuckyPizzeriaData = createPizzeriaRegistrationAPIData({name: 'Kentucky'})
+        kePizzaPizzeriaData = createPizzeriaRegistrationAPIData({name: 'Ke Pizza'})
+        muchaPizzaPizzeriaData = createPizzeriaRegistrationAPIData({name: 'Mucha Pizza'})
     })
 
     it('can find pizzerias matching a partial name', async () => {
