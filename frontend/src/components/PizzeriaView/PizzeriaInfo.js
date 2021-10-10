@@ -7,7 +7,7 @@ const PizzeriaInfo = ({ pizzeriaName }) => {
     const [pizzeria, setPizzeria] = useState({ username: '', telephone: '', email: '' });
 
     const getPizzeria = () => {
-        api.getPizzeria('pizzeria')
+        api.getPizzeria(pizzeriaName)
         .then((response => {
             setPizzeria(response.data);
         }))

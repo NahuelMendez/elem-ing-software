@@ -1,7 +1,10 @@
 import NavBar from "../Navbar";
 import PizzeriaInfo from "./PizzeriaInfo";
+import { useParams } from "react-router";
 
-const PizzeriaView = ({ pizzeriaName }) => {
+const PizzeriaView = () => {
+
+    const { pizzeriaName } = useParams();
 
     return (
        <div>

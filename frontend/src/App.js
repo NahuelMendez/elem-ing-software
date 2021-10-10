@@ -17,7 +17,7 @@ function App() {
       <Route path="/login" component={Login}/>
       <Route path="/menu" component={MyMenu} />
       <Route path="/register" component={RegisterView}/>
-      <Route path="/pizzeria" component={PizzeriaView}/>
+      <Route path="/pizzeria/:pizzeriaName" component={PizzeriaView}/>
     </Router>
   );
 }
