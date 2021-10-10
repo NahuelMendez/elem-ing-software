@@ -2,12 +2,16 @@ import { useState } from "react"
 import { Link } from "react-router-dom"
 import searchIcon from "../../assets/search.png"
 import { useHistory } from "react-router-dom";
+import api from "../../Api/ApiObject";
+import { useDispatch } from "react-redux"
+import { setSearchResults } from "../../slices/searchSlice";
 
 const NavBar = () => {
   const [showProfileOptions, setShowProfileOptions] = useState(false)
   const [toSearch, setToSearch] = useState('')
   const role = localStorage.getItem("role")
   const history = useHistory();
+  const dispatch = useDispatch();
 
   const handleShowProfileOptions = () => {
     setShowProfileOptions(!showProfileOptions)
@@ -18,6 +22,9 @@ const NavBar = () => {
   }
 
   const handleSearch = () => {
+    api.searchPizzeria({ name: toSearch }).then(res => {
+      dispatch(setSearchResults(res.data))
+    })
     history.push('/busquedas')
   }
 
