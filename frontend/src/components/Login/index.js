@@ -21,6 +21,7 @@ const Login = () => {
         const username = res.data.username
         localStorage.setItem("role", role)
         localStorage.setItem("username", username)
+        localStorage.setItem("token", res.headers.authorization)
         history.push('/home')
       })
       .catch(err => setError(err.response.data.error));
