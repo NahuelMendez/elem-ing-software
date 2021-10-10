@@ -32,4 +32,19 @@ describe('Pizzeria - delete product from menu', () => {
         await page.waitForSelector('.card-container > .delete-product-btn > img')
     })
 
+    it(`when a pizzeria clicks the delete button of a product card, the product is removed from the menu`, async () => {
+        const pizzeriaData = createPizzeriaRegistrationData({})
+        const pizzaData = createPizzaData({})
+        await registerAsPizzeriaAndGoToMenu(page, pizzeriaData)
+        await addProduct(page, pizzaData)
+        await goto(page, '/home')
+
+        await page.waitForSelector('.card-container > .delete-product-btn > img')
+        await page.click('.card-container > .delete-product-btn > img')
+
+        const productCards = await page.$$eval('.card-container', element => element)
+        
+        expect(productCards).toHaveLength(0)
+    })
+
 })
