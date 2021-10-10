@@ -23,6 +23,10 @@ const api = {
     return axios.get(`${baseURL}/api/pizzeria/${pizzeriaName}/menu`)
   },
 
+  deleteProduct: (pizzeriaName, productName) => {
+    return axios.delete(`${baseURL}/api/pizzeria/${pizzeriaName}/menu/${productName}`);
+  }
+
 };
 
 export default api;

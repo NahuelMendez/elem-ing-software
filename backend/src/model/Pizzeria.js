@@ -20,6 +20,13 @@ class Pizzeria extends User {
         this.products.push(product)
     }
 
+    removeProductNamed(productName) {
+        const index = this.products.findIndex(product => product.isNamed(productName))
+        if (index === -1) throw new ModelException(`Product ${productName} not found`)
+
+        this.products.splice(index, 1)
+    }
+
     assertHasNoProductNamedAs(productToCheck) {
         if (this.products.some(product => product.getName() === productToCheck.getName()))
             throw new ModelException('A menu cannot have repeated product names')

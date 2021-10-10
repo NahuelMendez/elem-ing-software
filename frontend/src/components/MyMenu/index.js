@@ -10,6 +10,7 @@ const MyMenu = () => {
     imageURL: ''
   })
   const [result, setResult] = useState({ show: false, message: "", error: false })
+  const pizzeriaName = localStorage.getItem("username")
 
   const handleChange = event => {
     const target = event.target
@@ -18,7 +19,7 @@ const MyMenu = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    api.addProduct(productData, "pizzeria") // TODO: sacar pizzeria hardcodeada
+    api.addProduct(productData, pizzeriaName)
       .then(_ => {
         setResult({ show: true, message: "Se ha ingresado el producto correctamente", error: false })
       })

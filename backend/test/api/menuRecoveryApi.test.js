@@ -1,6 +1,6 @@
 const request = require('supertest')
 const {createApp} = require('../../src/api/app')
-const {registerPath} = require("../../src/api/path")
+const {registerPath, loginPath} = require("../../src/api/path")
 const { createMenuPath } = require('../helpers/pathFactory')
 const {OK, NOT_FOUND} = require("../../src/api/statusCode")
 const testObjects = require('../testObjects')
@@ -26,9 +26,15 @@ describe('Api menu recovery', () => {
 
     it('get the menu of a registered pizzeria with added products', async () => {
         await requester.post(registerPath).send({...bancheroRegistrationData, rol: 'pizzeria'})
+        const responseLogin = await requester.post(loginPath).send({
+            email: bancheroRegistrationData.email,
+            password: bancheroRegistrationData.password
+        })
+        const token = responseLogin.get('Authorization')
         await requester
             .put(createMenuPath(bancheroRegistrationData.name))
             .send(mozzarella)
+            .set('Authorization', token)
 
         const response = await requester.get(createMenuPath(bancheroRegistrationData.name))
 
