@@ -24,11 +24,7 @@ const api = {
   },
 
   addProduct: (data, pizzeriaName) => {
-    const headers = createHeadesrWithToken()
-    console.log("headers>>>")
-    console.log(headers)
-    console.log('-------------------')
-    return axios.put(`${baseURL}/api/pizzeria/${pizzeriaName}/menu`, data, headers)
+    return axios.put(`${baseURL}/api/pizzeria/${pizzeriaName}/menu`, data, createHeadesrWithToken())
   },
 
   getMenu: (pizzeriaName) => {
