@@ -3,7 +3,7 @@ const express = require('express')
 var cors = require('cors')
 const path = require('path')
 const bodyParser = require('body-parser')
-const {registerPath, loginPath, menuPath, pizzeriaPath} = require("./path")
+const {registerPath, loginPath, menuPath, pizzeriaPath, searchPizzeriaPath} = require("./path")
 const {UserService} = require("../model/UserService");
 const {MenuService} = require("../model/MenuService");
 const {TransientUsersRepository} = require("../model/TransientUsersRepository");
@@ -85,6 +85,14 @@ const createApp = () => {
             }))
             .catch( error => response.status(NOT_FOUND).json({error : error.message}) )
     })
+
+    app.get(searchPizzeriaPath, (request, response) => {
+        const {name} = request.query
+        
+        usersService.findPizzeriasByPartialName(name)
+            .then(pizzeriasToJson)
+            .then( pizzerias => response.status(OK).json(pizzerias))
+    })
         
     app.delete(menuPath + '/:productName', (request, response) => {
         const {pizzeriaName, productName} = request.params
@@ -95,12 +103,15 @@ const createApp = () => {
     })
 
     const menuToJson = (menu) => {
-
         return menu.map (product => ({
                 name: product.getName(),
                 description: product.getDescription(),
                 price: product.getPrice(),
                 imageURL: product.getImageURL()}))
+    }
+
+    const pizzeriasToJson = (pizzerias) => {
+        return pizzerias.map (pizzeria => ({name: pizzeria.getName()}))
     }
 
     const register = ({name, telephone, email, password, rol}) => {
