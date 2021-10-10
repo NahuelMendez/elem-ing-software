@@ -6,7 +6,7 @@ function createPizzeriaRegistrationData({name, telephone = 1112345678, email, pa
     if (!email) email = `${name}@d.c`
     if (!confirmPassword) confirmPassword = password
 
-    return ({ name, telephone, email, password})
+    return ({ name, telephone, email, password, confirmPassword})
 }
 
 const createConsumerRegistrationData = createPizzeriaRegistrationData
