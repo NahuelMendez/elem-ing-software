@@ -1,5 +1,4 @@
 const request = require('supertest')
-const {registerPath} = require("../../src/api/path")
 const {createApp} = require('../../src/api/app')
 const {CREATED, BAD_REQUEST} = require("../../src/api/statusCode")
 
@@ -12,6 +11,8 @@ const {
     kentRegistrationData
 } = require('../testObjects').consumersRegistrationData
 
+const { registerUser } = require('../helpers/apiHelperFunctions')
+
 describe('Api pizzeria registration', () => {
     let requester
 
@@ -20,17 +21,17 @@ describe('Api pizzeria registration', () => {
     })
 
     it('can register a new pizzeria with valid registration data', async () => {
-        const response = await requester.post(registerPath).send({...kentRegistrationData, rol: 'consumer'})
+        const response = await registerUser(requester, bancheroRegistrationData)
 
         expect(response.status).toBe(CREATED)
         expect(response.body).toEqual({
-            name: kentRegistrationData.name,
-            rol: 'consumer'
+            name: bancheroRegistrationData.name,
+            rol: 'pizzeria'
         })
     })
 
     it('cannot register a new pizzeria with an empty name', async () => {
-        const response = await requester.post(registerPath).send({...bancheroRegistrationData, name: '', rol: 'pizzeria'})
+        const response = await registerUser(requester, {...bancheroRegistrationData, name: ''})
 
         expect(response.status).toBe(BAD_REQUEST)
         expect(response.body).toEqual({
@@ -39,15 +40,14 @@ describe('Api pizzeria registration', () => {
     })
 
     it('cannot register a new pizzeria with a repeated pizzeria name', async () => {
-        await requester.post(registerPath).send({...bancheroRegistrationData, rol: 'pizzeria'})
+        await registerUser(requester, bancheroRegistrationData)
     
         const pizzeriaDataWithRepeatedName = {
             ...guerrinRegistrationData,
-            name: bancheroRegistrationData.name,
-            rol: 'pizzeria'
+            name: bancheroRegistrationData.name
         }
 
-        const response = await requester.post(registerPath).send(pizzeriaDataWithRepeatedName)
+        const response = await registerUser(requester,pizzeriaDataWithRepeatedName)
 
         expect(response.status).toBe(BAD_REQUEST)
         expect(response.body).toEqual({
@@ -56,7 +56,7 @@ describe('Api pizzeria registration', () => {
     })
 
     it('cannot register a new pizzeria if the name is not of type string', async () => {
-        const response = await requester.post(registerPath).send({...bancheroRegistrationData, name: 123, rol: 'pizzeria'})
+        const response = await registerUser(requester, {...bancheroRegistrationData, name: 123})
 
         expect(response.status).toBe(BAD_REQUEST)
         expect(response.body).toEqual({
@@ -65,7 +65,7 @@ describe('Api pizzeria registration', () => {
     })
 
     it('cannot register a new pizzeria if the email is not of type string ', async () => {
-        const response = await requester.post(registerPath).send({...bancheroRegistrationData, email: 123, rol: 'pizzeria'})
+        const response = await registerUser(requester, {...bancheroRegistrationData, email: 123})
 
         expect(response.status).toBe(BAD_REQUEST)
         expect(response.body).toEqual({
@@ -74,7 +74,7 @@ describe('Api pizzeria registration', () => {
     })
 
     it('cannot register a new pizzeria if the password is not of type string ', async () => {
-        const response = await requester.post(registerPath).send({...bancheroRegistrationData, password: 123, rol: 'pizzeria'})
+        const response = await registerUser(requester, {...bancheroRegistrationData, password: 123})
 
         expect(response.status).toBe(BAD_REQUEST)
         expect(response.body).toEqual({
@@ -83,12 +83,7 @@ describe('Api pizzeria registration', () => {
     })
 
     it('cannot register a new pizzeria if a password is not provided', async () => {
-        const response = await requester.post(registerPath).send({
-            name: 'Barquito',
-            telephone: 1112345678,
-            email: 'barquito@gmail.com',
-            rol: 'pizzeria'
-        })
+        const response = await registerUser(requester, {...bancheroRegistrationData, password: undefined})
 
         expect(response.status).toBe(BAD_REQUEST)
         expect(response.body).toEqual({
@@ -97,12 +92,7 @@ describe('Api pizzeria registration', () => {
     })
 
     it('cannot register a new pizzeria if a email is not provided', async () => {
-        const response = await requester.post(registerPath).send({
-            name: 'Barquito',
-            telephone: 1112345678,
-            password: 'password',
-            rol: 'pizzeria'
-        })
+        const response = await registerUser(requester, {...bancheroRegistrationData, email: undefined})
 
         expect(response.status).toBe(BAD_REQUEST)
         expect(response.body).toEqual({
@@ -111,12 +101,7 @@ describe('Api pizzeria registration', () => {
     })
 
     it('cannot register a new pizzeria if a name is not provided', async () => {
-        const response = await requester.post(registerPath).send({
-            telephone: 1112345678,
-            email: 'barquito@gmail.com',
-            password: 'password',
-            rol: 'pizzeria'
-        })
+        const response = await registerUser(requester, {...bancheroRegistrationData, name: undefined})
 
         expect(response.status).toBe(BAD_REQUEST)
         expect(response.body).toEqual({
@@ -125,12 +110,7 @@ describe('Api pizzeria registration', () => {
     })
 
     it('cannot register a new pizzeria if a telephone is not provided', async () => {
-        const response = await requester.post(registerPath).send({
-            name: 'Barquito',
-            email: 'barquito@gmail.com',
-            password: 'password',
-            rol: 'pizzeria'
-        })
+        const response = await registerUser(requester, {...bancheroRegistrationData, telephone: undefined})
 
         expect(response.status).toBe(BAD_REQUEST)
         expect(response.body).toEqual({
@@ -139,12 +119,7 @@ describe('Api pizzeria registration', () => {
     })
 
     it('cannot register a new pizzeria if a rol is not provided', async () => {
-        const response = await requester.post(registerPath).send({
-            name: 'Barquito',
-            telephone: 1112345678,
-            email: 'barquito@gmail.com',
-            password: 'password'
-        })
+        const response = await registerUser(requester, {...bancheroRegistrationData, rol: undefined})
 
         expect(response.status).toBe(BAD_REQUEST)
         expect(response.body).toEqual({
@@ -153,7 +128,7 @@ describe('Api pizzeria registration', () => {
     })
 
     it('cannot register a user with an invalid rol', async () => {
-        const response = await requester.post(registerPath).send({...kentRegistrationData, rol: 'invalid_rol'})
+        const response = await registerUser(requester, {...bancheroRegistrationData, rol: 'invalid_rol'})
 
         expect(response.status).toBe(BAD_REQUEST)
         expect(response.body).toEqual({
