@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken')
+const {UNAUTHORIZED, FORBIDDEN} = require("./statusCode")
 
 const authenticate = role => (request, response, next) => {
     const authHeader = request.get('Authorization')
@@ -6,13 +7,13 @@ const authenticate = role => (request, response, next) => {
     if (authHeader) {
         jwt.verify(authHeader,'secret', (error, user) => {
             if (error || role !== user.role) {
-                return response.status(403).json({error: 'invalid token or unauthorized user'})
+                return response.status(FORBIDDEN).json({error: 'invalid token or unauthorized user'})
             }
             request.user = user
             next()
         })   
     } else {
-        response.status(401).json({error: 'token missing'});
+        response.status(UNAUTHORIZED).json({error: 'token missing'});
     }
 }
 

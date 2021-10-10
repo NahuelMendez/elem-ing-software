@@ -1,7 +1,7 @@
 const {registerPath, loginPath } = require("../../src/api/path")
-const { createMenuPath, deleteProductPath } = require('../helpers/pathFactory')
+const { createMenuPath, deleteProductPath, createPizzeriaPath } = require('../helpers/pathFactory')
 
-async function registerPizzeria(requester, pizzeriaRegistrationData) {
+async function registerUser(requester, pizzeriaRegistrationData) {
     return await requester.post(registerPath).send(pizzeriaRegistrationData)
 }
 
@@ -25,10 +25,25 @@ async function getMenu(requester, pizzeriaRegistrationData) {
     return await requester.get(createMenuPath(pizzeriaRegistrationData.name))
 }
 
+async function getPizzeria(requester, pizzeriaRegistrationData) {
+    return await requester.get(createPizzeriaPath(pizzeriaRegistrationData.name))
+}
+
+async function loginToken(requester, user) {
+    await registerUser(requester, user)
+    const responseLogin = await login(requester, {
+        email: user.email,
+        password: user.password
+    })
+    return responseLogin.get('Authorization')
+}
+
 module.exports = {
-    registerPizzeria,
+    registerUser,
     addProduct,
     deleteProduct,
     getMenu,
-    login
+    login,
+    getPizzeria,
+    loginToken
 }
