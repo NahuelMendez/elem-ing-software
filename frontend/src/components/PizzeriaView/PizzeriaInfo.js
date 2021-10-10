@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import api from "../../Api/ApiObject";
+import userIMG from "../../assets/user.png"
 
 const PizzeriaInfo = ({ pizzeriaName }) => {
 
@@ -23,6 +24,7 @@ const PizzeriaInfo = ({ pizzeriaName }) => {
     return (
         <div className="piz-info-container">
             <div className="pizz-info-image">
+                <img src={userIMG}></img>
             </div>
             <div className="pizz-info-dtl">
                 <ul>
