@@ -22,10 +22,16 @@ const MenuContainer = () =>{
         })
     }
 
+    const deleteProduct = (productName) => {
+        api.deleteProduct('pizzeria', productName);
+        const newProducts = products.filter((product) => product.name !== productName);
+        setProducts(newProducts);
+    }
+
     return (
         <div>
             { error? <h3>Ocurrio un error al cargar los productos</h3>:
-            <ViewProducts products={products}/>  
+            <ViewProducts products={products} deleteProduct={deleteProduct}/>  
             }
         </div>
     );
@@ -34,5 +40,3 @@ const MenuContainer = () =>{
 }
 
 export default MenuContainer;
-
-/**/ 
