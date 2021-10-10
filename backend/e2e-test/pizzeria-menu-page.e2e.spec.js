@@ -34,7 +34,6 @@ describe('Pizzeria menu', () => {
     it(`when an authenticated pizzeria add a product to its menu, it appears on it's home page`, async () => {
         const pizzeriaData = createPizzeriaRegistrationData({})
         const pizzaData = createPizzaData({})
-        pizzeriaData.name = 'pizzeria'
         await registerAsPizzeriaAndGoToMenu(page, pizzeriaData)
 
         await addProduct(page, pizzaData)
