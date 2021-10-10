@@ -7,6 +7,7 @@ import MyMenu from "./components/MyMenu";
 import MainView from "./components/MainView";
 import Profile from "./components/Profile";
 import RegisterView from "./components/Register";
+import PizzeriaView from "./components/PizzeriaView/PizzeriaView";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
       <Route path="/login" component={Login}/>
       <Route path="/menu" component={MyMenu} />
       <Route path="/register" component={RegisterView}/>
+      <Route path="/pizzeria" component={PizzeriaView}/>
     </Router>
   );
 }
