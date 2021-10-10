@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import api from "../../Api/ApiObject";
 import ViewProducts from "../Product/ViewProducts";
 
+const getPizzeriaName = () => localStorage.getItem('username')
+
 const MenuContainer = () =>{
 
     const [products, setProducts] = useState([]);
@@ -12,7 +14,7 @@ const MenuContainer = () =>{
     }, [])
 
     const getMenu = () => {
-        api.getMenu('pizzeria')
+        api.getMenu(getPizzeriaName())
         .then(response => {
             setProducts(response.data)
             setError("")
@@ -23,7 +25,7 @@ const MenuContainer = () =>{
     }
 
     const deleteProduct = (productName) => {
-        api.deleteProduct('pizzeria', productName);
+        api.deleteProduct(getPizzeriaName(), productName);
         const newProducts = products.filter((product) => product.name !== productName);
         setProducts(newProducts);
     }

@@ -86,12 +86,12 @@ describe('Pizzeria registration', () => {
         const secondPizzeriaData = createPizzeriaRegistrationData({ email: firstPizzeriaData.email })
         await goto(page, '/register')
         await chooseToRegisterAsPizzeria(page)
-        await submitConsumerRegistration(page, secondPizzeriaData)
+        await fillPizzeriaRegistrationForm(page, secondPizzeriaData)
 
         await page.click('[type="submit"]', )
         await page.waitForSelector('#alertReg')
 
-        await expectTextContent(page, '#alertReg', `A user with email ${pizzeriaData.email} is already registered`)
+        await expectTextContent(page, '#alertReg', `A user with email ${secondPizzeriaData.email} is already registered`)
         expectPath(page, '/register')
     })
 
@@ -105,7 +105,7 @@ describe('Pizzeria registration', () => {
 
         await goto(page, '/register')
         await chooseToRegisterAsPizzeria(page)
-        await submitConsumerRegistration(page, pizzeriaData)
+        await fillPizzeriaRegistrationForm(page, pizzeriaData)
 
         await page.click('[type="submit"]', )
         await page.waitForSelector('#alertReg')
