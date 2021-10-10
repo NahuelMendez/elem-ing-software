@@ -2,6 +2,7 @@ const {UserService} = require('../../src/model/UserService')
 const {TransientUsersRepository} = require("../../src/model/TransientUsersRepository");
 
 const { createPizzeriaRegistrationData } = require('../testObjects')
+const { createConsumerRegistrationData } = require('../testObjects')
 
 describe('Find Pizzerias matching partial name', () => {
     let userService
@@ -40,6 +41,15 @@ describe('Find Pizzerias matching partial name', () => {
         expect(foundPizzerias).toHaveLength(2)
         expect(foundPizzerias[0].isNamed(kentuckyPizzeriaData.name)).toBe(true)
         expect(foundPizzerias[1].isNamed(kePizzaPizzeriaData.name)).toBe(true)
+    })
+
+    it('finding pizzerias matching a partial name ignore consumers', async () => {
+        const kentConsumerData = createConsumerRegistrationData({name: 'Kent'})
+        await userService.registerConsumer(kentConsumerData)
+
+        const foundPizzerias = await userService.findPizzeriasByPartialName('K')
+
+        expect(foundPizzerias).toHaveLength(0)
     })
 
 })

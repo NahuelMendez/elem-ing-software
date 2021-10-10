@@ -27,7 +27,7 @@ class TransientUsersRepository {
     }
 
     async findPizzeriasByPartialName(pizzeriaName) {
-        return this.users.filter(user => user.getName().match(new RegExp(pizzeriaName, 'i')))
+        return this.users.filter(user => user.getName().match(new RegExp(pizzeriaName, 'i')) && user.isPizzeria())
     }
 
     async save(newUser) {
