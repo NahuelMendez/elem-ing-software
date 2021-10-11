@@ -21,11 +21,14 @@ const NavBar = () => {
     localStorage.clear()
   }
 
-  const handleSearch = () => {
-    api.searchPizzeria({ name: toSearch }).then(res => {
-      dispatch(setSearchResults(res.data))
-    })
-    history.push('/busquedas')
+  const handleSearch = (event) => {
+    event.preventDefault()
+    if (toSearch.trim().length !== 0) {
+      api.searchPizzeria({ name: toSearch }).then(res => {
+        dispatch(setSearchResults(res.data))
+      })
+      history.push('/busquedas')
+    }
   }
 
   const handleChangeSearch = (event) => {

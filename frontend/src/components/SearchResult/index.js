@@ -13,8 +13,8 @@ const SearchResult = () => {
       </div>
       <div className="w-5/6 flex flex-wrap justify-center">
         {results.length === 0 && <p className="text-lg mt-8 text-gray-500">No se encontraron pizzerías que coincidan.</p>}
-        {results && results.map(i => (
-          <PizzeriaCard key={i.name} name={i.name} />
+        {results && results.map((pizzeria, index) => (
+          <PizzeriaCard key={index} name={pizzeria.name} />
         ))}
       </div>
     </div>
