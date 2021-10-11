@@ -32,4 +32,10 @@ describe('Pizzeria data visualization', () => {
         await expectTextContent(page, '.pizz-info-dtl > ul > li:nth-child(3)', pizzeriaData.email)
     })
 
+    it('when a user visits the route /pizzeria/:pizzeria_name with the name of a not registered pizzeria, the page should contain an error message', async () => {
+        await goto(page, `/pizzeria/NOT_REGISTERED_PIZZERIA_NAME`)
+
+        await expectTextContent(page, '.error-piz-nf', 'No se encontro la pizzeria')
+    })
+
 })
