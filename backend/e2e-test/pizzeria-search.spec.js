@@ -39,6 +39,7 @@ describe('Pizzeria search by partial name', () => {
         const consumerData = createConsumerRegistrationData({})
         await registerAndLoginConsumer(page, consumerData)
 
+        await page.type(searchInputSelector, 'something')
         await clickAndWait(page, searchButtonSelector)
 
         expectPath(page, '/busquedas')
@@ -91,5 +92,6 @@ describe('Pizzeria search by partial name', () => {
             }
         ])
     })
+
 
 })
