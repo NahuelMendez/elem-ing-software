@@ -41,10 +41,6 @@ const api = {
   
   getPizzeria: (pizzeriaName) => {
     return axios.get(`${baseURL}/api/pizzeria/${pizzeriaName}`);
-  },
-
-  searchPizzeria: (data) => {
-    return axios.get(`${baseURL}/api/search/pizzeria`, { params: data })
   }
 
 };
