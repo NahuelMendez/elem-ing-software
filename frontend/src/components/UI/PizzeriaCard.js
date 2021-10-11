@@ -4,7 +4,7 @@ import imgGeneric from "../../assets/generic-img.jpg"
 const PizzeriaCard = ({ name }) => {
 
   return (
-    <Link style={{color: "black", textDecoration: "none"}} className="card w-1/6">
+    <Link to={"/pizzeria/" + name} style={{color: "black", textDecoration: "none"}} className="card w-1/6">
       <div className="w-full">
         <img src={imgGeneric} alt="" className="pizzeria-img"></img>
       </div>

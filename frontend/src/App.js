@@ -8,6 +8,7 @@ import MainView from "./components/MainView";
 import Profile from "./components/Profile";
 import RegisterView from "./components/Register";
 import SearchResult from "./components/SearchResult";
+import PizzeriaView from "./components/PizzeriaView/PizzeriaView";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
       <Route path="/menu" component={MyMenu} />
       <Route path="/register" component={RegisterView}/>
       <Route path="/busquedas" component={SearchResult}/>
+      <Route path="/pizzeria/:pizzeriaName" component={PizzeriaView}/>
     </Router>
   );
 }

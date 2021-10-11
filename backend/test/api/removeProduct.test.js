@@ -1,14 +1,14 @@
 const request = require('supertest')
 const {createApp} = require('../../src/api/app')
 
-const {BAD_REQUEST, OK, NOT_FOUND} = require("../../src/api/statusCode")
+const {OK, NOT_FOUND} = require("../../src/api/statusCode")
 const testObjects = require('../testObjects')
 
-const { bancheroRegistrationData, guerrinRegistrationData } = testObjects.pizzeriasRegistrationData
-const { mozzarella, bacon } = testObjects.productsData
+const { bancheroRegistrationData} = testObjects.pizzeriasRegistrationData
+const { mozzarella} = testObjects.productsData
 
 const {
-    registerPizzeria,
+    registerUser,
     addProduct,
     deleteProduct,
     getMenu,
@@ -23,7 +23,7 @@ describe('Api remove product from menu', () => {
     })
 
     it(`given a registered pizzeria when a product is removed from it's menu the product is no longer on it's menu`, async () => {
-        await registerPizzeria(requester, bancheroRegistrationData)
+        await registerUser(requester, bancheroRegistrationData)
         const responseLogin = await login(requester, bancheroRegistrationData)
         const token = responseLogin.get('Authorization')
         await addProduct(requester, bancheroRegistrationData, mozzarella, token)
@@ -35,7 +35,7 @@ describe('Api remove product from menu', () => {
     })
 
     it(`given a registered pizzeria when a product is removed from it's menu the response has the removed product name`, async () => {
-        await registerPizzeria(requester, bancheroRegistrationData)
+        await registerUser(requester, bancheroRegistrationData)
         const responseLogin = await login(requester, bancheroRegistrationData)
         const token = responseLogin.get('Authorization')
         await addProduct(requester, bancheroRegistrationData, mozzarella, token)
@@ -47,7 +47,7 @@ describe('Api remove product from menu', () => {
     })
 
     it(`given a registered pizzeria when it ask to remove a product missing from it's menu it fails`, async () => {
-        await registerPizzeria(requester, bancheroRegistrationData)
+        await registerUser(requester, bancheroRegistrationData)
         const responseLogin = await login(requester, bancheroRegistrationData)
         const token = responseLogin.get('Authorization')
         await addProduct(requester, bancheroRegistrationData, mozzarella, token)

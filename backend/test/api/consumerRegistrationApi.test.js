@@ -1,5 +1,4 @@
 const request = require('supertest')
-const {registerPath} = require("../../src/api/path")
 const {createApp} = require('../../src/api/app')
 const {CREATED, BAD_REQUEST} = require("../../src/api/statusCode")
 
@@ -7,6 +6,8 @@ const {
     kentRegistrationData,
     martinRegistrationData
 } = require('../testObjects').consumersRegistrationData
+
+const { registerUser } = require('../helpers/apiHelperFunctions')
 
 describe('Api consumer registration', () => {
     let requester
@@ -16,7 +17,7 @@ describe('Api consumer registration', () => {
     })
 
     it('can register a new consumer with valid registration data', async () => {
-        const response = await requester.post(registerPath).send({...kentRegistrationData, rol: 'consumer'})
+        const response = await registerUser(requester, kentRegistrationData)
 
         expect(response.status).toBe(CREATED)
         expect(response.body).toEqual({
@@ -26,14 +27,14 @@ describe('Api consumer registration', () => {
     })
 
     it('cannot register a new consumer with a repeated email', async () => {
-        await requester.post(registerPath).send({...kentRegistrationData, rol: 'consumer'})
+        await registerUser(requester, kentRegistrationData)
 
         const consumerDataWithRepeatedName = {
             ...martinRegistrationData,
             email: kentRegistrationData.email
         }
 
-        const response = await requester.post(registerPath).send({...consumerDataWithRepeatedName, rol: 'consumer'})
+        const response = await registerUser(requester, consumerDataWithRepeatedName)
 
         expect(response.status).toBe(BAD_REQUEST)
         expect(response.body).toEqual({
@@ -42,8 +43,7 @@ describe('Api consumer registration', () => {
     })
 
     it('cannot register a new consumer with an empty name', async () => {
-        const response = await requester.post(registerPath).send({...martinRegistrationData, name: '', rol: 'consumer'})
-
+        const response = await registerUser(requester, {...martinRegistrationData, name: ''})
         expect(response.status).toBe(BAD_REQUEST)
         expect(response.body).toEqual({
             error: '"name" is not allowed to be empty'
@@ -51,7 +51,7 @@ describe('Api consumer registration', () => {
     })
 
     it('cannot register a new consumer if the name is not of type string', async () => {
-        const response = await requester.post(registerPath).send({...kentRegistrationData, name: 123, rol: 'consumer'})
+        const response = await registerUser(requester, {...kentRegistrationData, name: 123})
 
         expect(response.status).toBe(BAD_REQUEST)
         expect(response.body).toEqual({
@@ -60,7 +60,7 @@ describe('Api consumer registration', () => {
     })
 
     it('cannot register a new consumer if the email is not of type string', async () => {
-        const response = await requester.post(registerPath).send({...kentRegistrationData, email: 123, rol: 'consumer'})
+        const response = await registerUser(requester, {...kentRegistrationData, email: 123})
 
         expect(response.status).toBe(BAD_REQUEST)
         expect(response.body).toEqual({
@@ -69,7 +69,7 @@ describe('Api consumer registration', () => {
     })
 
     it('cannot register a new consumer if the password is not of type string', async () => {
-        const response = await requester.post(registerPath).send({...kentRegistrationData, password: 123, rol: 'consumer'})
+        const response = await registerUser(requester, {...kentRegistrationData, password: 123})
 
         expect(response.status).toBe(BAD_REQUEST)
         expect(response.body).toEqual({
@@ -78,12 +78,7 @@ describe('Api consumer registration', () => {
     })
 
     it('cannot register a new consumer if a password is not provided', async () => {
-        const response = await requester.post(registerPath).send({
-            name: 'Kent Beck',
-            telephone: 1112345678,
-            email: 'kent@gmail.com',
-            rol: 'consumer'
-        })
+        const response = await registerUser(requester,{...kentRegistrationData, password: undefined})
 
         expect(response.status).toBe(BAD_REQUEST)
         expect(response.body).toEqual({
@@ -92,12 +87,7 @@ describe('Api consumer registration', () => {
     })
 
     it('cannot register a new consumer if a email is not provided', async () => {
-        const response = await requester.post(registerPath).send({
-            name: 'Kent Beck',
-            telephone: 1112345678,
-            password: 'kent@gmail.com',
-            rol: 'consumer'
-        })
+        const response = await registerUser(requester,{...kentRegistrationData, email: undefined})
 
         expect(response.status).toBe(BAD_REQUEST)
         expect(response.body).toEqual({
@@ -106,12 +96,7 @@ describe('Api consumer registration', () => {
     })
 
     it('cannot register a new consumer if a name is not provided', async () => {
-        const response = await requester.post(registerPath).send({
-            telephone: 1112345678,
-            email: 'kent@gmail.com',
-            password: 'password',
-            rol: 'consumer'
-        })
+        const response = await registerUser(requester,{...kentRegistrationData, name: undefined})
 
         expect(response.status).toBe(BAD_REQUEST)
         expect(response.body).toEqual({
@@ -120,12 +105,7 @@ describe('Api consumer registration', () => {
     })
 
     it('cannot register a new consumer if a telephone is not provided', async () => {
-        const response = await requester.post(registerPath).send({
-            name: 'Kent Beck',
-            email: 'kent@gmail.com',
-            password: 'password',
-            rol: 'consumer'
-        })
+        const response = await registerUser(requester,{...kentRegistrationData, telephone: undefined})
 
         expect(response.status).toBe(BAD_REQUEST)
         expect(response.body).toEqual({

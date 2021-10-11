@@ -6,7 +6,13 @@ function createPizzeriaRegistrationData({name, telephone = 1112345678, email, pa
     if (!email) email = `${name}@d.c`
     if (!confirmPassword) confirmPassword = password
 
-    return ({ name, telephone, email, password})
+    return ({ name, telephone, email, password, confirmPassword })
+}
+
+function createPizzeriaRegistrationAPIData(properties) { // TODO: solucionar este parche. El front necesita "confirmPassword", pero la API se rompe si lo tiene
+    const registrationData = createPizzeriaRegistrationData(properties)
+    registrationData.confirmPassword = undefined
+    return registrationData
 }
 
 const createConsumerRegistrationData = createPizzeriaRegistrationData
@@ -74,6 +80,7 @@ module.exports = {
     createPizzeriaRegistrationData,
     createConsumerRegistrationData,
     createPizzaData,
+    createPizzeriaRegistrationAPIData,
     pizzeriasRegistrationData,
     consumersRegistrationData,
     productsData
