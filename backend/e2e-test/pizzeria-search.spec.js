@@ -35,7 +35,7 @@ describe('Pizzeria search by partial name', () => {
         await page.waitForSelector(searchButtonSelector)
     })
 
-    it('when a user on his home page clicks the search icon the browser is redirected to the search path', async () => {
+    it('when a user on his home page clicks the search icon after filling the search input the browser is redirected to the search path', async () => {
         const consumerData = createConsumerRegistrationData({})
         await registerAndLoginConsumer(page, consumerData)
 
