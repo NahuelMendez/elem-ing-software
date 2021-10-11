@@ -61,3 +61,26 @@ code {
   width: 65px;
   height: 65px;
 }
+
+.piz-info-container {
+  align-items: center;
+  display: grid;
+  grid-template-columns: 20% 60% 20%;
+}
+
+.piz-info-body-container {
+  display: flex;
+  grid-column: 2/3;
+  border: solid 1px grey;
+}
+
+.piz-info-body {
+  display: flex;
+  align-self: center;
+}
+
+.pizz-info-dtl {
+  margin-top: 15px;
+  font-size: larger;
+  text-align: justify;
+}
