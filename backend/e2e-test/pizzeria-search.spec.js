@@ -14,6 +14,9 @@ jest.setTimeout(10000)
 const searchInputSelector = 'form > input[name="search-input"]'
 const searchButtonSelector = 'form > img[alt="search-icon"]'
 
+const pizzeriaCardContainerSelector = '#root > div > .flex-wrap'
+const pizzeriaCardSelector = '#root > div > .flex-wrap > a'
+
 describe('Pizzeria search by partial name', () => {
     let browser
     let page
@@ -78,10 +81,10 @@ describe('Pizzeria search by partial name', () => {
         await page.type(searchInputSelector, 'ke')
         await page.click(searchButtonSelector)
 
-        await page.waitForSelector('#root > div > .flex-wrap')
+        await page.waitForSelector(pizzeriaCardContainerSelector)
 
         const result = await page.$$eval(
-            '#root > div > .flex-wrap > a',
+            pizzeriaCardSelector,
             elements => elements.map(
                 element => ({
                     imageURL: element.querySelector('div > img.pizzeria-img').src,
@@ -111,10 +114,9 @@ describe('Pizzeria search by partial name', () => {
 
         await page.type(searchInputSelector, pizzeriaRegistrationData.name)
         await page.click(searchButtonSelector)
+        await page.waitForSelector(pizzeriaCardContainerSelector)
 
-        await page.waitForSelector('#root > div > .flex-wrap')
-
-        await clickAndWait(page, '#root > div > .flex-wrap > a')
+        await clickAndWait(page, pizzeriaCardSelector)
 
         expectPath(page, '/pizzeria/' + pizzeriaRegistrationData.name)
     })
