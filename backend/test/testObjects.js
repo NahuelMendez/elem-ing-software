@@ -3,7 +3,7 @@ const generatePizzeriaName = () => `P${Date.now()}`
 
 function createPizzeriaRegistrationData({name, telephone = 1112345678, email, password = 'pass123', confirmPassword}) {
     if (!name) name = generatePizzeriaName()
-    if (!email) email = `${name}@d.c`
+    if (!email) email = `${name.replace(" ", "_")}@d.c`
     if (!confirmPassword) confirmPassword = password
 
     return ({ name, telephone, email, password, confirmPassword })

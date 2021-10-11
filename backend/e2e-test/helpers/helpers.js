@@ -59,6 +59,13 @@ async function registerAndLoginPizzeria(page, pizzeriaRegistrationData) {
     await submitLogin(page, pizzeriaRegistrationData)
 }
 
+async function registerAndLoginConsumer(page, consumerRegistrationData) {
+    await goto(page, '/register')
+    await chooseToRegisterAsConsumer(page)
+    await submitConsumerRegistration(page, consumerRegistrationData)
+    await submitLogin(page, consumerRegistrationData)
+}
+
 async function logoutPizzeria(page) {
     await clickHomeCircularThing(page)
     await page.waitForSelector('[name="logout-button"]')
@@ -123,6 +130,7 @@ module.exports = {
     clickHomeCircularThing,
     registerPizzeria,
     registerAndLoginPizzeria,
+    registerAndLoginConsumer,
     fillPizzeriaRegistrationForm,
     fillConsumerRegistrationForm,
     logoutPizzeria,
