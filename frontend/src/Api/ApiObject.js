@@ -5,6 +5,14 @@ const baseURL =
     ? 'http://localhost:8080'
     : 'https://g1-eis-backend.herokuapp.com'
 
+
+const createHeadesrWithToken = () => ({
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': localStorage.getItem("token")
+  }
+})
+
 const api = {
 
   register: (data) => {
@@ -16,12 +24,24 @@ const api = {
   },
 
   addProduct: (data, pizzeriaName) => {
-    return axios.put(`${baseURL}/api/pizzeria/${pizzeriaName}/menu`, data)
+    return axios.put(`${baseURL}/api/pizzeria/${pizzeriaName}/menu`, data, createHeadesrWithToken())
   },
 
   getMenu: (pizzeriaName) => {
     return axios.get(`${baseURL}/api/pizzeria/${pizzeriaName}/menu`)
   },
+
+  deleteProduct: (pizzeriaName, productName) => {
+    return axios.delete(`${baseURL}/api/pizzeria/${pizzeriaName}/menu/${productName}`);
+  },
+
+  searchPizzeria: (data) => {
+    return axios.get(`${baseURL}/api/search/pizzeria`, { params: data })
+  },
+  
+  getPizzeria: (pizzeriaName) => {
+    return axios.get(`${baseURL}/api/pizzeria/${pizzeriaName}`);
+  }
 
 };
 

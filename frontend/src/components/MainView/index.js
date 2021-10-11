@@ -2,10 +2,12 @@ import NavBar from "../Navbar"
 import MenuContainer from "../MenuView/MenuContainer";
 
 const MainView = () => {
+  const role = localStorage.getItem("role")
+
   return (
     <div>
       <NavBar />
-      <MenuContainer/>
+      {role === "pizzeria" && <MenuContainer />}
     </div>
   )
 }

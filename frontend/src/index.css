@@ -26,13 +26,13 @@ code {
 }
 
 .card-img-cont {
-  maxi-width: 250px;
-  max-height: 200px;
+  max-width: 250px;
+  max-height: 200px; 
   min-height: 200px;
 }
 
 .product-img {
-  maxi-width: 250px;
+  max-width: 250px;
   max-height: 200px;
   min-height: 200px;
 }
@@ -40,6 +40,9 @@ code {
 .card-container {
   width: 250px;
   height: 400px;
+}
+
+.card{
   -webkit-box-shadow: 10px 10px 18px 3px rgba(0,0,0,0.22);
   -moz-box-shadow: 10px 10px 18px 3px rgba(0,0,0,0.22);
   box-shadow: 10px 10px 18px 3px rgba(0,0,0,0.22);
@@ -47,11 +50,44 @@ code {
   margin-right: 20px;
 }
 
-.card-container:hover{
+.card:hover{
   transition: all 0.3s;
   transform: scale(1.05);
 }
 
-.card-container:active{
+.card:active{
   transform: scale(0.95);
+}
+
+.delete-product-btn {
+  align-self: flex-end;
+  width: 65px;
+  height: 65px;
+}
+
+.piz-info-container {
+  align-items: center;
+  display: grid;
+  grid-template-columns: 20% 60% 20%;
+}
+
+.piz-info-body-container {
+  display: flex;
+  grid-column: 2/3;
+  border: solid 1px grey;
+}
+
+.piz-info-body {
+  display: flex;
+  align-self: center;
+}
+
+.pizz-info-dtl {
+  margin-top: 15px;
+  font-size: larger;
+  text-align: justify;
+}
+
+.error-piz-nf {
+  text-align: center;
 }

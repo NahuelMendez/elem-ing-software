@@ -1,12 +1,12 @@
 const request = require('supertest')
 const {createApp} = require('../../src/api/app')
-const {registerPath} = require("../../src/api/path")
 const { createMenuPath } = require('../helpers/pathFactory')
 const {OK, NOT_FOUND} = require("../../src/api/statusCode")
 const testObjects = require('../testObjects')
 
 const {bancheroRegistrationData, guerrinRegistrationData} = testObjects.pizzeriasRegistrationData
-const { mozzarella, bacon } = testObjects.productsData
+const { mozzarella} = testObjects.productsData
+const { registerUser, getMenu, loginToken } = require('../helpers/apiHelperFunctions')
 
 describe('Api menu recovery', () => {
     let requester
@@ -16,19 +16,21 @@ describe('Api menu recovery', () => {
     })
 
     it('get the empty menu of a registered pizzeria', async () => {
-        await requester.post(registerPath).send({...bancheroRegistrationData, rol: 'pizzeria'})
+        await registerUser(requester, bancheroRegistrationData)
 
-        const response = await requester.get(createMenuPath(bancheroRegistrationData.name))
+        const response = await getMenu(requester, bancheroRegistrationData)
 
         expect(response.status).toBe(OK)
         expect(response.body).toEqual([])
     })
 
     it('get the menu of a registered pizzeria with added products', async () => {
-        await requester.post(registerPath).send({...bancheroRegistrationData, rol: 'pizzeria'})
+        const token = await loginToken(requester, bancheroRegistrationData)
+        
         await requester
             .put(createMenuPath(bancheroRegistrationData.name))
             .send(mozzarella)
+            .set('Authorization', token)
 
         const response = await requester.get(createMenuPath(bancheroRegistrationData.name))
 
@@ -37,7 +39,7 @@ describe('Api menu recovery', () => {
     })
 
     it('get the menu of a unregistered pizzeria', async () => {
-        const response = await requester.get(createMenuPath(guerrinRegistrationData.name))
+        const response = await getMenu(requester, guerrinRegistrationData)
 
         expect(response.status).toBe(NOT_FOUND)
         expect(response.body).toEqual({

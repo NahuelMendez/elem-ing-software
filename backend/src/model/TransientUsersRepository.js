@@ -21,9 +21,13 @@ class TransientUsersRepository {
     }
 
     async findPizzeriaByName(pizzeriaName) {
-        const foundPizzeria = this.users.find(user => user.getName() === pizzeriaName)
+        const foundPizzeria = this.users.find(user => user.isNamed(pizzeriaName) && user.isPizzeria())
         if (!foundPizzeria) throw new ModelException(`Pizzeria ${pizzeriaName} not found`)
         return foundPizzeria
+    }
+
+    async findPizzeriasByPartialName(pizzeriaName) {
+        return this.users.filter(user => user.getName().match(new RegExp(pizzeriaName, 'i')) && user.isPizzeria())
     }
 
     async save(newUser) {

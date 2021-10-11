@@ -3,10 +3,16 @@ const generatePizzeriaName = () => `P${Date.now()}`
 
 function createPizzeriaRegistrationData({name, telephone = 1112345678, email, password = 'pass123', confirmPassword}) {
     if (!name) name = generatePizzeriaName()
-    if (!email) email = `${name}@d.c`
+    if (!email) email = `${name.replace(" ", "_")}@d.c`
     if (!confirmPassword) confirmPassword = password
 
     return ({ name, telephone, email, password, confirmPassword })
+}
+
+function createPizzeriaRegistrationAPIData(properties) { // TODO: solucionar este parche. El front necesita "confirmPassword", pero la API se rompe si lo tiene
+    const registrationData = createPizzeriaRegistrationData(properties)
+    registrationData.confirmPassword = undefined
+    return registrationData
 }
 
 const createConsumerRegistrationData = createPizzeriaRegistrationData
@@ -24,14 +30,16 @@ const pizzeriasRegistrationData = {
         name: 'Banchero',
         telephone: 1112345678,
         email: 'banchero@gmail.com',
-        password: 'password'
+        password: 'password',
+        rol: 'pizzeria'
     },
 
     guerrinRegistrationData: {
         name: 'Guerrin',
         telephone: 1112345678,
         email: 'guerrin@gmail.com',
-        password: 'password'
+        password: 'password',
+        rol: 'pizzeria'
     }
 }
 
@@ -72,6 +80,7 @@ module.exports = {
     createPizzeriaRegistrationData,
     createConsumerRegistrationData,
     createPizzaData,
+    createPizzeriaRegistrationAPIData,
     pizzeriasRegistrationData,
     consumersRegistrationData,
     productsData
