@@ -4,14 +4,14 @@ import { useParams } from "react-router";
 
 const PizzeriaView = () => {
 
-    const { pizzeriaName } = useParams();
+  const { pizzeriaName } = useParams();
 
-    return (
-       <div>
-            <NavBar/>
-            <PizzeriaInfo pizzeriaName={pizzeriaName}/>
-       </div>
-    );
+  return (
+    <div>
+      <NavBar />
+      <PizzeriaInfo pizzeriaName={pizzeriaName} />
+    </div>
+  );
 
 }
 

@@ -35,6 +35,10 @@ const api = {
     return axios.delete(`${baseURL}/api/pizzeria/${pizzeriaName}/menu/${productName}`);
   },
 
+  searchPizzeria: (data) => {
+    return axios.get(`${baseURL}/api/search/pizzeria`, { params: data })
+  },
+  
   getPizzeria: (pizzeriaName) => {
     return axios.get(`${baseURL}/api/pizzeria/${pizzeriaName}`);
   }
