@@ -1,9 +1,10 @@
 const puppeteer = require('puppeteer')
 const {
-    goto,
     registerPizzeria,
     registerAndLoginConsumer,
-    expectTextContent, clickAndWait, expectPath
+    expectTextContent,
+    clickAndWait,
+    expectPath
 } = require('./helpers/helpers')
 
 const { createPizzeriaRegistrationData, createConsumerRegistrationData } = require('../test/testObjects')
@@ -13,7 +14,7 @@ jest.setTimeout(10000)
 const searchInputSelector = 'form > input[name="search-input"]'
 const searchButtonSelector = 'form > img[alt="search-icon"]'
 
-describe('Pizzeria data visualization', () => {
+describe('Pizzeria search by partial name', () => {
     let browser
     let page
 
@@ -41,6 +42,16 @@ describe('Pizzeria data visualization', () => {
         await clickAndWait(page, searchButtonSelector)
 
         expectPath(page, '/busquedas')
+    })
+
+    it('when the entered partial name has no match with any pizzeria name, the page should have a message saying that there are no matches', async () => {
+        const consumerData = createConsumerRegistrationData({})
+        await registerAndLoginConsumer(page, consumerData)
+
+        await page.type(searchInputSelector, 'name with no matches')
+        await clickAndWait(page, searchButtonSelector)
+
+        await expectTextContent(page, "p", 'No se encontraron pizzerías que coincidan')
     })
 
 })
