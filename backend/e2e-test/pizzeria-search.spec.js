@@ -102,5 +102,22 @@ describe('Pizzeria search by partial name', () => {
         ])
     })
 
+    it('when a user enter a partial name that has some matches with pizzerias names, the page should have a card for each matching pizzeria containing its name and image', async () => {
+        const pizzeriaRegistrationData = createPizzeriaRegistrationData({})
+        await registerPizzeria(page, pizzeriaRegistrationData)
+
+        const consumerData = createConsumerRegistrationData({})
+        await registerAndLoginConsumer(page, consumerData)
+
+        await page.type(searchInputSelector, pizzeriaRegistrationData.name)
+        await page.click(searchButtonSelector)
+
+        await page.waitForSelector('#root > div > .flex-wrap')
+
+        await clickAndWait(page, '#root > div > .flex-wrap > a')
+
+        expectPath(page, '/pizzeria/' + pizzeriaRegistrationData.name)
+    })
+
 
 })
