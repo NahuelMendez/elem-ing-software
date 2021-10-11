@@ -45,6 +45,15 @@ describe('Pizzeria search by partial name', () => {
         expectPath(page, '/busquedas')
     })
 
+    it('when a user on his home page clicks the search icon without filling the search input nothing happens', async () => {
+        const consumerData = createConsumerRegistrationData({})
+        await registerAndLoginConsumer(page, consumerData)
+
+        await page.click(searchButtonSelector)
+
+        expectPath(page, '/home')
+    })
+
     it('when the entered partial name has no match with any pizzeria name, the page should have a message saying that there are no matches', async () => {
         const consumerData = createConsumerRegistrationData({})
         await registerAndLoginConsumer(page, consumerData)
