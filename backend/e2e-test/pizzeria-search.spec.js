@@ -3,7 +3,7 @@ const {
     goto,
     registerPizzeria,
     registerAndLoginConsumer,
-    expectTextContent
+    expectTextContent, clickAndWait, expectPath
 } = require('./helpers/helpers')
 
 const { createPizzeriaRegistrationData, createConsumerRegistrationData } = require('../test/testObjects')
@@ -32,6 +32,15 @@ describe('Pizzeria data visualization', () => {
 
         await page.waitForSelector(searchInputSelector)
         await page.waitForSelector(searchButtonSelector)
+    })
+
+    it('when a user on his home page clicks the search icon the browser is redirected to the search path', async () => {
+        const consumerData = createConsumerRegistrationData({})
+        await registerAndLoginConsumer(page, consumerData)
+
+        await clickAndWait(page, searchButtonSelector)
+
+        expectPath(page, '/busquedas')
     })
 
 })
