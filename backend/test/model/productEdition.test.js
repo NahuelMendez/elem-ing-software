@@ -8,7 +8,7 @@ const {
     guerrinRegistrationData
 } = require('../testObjects').pizzeriasRegistrationData
 
-describe('Pizzeria registration', () => {
+describe(`Edit product of pizzeria's menu`, () => {
     let userService
     let menuService
 
