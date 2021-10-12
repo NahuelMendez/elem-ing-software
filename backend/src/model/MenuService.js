@@ -26,10 +26,10 @@ class MenuService {
         await this.usersRepository.update(pizzeria)
     }
 
-    async updateProduct({ pizzeriaName, productToUpdateName, referenceProduct }) {
+    async updateProduct({ pizzeriaName, nameOfProductToUpdate, referenceProduct }) {
         const pizzeria = await this.usersRepository.findPizzeriaByName(pizzeriaName)
 
-        pizzeria.updateProductNamed(productToUpdateName, referenceProduct)
+        pizzeria.updateProductNamed(nameOfProductToUpdate, referenceProduct)
 
         await this.usersRepository.update(pizzeria)
     }

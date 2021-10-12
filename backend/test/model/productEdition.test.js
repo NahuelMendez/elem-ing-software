@@ -30,7 +30,7 @@ describe('Pizzeria registration', () => {
 
         await menuService.updateProduct({
             pizzeriaName: bancheroRegistrationData.name,
-            productToUpdateName: pepperoniPizza.name,
+            nameOfProductToUpdate: pepperoniPizza.name,
             referenceProduct: meatPizza
         })
 
@@ -47,7 +47,7 @@ describe('Pizzeria registration', () => {
         await expect(
             menuService.updateProduct({
                 pizzeriaName: bancheroRegistrationData.name,
-                productToUpdateName: pepperoniPizza.name,
+                nameOfProductToUpdate: pepperoniPizza.name,
                 referenceProduct: meatPizza
             })
         ).rejects.toThrow(`Pizzeria ${bancheroRegistrationData.name}`)
@@ -61,7 +61,7 @@ describe('Pizzeria registration', () => {
         await expect(
             menuService.updateProduct({
                 pizzeriaName: bancheroRegistrationData.name,
-                productToUpdateName: missingProductName,
+                nameOfProductToUpdate: missingProductName,
                 referenceProduct: meatPizza
             })
         ).rejects.toThrow(`Product ${missingProductName} not found`)

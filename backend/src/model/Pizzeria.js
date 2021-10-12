@@ -27,8 +27,8 @@ class Pizzeria extends User {
         this.products.splice(index, 1)
     }
 
-    updateProductNamed(productToUpdateName, referenceProduct) {
-        this.removeProductNamed(productToUpdateName)
+    updateProductNamed(nameOfProductToUpdate, referenceProduct) {
+        this.removeProductNamed(nameOfProductToUpdate)
         this.addToMenu(referenceProduct)
     }
 
