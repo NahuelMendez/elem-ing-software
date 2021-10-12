@@ -37,6 +37,24 @@ describe('Pizzeria registration', () => {
         await expectHasMenuWith([meatPizza], bancheroRegistrationData.name)
     })
 
+    it('a product from the menu of a registered pizzeria can be updated with a reference product with the same name', async () => {
+        const anotherPepperoniPizza = productFactory.createProductWith({
+            name: pepperoniPizza.name,
+            description: pepperoniPizza.description + '!!!'
+        })
+
+        await userService.registerPizzeria(bancheroRegistrationData)
+        await menuService.addToMenuOf(bancheroRegistrationData.name, pepperoniPizza)
+
+        await menuService.updateProduct({
+            pizzeriaName: bancheroRegistrationData.name,
+            nameOfProductToUpdate: pepperoniPizza.name,
+            referenceProduct: anotherPepperoniPizza
+        })
+
+        await expectHasMenuWith([anotherPepperoniPizza], bancheroRegistrationData.name)
+    })
+
     it('cannot update a product for a not registered pizzeria', async () => {
         await expect(
             menuService.updateProduct({
