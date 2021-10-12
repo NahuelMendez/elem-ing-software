@@ -53,6 +53,18 @@ describe('Pizzeria registration', () => {
         ).rejects.toThrow(`Pizzeria ${bancheroRegistrationData.name}`)
     })
 
+    it('cannot update a product for a registered pizzeria with a product name not mathing any product name in the menu', async () => {
+        await userService.registerPizzeria(bancheroRegistrationData)
+        await menuService.addToMenuOf(bancheroRegistrationData.name, pepperoniPizza)
 
+        const missingProductName = 'MISSING PRODUCT NAME'
+        await expect(
+            menuService.updateProduct({
+                pizzeriaName: bancheroRegistrationData.name,
+                productToUpdateName: missingProductName,
+                referenceProduct: meatPizza
+            })
+        ).rejects.toThrow(`Product ${missingProductName} not found`)
+    })
 
 })
