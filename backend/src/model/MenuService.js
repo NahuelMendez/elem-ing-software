@@ -26,6 +26,14 @@ class MenuService {
         await this.usersRepository.update(pizzeria)
     }
 
+    async updateProduct({ pizzeriaName, productToUpdateName, referenceProduct }) {
+        const pizzeria = await this.usersRepository.findPizzeriaByName(pizzeriaName)
+
+        pizzeria.updateProductNamed(productToUpdateName, referenceProduct)
+
+        await this.usersRepository.update(pizzeria)
+    }
+
 }
 
 module.exports = { MenuService }
