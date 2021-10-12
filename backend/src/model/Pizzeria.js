@@ -27,9 +27,21 @@ class Pizzeria extends User {
         this.products.splice(index, 1)
     }
 
+    updateProductNamed(nameOfProductToUpdate, referenceProduct) {
+        this.assertCanBeUpdateWith(nameOfProductToUpdate, referenceProduct)
+
+        this.removeProductNamed(nameOfProductToUpdate)
+        this.addToMenu(referenceProduct)
+    }
+
     assertHasNoProductNamedAs(productToCheck) {
         if (this.products.some(product => product.getName() === productToCheck.getName()))
             throw new ModelException('A menu cannot have repeated product names')
+    }
+
+    assertCanBeUpdateWith(nameOfProductToUpdate, referenceProduct) {
+        if (!referenceProduct.isNamed(nameOfProductToUpdate))
+            this.assertHasNoProductNamedAs(referenceProduct)
     }
 }
 
