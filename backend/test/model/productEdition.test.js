@@ -34,13 +34,7 @@ describe('Pizzeria registration', () => {
             referenceProduct: meatPizza
         })
 
-        const products = await menuService.productsInMenuOf(bancheroRegistrationData.name)
-
-        expect(products).toHaveLength(1)
-        expect(products[0].getName()).toEqual(meatPizza.getName())
-        expect(products[0].getDescription()).toEqual(meatPizza.getDescription())
-        expect(products[0].getPrice()).toEqual(meatPizza.getPrice())
-        expect(products[0].getImageURL()).toEqual(meatPizza.getImageURL())
+        await expectHasMenuWith([meatPizza], bancheroRegistrationData.name)
     })
 
     it('cannot update a product for a not registered pizzeria', async () => {
@@ -70,17 +64,7 @@ describe('Pizzeria registration', () => {
 
         const products = await menuService.productsInMenuOf(bancheroRegistrationData.name)
 
-        expect(products).toHaveLength(2)
-
-        expect(products[0].getName()).toEqual(pepperoniPizza.getName())
-        expect(products[0].getDescription()).toEqual(pepperoniPizza.getDescription())
-        expect(products[0].getPrice()).toEqual(pepperoniPizza.getPrice())
-        expect(products[0].getImageURL()).toEqual(pepperoniPizza.getImageURL())
-
-        expect(products[1].getName()).toEqual(meatPizza.getName())
-        expect(products[1].getDescription()).toEqual(meatPizza.getDescription())
-        expect(products[1].getPrice()).toEqual(meatPizza.getPrice())
-        expect(products[1].getImageURL()).toEqual(meatPizza.getImageURL())
+        await expectHasMenuWith([pepperoniPizza, meatPizza], bancheroRegistrationData.name)
     })
 
     it('cannot update a product for a registered pizzeria with a product name not mathing any product name in the menu', async () => {
@@ -96,5 +80,14 @@ describe('Pizzeria registration', () => {
             })
         ).rejects.toThrow(`Product ${missingProductName} not found`)
     })
+
+    async function expectHasMenuWith(expectedProducts, pizzeriaName) {
+        const foundProducts = await menuService.productsInMenuOf(pizzeriaName)
+
+        expect(foundProducts).toHaveLength(expectedProducts.length)
+        expectedProducts.forEach(expectedProduct =>
+            expect(foundProducts).toContain(expectedProduct)
+        )
+    }
 
 })
