@@ -43,6 +43,16 @@ describe('Pizzeria registration', () => {
         expect(products[0].getImageURL()).toEqual(meatPizza.getImageURL())
     })
 
+    it('cannot update a product for a not registered pizzeria', async () => {
+        await expect(
+            menuService.updateProduct({
+                pizzeriaName: bancheroRegistrationData.name,
+                productToUpdateName: pepperoniPizza.name,
+                referenceProduct: meatPizza
+            })
+        ).rejects.toThrow(`Pizzeria ${bancheroRegistrationData.name}`)
+    })
+
 
 
 })
