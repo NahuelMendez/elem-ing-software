@@ -53,6 +53,36 @@ describe('Pizzeria registration', () => {
         ).rejects.toThrow(`Pizzeria ${bancheroRegistrationData.name}`)
     })
 
+    it('cannot update the name of a product in a menu when another product in that menu has that name', async () => {
+        await userService.registerPizzeria(bancheroRegistrationData)
+        await menuService.addToMenuOf(bancheroRegistrationData.name, pepperoniPizza)
+        await menuService.addToMenuOf(bancheroRegistrationData.name, meatPizza)
+
+        const anotherMeatPizza = productFactory.createMeatPizza()
+
+        await expect(
+            menuService.updateProduct({
+                pizzeriaName: bancheroRegistrationData.name,
+                nameOfProductToUpdate: pepperoniPizza.name,
+                referenceProduct: anotherMeatPizza
+            })
+        ).rejects.toThrow(`A menu cannot have repeated product names`)
+
+        const products = await menuService.productsInMenuOf(bancheroRegistrationData.name)
+
+        expect(products).toHaveLength(2)
+
+        expect(products[0].getName()).toEqual(pepperoniPizza.getName())
+        expect(products[0].getDescription()).toEqual(pepperoniPizza.getDescription())
+        expect(products[0].getPrice()).toEqual(pepperoniPizza.getPrice())
+        expect(products[0].getImageURL()).toEqual(pepperoniPizza.getImageURL())
+
+        expect(products[1].getName()).toEqual(meatPizza.getName())
+        expect(products[1].getDescription()).toEqual(meatPizza.getDescription())
+        expect(products[1].getPrice()).toEqual(meatPizza.getPrice())
+        expect(products[1].getImageURL()).toEqual(meatPizza.getImageURL())
+    })
+
     it('cannot update a product for a registered pizzeria with a product name not mathing any product name in the menu', async () => {
         await userService.registerPizzeria(bancheroRegistrationData)
         await menuService.addToMenuOf(bancheroRegistrationData.name, pepperoniPizza)

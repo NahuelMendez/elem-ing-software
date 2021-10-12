@@ -28,6 +28,8 @@ class Pizzeria extends User {
     }
 
     updateProductNamed(nameOfProductToUpdate, referenceProduct) {
+        this.assertHasNoProductNamedAs(referenceProduct)
+
         this.removeProductNamed(nameOfProductToUpdate)
         this.addToMenu(referenceProduct)
     }
