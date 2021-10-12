@@ -24,7 +24,7 @@ describe('Pizzeria registration', () => {
         meatPizza = productFactory.createMeatPizza()
     })
 
-    it('a product from the menu of a registered pizzeria can be updated with a reference product', async () => {
+    it('a product from the menu of a registered pizzeria can be updated with a reference product with a different name', async () => {
         await userService.registerPizzeria(bancheroRegistrationData)
         await menuService.addToMenuOf(bancheroRegistrationData.name, pepperoniPizza)
 
