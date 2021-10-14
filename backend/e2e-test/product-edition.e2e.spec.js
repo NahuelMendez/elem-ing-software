@@ -82,6 +82,32 @@ describe('Pizzeria product edition', () => {
         expect(results).toEqual([])
     })
 
+    it('given a modal form with edited fields when it is closed with the close button then no changes are made to the product', async () => {
+        const pizzeriaData = createPizzeriaRegistrationData({})
+        const pizzaData = createPizzaData({})
+
+        await registerAsPizzeriaAndGoToMenu(page, pizzeriaData)
+        await addProduct(page, pizzaData)
+        await goto(page, '/home')
+
+        const originalProductCard = await page.$eval('.card-container', element => element.innerHTML)
+        
+        await page.waitForSelector(editProductButtonSelector)
+        await page.click(editProductButtonSelector)
+
+        await page.waitForSelector(editProductModalFormSelector)
+
+        await page.type(editProductFormNameSelector, 'aaa')
+        await page.type(editProductFormDescriptionSelector, 'bbbb')
+        await page.type(editProductFormPriceSelector, '9999')
+        await page.type(editProductFormImageURLSelector, 'http://change.com/image.jpg')
+
+        await page.click(modalCloseButton)
+
+        const currentProductCard = await page.$eval('.card-container', element => element.innerHTML)
+        expect(originalProductCard).toEqual(currentProductCard)
+    })
+
 })
 
 async function expectInputValue(page, inputSelector, expectedValue) {
