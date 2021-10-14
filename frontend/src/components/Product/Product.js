@@ -30,6 +30,7 @@ const Product = ({ name, description, price, imageURL, deleteProduct }) => {
       {
         showEditionForm &&
         <Modal
+          handleClose={() => setShowEditionForm(false)}
           title={"Editar producto"}
           body={
             <EditProductForm

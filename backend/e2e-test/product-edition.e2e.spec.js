@@ -17,6 +17,8 @@ const editProductFormDescriptionSelector = editProductModalFormSelector + ' inpu
 const editProductFormPriceSelector = editProductModalFormSelector + ' input[name="price"]'
 const editProductFormImageURLSelector = editProductModalFormSelector + ' input[name="imageURL"]'
 
+const modalCloseButton = '.pizzap-modal .pizzap-modal-close-btn'
+
 describe('Pizzeria product edition', () => {
     let browser
     let page
@@ -27,7 +29,7 @@ describe('Pizzeria product edition', () => {
     })
 
     afterEach(async () => {
-        //await browser.close()
+        await browser.close()
     })
 
     it(`a product card on the home page of a pizzeria should have an edition button`, async () => {
@@ -58,6 +60,26 @@ describe('Pizzeria product edition', () => {
         await expectInputValue(page, editProductFormDescriptionSelector, pizzaData.description)
         await expectInputValue(page, editProductFormPriceSelector, pizzaData.price)
         await expectInputValue(page, editProductFormImageURLSelector, pizzaData.imageURL)
+    })
+
+    it('when the close button of the modal edition form is clicked it is closed', async () => {
+        const pizzeriaData = createPizzeriaRegistrationData({})
+        const pizzaData = createPizzaData({})
+
+        await registerAsPizzeriaAndGoToMenu(page, pizzeriaData)
+        await addProduct(page, pizzaData)
+        await goto(page, '/home')
+        
+        await page.waitForSelector(editProductButtonSelector)
+        await page.click(editProductButtonSelector)
+
+        await page.waitForSelector(editProductModalFormSelector)
+
+        await page.click(modalCloseButton)
+
+
+        const results = await page.$$eval(editProductModalFormSelector, elements => elements)
+        expect(results).toEqual([])
     })
 
 })
