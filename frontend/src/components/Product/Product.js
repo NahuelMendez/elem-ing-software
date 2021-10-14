@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 
+import api from '../../Api/ApiObject'
+
 import Modal from '../Modal'
 
 import EditProductButton from './EditProductButton'
@@ -35,7 +37,16 @@ const Product = ({ name, description, price, imageURL, deleteProduct }) => {
           body={
             <EditProductForm
               product={{ name, description, price, imageURL, deleteProduct }}
-              handleSubmit={ editedProduct => {} }
+              handleSubmit={
+                editedProduct =>
+                  api
+                    .updateProduct(name, editedProduct)
+                    .then(() => window.location.reload())
+                    .catch(error => {
+                      console.log(error)
+                      alert(error)
+                    })
+              }
             />
           }
         />

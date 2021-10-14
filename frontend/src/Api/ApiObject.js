@@ -35,6 +35,11 @@ const api = {
     return axios.delete(`${baseURL}/api/pizzeria/${pizzeriaName}/menu/${productName}`);
   },
 
+  updateProduct: (nameOfProductToUpdate, productData) => {
+    const pizzeriaName = localStorage.getItem("username")
+    return axios.put(`${baseURL}/api/pizzeria/${pizzeriaName}/menu/${nameOfProductToUpdate}`, productData, createHeadesrWithToken());
+  },
+
   searchPizzeria: (data) => {
     return axios.get(`${baseURL}/api/search/pizzeria`, { params: data })
   },

@@ -17,6 +17,8 @@ const editProductFormDescriptionSelector = editProductModalFormSelector + ' inpu
 const editProductFormPriceSelector = editProductModalFormSelector + ' input[name="price"]'
 const editProductFormImageURLSelector = editProductModalFormSelector + ' input[name="imageURL"]'
 
+const editProductFormConfirmButtonSelector = editProductModalFormSelector + ' button[type="submit"]'
+
 const modalCloseButton = '.pizzap-modal .pizzap-modal-close-btn'
 
 describe('Pizzeria product edition', () => {
@@ -106,6 +108,32 @@ describe('Pizzeria product edition', () => {
 
         const currentProductCard = await page.$eval('.card-container', element => element.innerHTML)
         expect(originalProductCard).toEqual(currentProductCard)
+    })
+
+    it('given a modal form with edited fields containing valid data when it is confirm then the product is updated', async () => {
+        const pizzeriaData = createPizzeriaRegistrationData({})
+        const pizzaData = createPizzaData({})
+
+        await registerAsPizzeriaAndGoToMenu(page, pizzeriaData)
+        await addProduct(page, pizzaData)
+        await goto(page, '/home')
+        
+        await page.waitForSelector(editProductButtonSelector)
+        await page.click(editProductButtonSelector)
+
+        await page.waitForSelector(editProductModalFormSelector)
+
+        await page.type(editProductFormNameSelector, "!!!")
+        await page.type(editProductFormDescriptionSelector, "!!!")
+        await page.type(editProductFormPriceSelector, '99')
+        await page.type(editProductFormImageURLSelector, '.png')
+
+        await page.click(editProductFormConfirmButtonSelector)
+        await page.waitForNavigation('/home')
+
+        await expectTextContent(page, '.card-tittle', pizzaData.name + '!!!')
+        await expectTextContent(page, '.card-text', pizzaData.description + '!!!')
+        await expectTextContent(page, 'p > b', pizzaData.price.toString() + '99')
     })
 
 })
