@@ -136,6 +136,31 @@ describe('Pizzeria product edition', () => {
         await expectTextContent(page, 'p > b', pizzaData.price.toString() + '99')
     })
 
+    it('given a modal form with a product name input containing the name of another existing product when it is submitted then the update fails with an error message', async () => {
+        const pizzeriaData = createPizzeriaRegistrationData({})
+        const pizzaData = createPizzaData({})
+        const anotherPizzaData = createPizzaData({})
+
+        await registerAsPizzeriaAndGoToMenu(page, pizzeriaData)
+        await addProduct(page, pizzaData)
+        await addProduct(page, anotherPizzaData)
+        await goto(page, '/home')
+        
+        await page.waitForSelector(editProductButtonSelector)
+        await page.click(editProductButtonSelector)
+
+        await page.waitForSelector(editProductModalFormSelector)
+
+        const nameField = await page.$(editProductFormNameSelector)
+        nameField.value = ''
+
+        await page.type(editProductFormNameSelector, anotherPizzaData.name)
+        await page.click(editProductFormConfirmButtonSelector)
+        
+        await page.waitForSelector('.pizza-form-alert')
+        await expectTextContent(page, '.pizza-form-alert', 'A menu cannot have repeated product names')
+    })
+
 })
 
 async function expectInputValue(page, inputSelector, expectedValue) {

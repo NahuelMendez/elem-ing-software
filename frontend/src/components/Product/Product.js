@@ -42,10 +42,6 @@ const Product = ({ name, description, price, imageURL, deleteProduct }) => {
                   api
                     .updateProduct(name, editedProduct)
                     .then(() => window.location.reload())
-                    .catch(error => {
-                      console.log(error)
-                      alert(error)
-                    })
               }
             />
           }

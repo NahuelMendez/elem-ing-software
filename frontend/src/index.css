@@ -137,3 +137,10 @@ code {
 .edit-product-form > * {
   width: 100%;
 }
+
+.pizza-form-alert {
+  padding: 5px;
+  background: #f44336;
+  color: white;
+  border-radius: 10px;
+}
