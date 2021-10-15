@@ -1,6 +1,13 @@
 import { useState } from 'react';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 
+const FormFieldWithError = ({name, label, type='text'}) =>
+  <div class="mb-4 text-gray-700">
+    <label class="block mb-1" for="forms-validationInputCode_error">{label}</label>
+    <Field id="name" name={name} type={type} className="w-full h-10 px-3 text-base placeholder-gray-600 border border-red-700 rounded-lg focus:shadow-outline" />
+    <ErrorMessage name={name} render={message => <div class="pizzap-input-error-message">{message}</div>}/>
+  </div>
+
 const FormAlert = ({text}) =>
   <>
     { text ? <div className="pizza-form-alert" role="alert">{ text }</div> : null }
@@ -13,15 +20,29 @@ const EditProductForm = ({product: { name, description, price, imageURL }, handl
     <Formik
       initialValues = { { name, description, price, imageURL } }
       onSubmit = {
-        async editedProduct =>
-          handleSubmit(editedProduct).catch(error => setSubmitError(error.response.data.error))
+        async (values, { setErrors }) => {
+          const errors = {}
+
+          if (values.name.trim() === '') errors.name = 'El nombre no puede estar vacio'
+          if (values.description.trim() === '') errors.description = 'La descripcion no puede estar vacia'
+          if (values.price.trim() === '') errors.price = 'El precio no puede estar vacio'
+          if (values.imageURL.trim() === '') errors.imageURL = 'La URL de la imagen no puede estar vacia'
+          
+
+          if (Object.keys(errors).length > 0) {
+            setErrors(errors)
+          }
+          else {
+            handleSubmit(values).catch(error => setSubmitError(error.response.data.error))
+          }            
+        }
       }
     >
       <Form className="edit-product-form">
-        <Field id="name" name="name" placeholder="Nombre" className="input mb-8" />
-        <Field id="description" name="description" placeholder="Descripcion" className="input mb-8" />
-        <Field id="price" name="price" placeholder="Precio" className="input mb-8" type="number"/>
-        <Field id="imageURL" name="imageURL" placeholder="URL de imagen" className="input mb-8" />
+        <FormFieldWithError name="name" label="Nombre" />
+        <FormFieldWithError name="description" label="Descripcion" />
+        <FormFieldWithError name="price" label="Precio" type="text"/>
+        <FormFieldWithError name="imageURL" label="URL de imagen" />
 
         <FormAlert text={submitError} />
 

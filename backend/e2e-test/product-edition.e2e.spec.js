@@ -161,6 +161,44 @@ describe('Pizzeria product edition', () => {
         await expectTextContent(page, '.pizza-form-alert', 'A menu cannot have repeated product names')
     })
 
+    it('given a modal edition form with some empty input fields when a user submits the form then an error message indicating that the fields cannot be empty should appear', async () => {
+        const pizzeriaData = createPizzeriaRegistrationData({})
+        const pizzaData = createPizzaData({})
+
+        await registerAsPizzeriaAndGoToMenu(page, pizzeriaData)
+        await addProduct(page, pizzaData)
+        await goto(page, '/home')
+        
+        await page.waitForSelector(editProductButtonSelector)
+        await page.click(editProductButtonSelector)
+
+        await page.waitForSelector(editProductModalFormSelector)
+
+        
+        const fieldSelectors = [
+            editProductFormNameSelector,
+            editProductFormDescriptionSelector,
+            editProductFormPriceSelector,
+            editProductFormImageURLSelector
+        ]
+        
+        for(fieldSelector of fieldSelectors) {
+            const inputField = await page.$(fieldSelector)
+            await inputField.click({clickCount: 3})
+            await inputField.press('Backspace')
+        }
+        
+        await page.click(editProductFormConfirmButtonSelector)
+        
+        await page.waitForSelector('.pizzap-input-error-message')
+        const errorMessages = await page.$$eval('.pizzap-input-error-message', elements => elements.map(element => element.innerText))
+        
+        expect(errorMessages).toContain('El nombre no puede estar vacio')
+        expect(errorMessages).toContain('La descripcion no puede estar vacia')
+        expect(errorMessages).toContain('El precio no puede estar vacio')
+        expect(errorMessages).toContain('La URL de la imagen no puede estar vacia')
+    })
+
 })
 
 async function expectInputValue(page, inputSelector, expectedValue) {

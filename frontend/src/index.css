@@ -144,3 +144,8 @@ code {
   color: white;
   border-radius: 10px;
 }
+
+.pizzap-input-error-message {
+  font-weight: bold;
+  color: #f44336;
+}
