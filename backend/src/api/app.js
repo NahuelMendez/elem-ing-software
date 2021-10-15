@@ -3,7 +3,7 @@ const express = require('express')
 var cors = require('cors')
 const path = require('path')
 const bodyParser = require('body-parser')
-const {registerPath, loginPath, menuPath, pizzeriaPath, searchPizzeriaPath} = require("./path")
+const {registerPath, loginPath, menuPath, pizzeriaPath, searchPizzeriaPath, updateProductPath} = require("./path")
 const {UserService} = require("../model/UserService");
 const {MenuService} = require("../model/MenuService");
 const {TransientUsersRepository} = require("../model/TransientUsersRepository");
@@ -100,6 +100,23 @@ const createApp = () => {
         menuService.removeProduct(pizzeriaName, productName)
             .then(() => response.status(OK).json({removed: productName}))
             .catch(error => response.status(NOT_FOUND).json({error : error.message}))
+    })
+    
+    app.put(updateProductPath, (request, response) => {
+        const {pizzeriaName, productName} = request.params
+        const productData = request.body
+
+        const product = new Product(productData)
+
+        const dataToUpdate = { 
+            pizzeriaName: pizzeriaName, 
+            nameOfProductToUpdate: productName, 
+            referenceProduct: product 
+        }
+
+        menuService.updateProduct(dataToUpdate)
+            .then(() => response.status(OK).json({message: "The product was updated successfully"}))
+            .catch( error => response.status(BAD_REQUEST).json({error: error.message}))
     })
 
     const menuToJson = (menu) => {

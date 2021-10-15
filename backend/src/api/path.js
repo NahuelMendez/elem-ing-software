@@ -9,5 +9,7 @@ const pizzeriaPath = '/api/pizzeria/:pizzeriaName'
 
 const searchPizzeriaPath = '/api/search/pizzeria'
 
+const updateProductPath = '/api/pizzeria/:pizzeriaName/menu/:productName'
 
-module.exports = {registerPath, menuPath, loginPath, pizzeriaPath, searchPizzeriaPath}
+
+module.exports = {registerPath, menuPath, loginPath, pizzeriaPath, searchPizzeriaPath, updateProductPath}
