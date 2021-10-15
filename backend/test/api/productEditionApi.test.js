@@ -95,4 +95,102 @@ describe("Api edit a product of pizzeria's menu", () => {
             error: 'invalid token or unauthorized user'
         })
     })
+
+    it('cannot update a product if the name is not of type string', async () => {
+        const token = await loginToken(requester, bancheroRegistrationData)
+        await addProduct(requester, bancheroRegistrationData, mozzarella, token)   
+        
+        const badPizza = { ...mozzarella, name: 123 }
+
+        const response = await updatedProduct(requester, bancheroRegistrationData, mozzarella, badPizza, token)
+
+        expect(response.status).toBe(BAD_REQUEST)
+        expect(response.body).toEqual({
+            error: '"product name" must be a string'
+        })
+    })
+
+    it('cannot update a product if the description is not of type string', async () => {
+        const token = await loginToken(requester, bancheroRegistrationData)
+        await addProduct(requester, bancheroRegistrationData, mozzarella, token)
+
+        const badPizza = { ...mozzarella, description: 123 }
+
+        const response = await updatedProduct(requester, bancheroRegistrationData, mozzarella, badPizza, token)
+
+        expect(response.status).toBe(BAD_REQUEST)
+        expect(response.body).toEqual({
+            error: '"product description" must be a string'
+        })
+    })
+
+    it('cannot update a product if the price is not of type number', async () => {
+        const token = await loginToken(requester, bancheroRegistrationData)
+        await addProduct(requester, bancheroRegistrationData, mozzarella, token)
+
+        const badPizza = { ...mozzarella, price: 'not a number' }
+
+        const response = await updatedProduct(requester, bancheroRegistrationData, mozzarella, badPizza, token)
+
+        expect(response.status).toBe(BAD_REQUEST)
+        expect(response.body).toEqual({
+            error: '"product price" must be a number'
+        })
+    })
+
+    it('cannot update a product if the imageURL is not of type String', async () => {
+        const token = await loginToken(requester, bancheroRegistrationData)
+        await addProduct(requester, bancheroRegistrationData, mozzarella, token)
+
+        const badPizza = { ...mozzarella, imageURL: 123 }
+
+        const response = await updatedProduct(requester, bancheroRegistrationData, mozzarella, badPizza, token)
+
+        expect(response.status).toBe(BAD_REQUEST)
+        expect(response.body).toEqual({
+            error: '"product imageURL" must be a string'
+        })
+    })
+
+    it('cannot update a product if a name is not provided', async () => {
+        const token = await loginToken(requester, bancheroRegistrationData)
+        await addProduct(requester, bancheroRegistrationData, mozzarella, token)
+
+        const badPizza = { ...mozzarella, name: undefined }
+
+        const response = await updatedProduct(requester, bancheroRegistrationData, mozzarella, badPizza, token)
+
+        expect(response.status).toBe(BAD_REQUEST)
+        expect(response.body).toEqual({
+            error: '"product name" is required'
+        })
+    })
+
+    it('cannot update a product if a imageURL is not provided', async () => {
+        const token = await loginToken(requester, bancheroRegistrationData)
+        await addProduct(requester, bancheroRegistrationData, mozzarella, token)
+
+        const badPizza = { ...mozzarella, imageURL: undefined }
+
+        const response = await updatedProduct(requester, bancheroRegistrationData, mozzarella, badPizza, token)
+
+        expect(response.status).toBe(BAD_REQUEST)
+        expect(response.body).toEqual({
+            error: '"product imageURL" is required'
+        })
+    })
+
+    it('cannot update a product if a price is not provided', async () => {
+        const token = await loginToken(requester, bancheroRegistrationData)
+        await addProduct(requester, bancheroRegistrationData, mozzarella, token)
+
+        const badPizza = { ...mozzarella, price: undefined }
+
+        const response = await updatedProduct(requester, bancheroRegistrationData, mozzarella, badPizza, token)
+
+        expect(response.status).toBe(BAD_REQUEST)
+        expect(response.body).toEqual({
+            error: '"product price" is required'
+        })
+    })
 })
