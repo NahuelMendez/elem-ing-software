@@ -102,7 +102,7 @@ const createApp = () => {
             .catch(error => response.status(NOT_FOUND).json({error : error.message}))
     })
     
-    app.put(updateProductPath, (request, response) => {
+    app.put(updateProductPath, authenticatePizzeria, (request, response) => {
         const {pizzeriaName, productName} = request.params
         const productData = request.body
 

@@ -35,8 +35,10 @@ async function getPizzeria(requester, pizzeriaRegistrationData) {
     return await requester.get(createPizzeriaPath(pizzeriaRegistrationData.name))
 }
 
-async function updatedProduct(requester, pizzeria, productToUpdate, product) {
-    return await requester.put(createUpdateProductPath(pizzeria.name, productToUpdate.name)).send(product)
+async function updatedProduct(requester, pizzeria, productToUpdate, product, token) {
+    return await requester.put(createUpdateProductPath(pizzeria.name, productToUpdate.name))
+        .send(product)
+        .set('Authorization', token)
 }
 
 async function loginToken(requester, user) {

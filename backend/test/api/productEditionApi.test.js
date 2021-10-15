@@ -1,6 +1,7 @@
 const request = require('supertest')
 const {createApp} = require('../../src/api/app')
-const {OK, BAD_REQUEST} = require("../../src/api/statusCode")
+const { createUpdateProductPath } = require('../helpers/pathFactory')
+const {OK, BAD_REQUEST, UNAUTHORIZED, FORBIDDEN} = require("../../src/api/statusCode")
 
 const testObjects = require('../testObjects')
 
@@ -9,7 +10,6 @@ const { mozzarella, bacon} = testObjects.productsData
 
 const {
     loginToken,
-    registerUser,
     addProduct,
     updatedProduct
 } = require('../helpers/apiHelperFunctions')
@@ -26,7 +26,7 @@ describe("Api edit a product of pizzeria's menu", () => {
 
         await addProduct(requester, bancheroRegistrationData, mozzarella, token)
 
-        const response = await updatedProduct(requester, bancheroRegistrationData, mozzarella, bacon)
+        const response = await updatedProduct(requester, bancheroRegistrationData, mozzarella, bacon, token)
 
         expect(response.status).toBe(OK)
         expect(response.body).toEqual({
@@ -44,7 +44,8 @@ describe("Api edit a product of pizzeria's menu", () => {
             requester, 
             bancheroRegistrationData, 
             bacon, 
-            {...bacon, name: mozzarella.name}
+            {...bacon, name: mozzarella.name},
+            token
         )
 
         expect(response.status).toBe(BAD_REQUEST)
@@ -54,13 +55,14 @@ describe("Api edit a product of pizzeria's menu", () => {
     })
 
     it('cannot update a product for a registered pizzeria with a product name not mathing any product name in the menu', async () => {
-        await registerUser(requester, bancheroRegistrationData)
+        const token = await loginToken(requester, bancheroRegistrationData)
 
         const response = await updatedProduct(
             requester, 
             bancheroRegistrationData, 
             bacon, 
-            mozzarella
+            mozzarella,
+            token
         )
 
         expect(response.status).toBe(BAD_REQUEST)
@@ -69,4 +71,28 @@ describe("Api edit a product of pizzeria's menu", () => {
         })
     })
 
+    it('cannot update a product when the token is missing', async () => {
+        const response = await requester.put(createUpdateProductPath(bancheroRegistrationData.name, mozzarella.name))
+            .send(bacon)
+
+        expect(response.status).toBe(UNAUTHORIZED)
+        expect(response.body).toEqual({
+            error: 'token missing'
+        })
+    })
+
+    it('cannot update a product when the token is unauthorized', async () => {
+        const response = await await updatedProduct(
+            requester, 
+            bancheroRegistrationData, 
+            bacon, 
+            mozzarella,
+            'incorrect token'
+        )
+
+        expect(response.status).toBe(FORBIDDEN)
+        expect(response.body).toEqual({
+            error: 'invalid token or unauthorized user'
+        })
+    })
 })
