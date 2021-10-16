@@ -137,8 +137,3 @@ code {
 .edit-product-form > * {
   width: 100%;
 }
-
-.pizzap-input-error-message {
-  font-weight: bold;
-  color: #f44336;
-}

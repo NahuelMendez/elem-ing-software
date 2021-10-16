@@ -5,12 +5,12 @@ const FormFieldWithError = ({name, label, type='text'}) =>
   <div class="mb-4 text-gray-700">
     <label class="block mb-1" for="forms-validationInputCode_error">{label}</label>
     <Field id="name" name={name} type={type} className="w-full h-10 px-3 text-base placeholder-gray-600 border border-red-700 rounded-lg focus:shadow-outline" />
-    <ErrorMessage name={name} render={message => <div class="pizzap-input-error-message">{message}</div>}/>
+    <ErrorMessage name={name} render={message => <div name="input-error-message" class="bold text-red-500">{message}</div>}/>
   </div>
 
 const FormAlert = ({text}) =>
   <>
-    { text ? <div name="pizza-form-alert" className="rounded p-1 bg-red-500 text-white" role="alert">{ text }</div> : null }
+    { text ? <div name="form-alert" className="rounded p-1 bg-red-500 text-white" role="alert">{ text }</div> : null }
   </>
 
 const EditProductForm = ({product: { name, description, price, imageURL }, handleSubmit }) => {

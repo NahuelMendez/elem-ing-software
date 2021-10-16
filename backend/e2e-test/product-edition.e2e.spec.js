@@ -157,8 +157,8 @@ describe('Pizzeria product edition', () => {
         await page.type(editProductFormNameSelector, anotherPizzaData.name)
         await page.click(editProductFormConfirmButtonSelector)
         
-        await page.waitForSelector('[name="pizza-form-alert"]')
-        await expectTextContent(page, '[name="pizza-form-alert"]', 'A menu cannot have repeated product names')
+        await page.waitForSelector('[name="form-alert"]')
+        await expectTextContent(page, '[name="form-alert"]', 'A menu cannot have repeated product names')
     })
 
     it('given a modal edition form with some empty input fields when a user submits the form then an error message indicating that the fields cannot be empty should appear', async () => {
@@ -190,8 +190,8 @@ describe('Pizzeria product edition', () => {
         
         await page.click(editProductFormConfirmButtonSelector)
         
-        await page.waitForSelector('.pizzap-input-error-message')
-        const errorMessages = await page.$$eval('.pizzap-input-error-message', elements => elements.map(element => element.innerText))
+        await page.waitForSelector('[name="input-error-message"]')
+        const errorMessages = await page.$$eval('[name="input-error-message"]', elements => elements.map(element => element.innerText))
         
         expect(errorMessages).toContain('El nombre no puede estar vacio')
         expect(errorMessages).toContain('La descripcion no puede estar vacia')
