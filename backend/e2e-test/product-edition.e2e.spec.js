@@ -19,7 +19,7 @@ const editProductFormImageURLSelector = editProductModalFormSelector + ' input[n
 
 const editProductFormConfirmButtonSelector = editProductModalFormSelector + ' button[type="submit"]'
 
-const modalCloseButton = '.pizzap-modal .pizzap-modal-close-btn'
+const modalCloseButton = '.pizzap-modal [name="modal-close-btn"]'
 
 describe('Pizzeria product edition', () => {
     let browser

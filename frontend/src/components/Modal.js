@@ -2,7 +2,7 @@ const Modal = ({title, body, handleClose}) =>
   <div className="pizzap-modal">
     <div className="pizzap-modal-content">
       <header>
-        <h3>{title} <span onClick={handleClose} className="pizzap-modal-close-btn">&times;</span></h3>
+        <h3>{title} <span onClick={handleClose} name="modal-close-btn" className="float-right cursor-pointer text-3xl text-gray-400 hover:text-black">&times;</span></h3>
       </header>
       <main>{body}</main>
     </div>
