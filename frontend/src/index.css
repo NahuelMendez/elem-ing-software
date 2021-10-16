@@ -129,11 +129,11 @@ code {
   cursor: pointer;
 }
 
-.edit-product-form {
+/* .edit-product-form {
   display: flex;
   flex-direction: column;
-}
-
+} */
+/* 
 .edit-product-form > * {
   width: 100%;
-}
+} */

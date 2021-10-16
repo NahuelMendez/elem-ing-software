@@ -38,7 +38,7 @@ const EditProductForm = ({product: { name, description, price, imageURL }, handl
         }
       }
     >
-      <Form className="edit-product-form">
+      <Form name="edit-product-form" >
         <FormFieldWithError name="name" label="Nombre" />
         <FormFieldWithError name="description" label="Descripcion" />
         <FormFieldWithError name="price" label="Precio" type="text"/>
