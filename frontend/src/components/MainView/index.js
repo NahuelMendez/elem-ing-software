@@ -9,7 +9,7 @@ const MainView = () => {
     <div>
       <NavBar />
       <div className=" w-full flex flex-col items-end">
-        <Notebook />
+        <Notebook pizzeriaName={'pizzeriaB'}/>
       </div>
       {role === "pizzeria" && <MenuContainer />}
     </div>
