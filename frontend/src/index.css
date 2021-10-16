@@ -138,13 +138,6 @@ code {
   width: 100%;
 }
 
-.pizza-form-alert {
-  padding: 5px;
-  background: #f44336;
-  color: white;
-  border-radius: 10px;
-}
-
 .pizzap-input-error-message {
   font-weight: bold;
   color: #f44336;

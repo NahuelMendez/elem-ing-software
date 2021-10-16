@@ -10,7 +10,7 @@ const FormFieldWithError = ({name, label, type='text'}) =>
 
 const FormAlert = ({text}) =>
   <>
-    { text ? <div className="pizza-form-alert" role="alert">{ text }</div> : null }
+    { text ? <div name="pizza-form-alert" className="rounded p-1 bg-red-500 text-white" role="alert">{ text }</div> : null }
   </>
 
 const EditProductForm = ({product: { name, description, price, imageURL }, handleSubmit }) => {

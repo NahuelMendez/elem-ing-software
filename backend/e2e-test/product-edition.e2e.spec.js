@@ -157,8 +157,8 @@ describe('Pizzeria product edition', () => {
         await page.type(editProductFormNameSelector, anotherPizzaData.name)
         await page.click(editProductFormConfirmButtonSelector)
         
-        await page.waitForSelector('.pizza-form-alert')
-        await expectTextContent(page, '.pizza-form-alert', 'A menu cannot have repeated product names')
+        await page.waitForSelector('[name="pizza-form-alert"]')
+        await expectTextContent(page, '[name="pizza-form-alert"]', 'A menu cannot have repeated product names')
     })
 
     it('given a modal edition form with some empty input fields when a user submits the form then an error message indicating that the fields cannot be empty should appear', async () => {
