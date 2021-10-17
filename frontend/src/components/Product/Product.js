@@ -1,10 +1,12 @@
 import React from 'react';
 import DeleteProductButton from './DeleteProductButton';
 
-const Product = ({ name, description, price, imageURL, deleteProduct }) => {
+const Product = ({ name, description, price, imageURL, deleteProduct, mode }) => {
+
   return (
     <div className="card card-container">
-      <DeleteProductButton productName={name} deleteProduct={deleteProduct} />
+      {mode === 'edit'? <DeleteProductButton productName={name} deleteProduct={deleteProduct} /> :
+      <></>}
       <div className="card-img-cont">
         <img src={imageURL} alt="" className="product-img"></img>
       </div>
