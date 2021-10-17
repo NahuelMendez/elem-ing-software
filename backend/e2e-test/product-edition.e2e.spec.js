@@ -1,9 +1,8 @@
 const puppeteer = require('puppeteer')
 const {
-    registerAsPizzeriaAndGoToMenu,
-    addProduct,
-    expectTextContent,
-    goto
+    registerPizzeriaWithOneProductAndGoToHome,
+    registerPizzeriaWithAmountOfProductsAndGoToHome,
+    expectTextContent
 } = require('./helpers/helpers')
 
 const { createPizzeriaRegistrationData, createPizzaData } = require('../test/testObjects')
@@ -35,29 +34,18 @@ describe('Pizzeria product edition', () => {
     })
 
     it(`a product card on the home page of a pizzeria should have an edition button`, async () => {
-        const pizzeriaData = createPizzeriaRegistrationData({})
-        const pizzaData = createPizzaData({})
-
-        await registerAsPizzeriaAndGoToMenu(page, pizzeriaData)
-        await addProduct(page, pizzaData)
-        await goto(page, '/home')
+        await registerPizzeriaWithOneProductAndGoToHome(page)
 
         await page.waitForSelector(editProductButtonSelector)
     })
 
     it('when the edition button of a product card is clicked should appear an edition modal form for the product', async () => {
-        const pizzeriaData = createPizzeriaRegistrationData({})
-        const pizzaData = createPizzaData({})
+        const { pizzaData } = await registerPizzeriaWithOneProductAndGoToHome(page)
 
-        await registerAsPizzeriaAndGoToMenu(page, pizzeriaData)
-        await addProduct(page, pizzaData)
-        await goto(page, '/home')
         await page.waitForSelector(editProductButtonSelector)
-
         await page.click(editProductButtonSelector)
 
         await page.waitForSelector(editProductModalFormSelector)
-        
         await expectInputValue(page, nameInputSelector, pizzaData.name)
         await expectInputValue(page, descriptionInputSelector, pizzaData.description)
         await expectInputValue(page, priceInputSelector, pizzaData.price)
@@ -65,32 +53,20 @@ describe('Pizzeria product edition', () => {
     })
 
     it('when the close button of the modal edition form is clicked it is closed', async () => {
-        const pizzeriaData = createPizzeriaRegistrationData({})
-        const pizzaData = createPizzaData({})
-
-        await registerAsPizzeriaAndGoToMenu(page, pizzeriaData)
-        await addProduct(page, pizzaData)
-        await goto(page, '/home')
+        await registerPizzeriaWithOneProductAndGoToHome(page)
         
         await page.waitForSelector(editProductButtonSelector)
         await page.click(editProductButtonSelector)
 
         await page.waitForSelector(editProductModalFormSelector)
-
         await page.click(modalCloseButton)
-
 
         const results = await page.$$eval(editProductModalFormSelector, elements => elements)
         expect(results).toEqual([])
     })
 
     it('given a modal form with edited fields when it is closed with the close button then no changes are made to the product', async () => {
-        const pizzeriaData = createPizzeriaRegistrationData({})
-        const pizzaData = createPizzaData({})
-
-        await registerAsPizzeriaAndGoToMenu(page, pizzeriaData)
-        await addProduct(page, pizzaData)
-        await goto(page, '/home')
+        await registerPizzeriaWithOneProductAndGoToHome(page)
 
         const originalProductCard = await page.$eval('.card-container', element => element.innerHTML)
         
@@ -98,7 +74,6 @@ describe('Pizzeria product edition', () => {
         await page.click(editProductButtonSelector)
 
         await page.waitForSelector(editProductModalFormSelector)
-
         await page.type(nameInputSelector, 'aaa')
         await page.type(descriptionInputSelector, 'bbbb')
         await page.type(priceInputSelector, '9999')
@@ -111,18 +86,12 @@ describe('Pizzeria product edition', () => {
     })
 
     it('given a modal form with edited fields containing valid data when it is confirm then the product is updated', async () => {
-        const pizzeriaData = createPizzeriaRegistrationData({})
-        const pizzaData = createPizzaData({})
-
-        await registerAsPizzeriaAndGoToMenu(page, pizzeriaData)
-        await addProduct(page, pizzaData)
-        await goto(page, '/home')
+        const { pizzaData } = await registerPizzeriaWithOneProductAndGoToHome(page)
         
         await page.waitForSelector(editProductButtonSelector)
         await page.click(editProductButtonSelector)
 
         await page.waitForSelector(editProductModalFormSelector)
-
         await page.type(nameInputSelector, "!!!")
         await page.type(descriptionInputSelector, "!!!")
         await page.type(priceInputSelector, '99')
@@ -137,14 +106,7 @@ describe('Pizzeria product edition', () => {
     })
 
     it('given a modal form with a product name input containing the name of another existing product when it is submitted then the update fails with an error message', async () => {
-        const pizzeriaData = createPizzeriaRegistrationData({})
-        const pizzaData = createPizzaData({})
-        const anotherPizzaData = createPizzaData({})
-
-        await registerAsPizzeriaAndGoToMenu(page, pizzeriaData)
-        await addProduct(page, pizzaData)
-        await addProduct(page, anotherPizzaData)
-        await goto(page, '/home')
+        const { pizzasData: [pizzaData, anotherPizzaData] } = await registerPizzeriaWithAmountOfProductsAndGoToHome(page, 2)
         
         await page.waitForSelector(editProductButtonSelector)
         await page.click(editProductButtonSelector)
@@ -162,12 +124,7 @@ describe('Pizzeria product edition', () => {
     })
 
     it('given a modal edition form with some empty input fields when a user submits the form then an error message indicating that the fields cannot be empty should appear', async () => {
-        const pizzeriaData = createPizzeriaRegistrationData({})
-        const pizzaData = createPizzaData({})
-
-        await registerAsPizzeriaAndGoToMenu(page, pizzeriaData)
-        await addProduct(page, pizzaData)
-        await goto(page, '/home')
+        await registerPizzeriaWithOneProductAndGoToHome(page)
         
         await page.waitForSelector(editProductButtonSelector)
         await page.click(editProductButtonSelector)
@@ -205,3 +162,28 @@ async function expectInputValue(page, inputSelector, expectedValue) {
     const actualValue = await page.$eval(inputSelector, input => input.value)
     expect(actualValue).toEqual(expectedValue.toString())
 }
+//
+// async function registerPizzeriaWithAmountOfProducts(page, amountOfProducts) {
+//     const pizzeriaData = createPizzeriaRegistrationData({})
+//     const pizzasData = Array.from(Array(amountOfProducts)).map(() => createPizzaData({}))
+//
+//     await registerAsPizzeriaAndGoToMenu(page, pizzeriaData)
+//
+//     for (let pizzaData of pizzasData) {
+//         await addProduct(page, pizzaData)
+//     }
+//
+//     return { pizzeriaData, pizzasData }
+// }
+//
+// async function registerPizzeriaWithOneProductAndGoToHome(page) {
+//     const { pizzeriaData, pizzasData } = await registerPizzeriaWithAmountOfProductsAndGoToHome(page, 1)
+//     return { pizzeriaData, pizzaData: pizzasData[0] }
+// }
+//
+// async function registerPizzeriaWithAmountOfProductsAndGoToHome(page, amountOfProducts) {
+//     const { pizzeriaData, pizzasData } = await registerPizzeriaWithAmountOfProducts(page, amountOfProducts)
+//     await goto(page, '/home')
+//
+//     return { pizzeriaData, pizzasData }
+// }
