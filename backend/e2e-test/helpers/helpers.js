@@ -146,6 +146,18 @@ async function expectTextContents(page, selector, expectedTextContents) {
     expect(textContents).toEqual(expectedTextContents)
 }
 
+async function clearInputFields(page, inputFieldsSelectors) {
+    for(let inputFieldSelector of inputFieldsSelectors) {
+        await clearInputField(page, inputFieldSelector)
+    }
+}
+
+async function clearInputField(page, inputFieldSelector) {
+    const inputField = await page.$(inputFieldSelector)
+    await inputField.click({clickCount: 3})
+    await inputField.press('Backspace')
+}
+
 module.exports = {
     goto,
     clickAndWait,
@@ -171,5 +183,7 @@ module.exports = {
     chooseToRegisterAsConsumer,
     expectH1,
     expectTextContent,
-    expectTextContents
+    expectTextContents,
+    clearInputFields,
+    clearInputField
 }

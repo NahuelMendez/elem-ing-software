@@ -2,7 +2,9 @@ const puppeteer = require('puppeteer')
 const {
     registerPizzeriaWithOneProductAndGoToHome,
     registerPizzeriaWithAmountOfProductsAndGoToHome,
-    expectTextContent
+    expectTextContent,
+    clearInputFields,
+    clearInputField
 } = require('./helpers/helpers')
 
 const { createPizzeriaRegistrationData, createPizzaData } = require('../test/testObjects')
@@ -130,20 +132,12 @@ describe('Pizzeria product edition', () => {
         await page.click(editProductButtonSelector)
 
         await page.waitForSelector(editProductModalFormSelector)
-
-        
-        const fieldSelectors = [
+        await clearInputFields(page, [
             nameInputSelector,
             descriptionInputSelector,
             priceInputSelector,
             imageURLInputSelector
-        ]
-        
-        for(fieldSelector of fieldSelectors) {
-            const inputField = await page.$(fieldSelector)
-            await inputField.click({clickCount: 3})
-            await inputField.press('Backspace')
-        }
+        ])
         
         await page.click(confirmButtonSelector)
         
