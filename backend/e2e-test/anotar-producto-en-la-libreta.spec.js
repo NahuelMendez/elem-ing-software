@@ -37,7 +37,7 @@ describe('Consumidor - add product to notebook', () => {
         await expectTextContent(page, '.notebook-container .total', pizzaData.price.toString())
     })
 
-    it(`when a user adds a product that already exists, product units are increased and total is modified`, async () => {
+    it(`when a user adds a product that already exists, product units are increased`, async () => {
         const pizzeriaData = createPizzeriaRegistrationData({})
         const pizzaData = createPizzaData({})
         await registerAsPizzeriaAndGoToMenu(page, pizzeriaData)
@@ -50,11 +50,10 @@ describe('Consumidor - add product to notebook', () => {
 
         await expectTextContent(page, '.notebook-container .name-product', pizzaData.name)
         await expectTextContent(page, '.notebook-container .price-product', pizzaData.price.toString())
-        await expectTextContent(page, '.notebook-container .cant-product', "2")
-        await expectTextContent(page, '.notebook-container .total', (pizzaData.price * 2).toString())
+        await expectTextContent(page, '.notebook-container .unit-product', "2")
     })
 
-    it(`when there is no product add in then notebook, the total is 0`, async () => {
+    it(`when a user adds a product, the total is modified`, async () => {
         const pizzeriaData = createPizzeriaRegistrationData({})
         const pizzaData = createPizzaData({})
         await registerAsPizzeriaAndGoToMenu(page, pizzeriaData)
@@ -62,8 +61,12 @@ describe('Consumidor - add product to notebook', () => {
         await goto(page, `/pizzeria/${pizzeriaData.name}`)
 
         await page.waitForSelector('.product-container .button-add > img')
+        await page.click('.product-container .button-add > img')
+        await page.click('.product-container .button-add > img')
 
-        await expectTextContent(page, '.notebook-container .total', "0")
+        await expectTextContent(page, '.notebook-container .name-product', pizzaData.name)
+        await expectTextContent(page, '.notebook-container .price-product', pizzaData.price.toString())
+        await expectTextContent(page, '.notebook-container .total', (pizzaData.price * 2).toString())
     })
 
     it(`when there is no product add in then notebook, the total is 0`, async () => {
