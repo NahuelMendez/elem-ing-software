@@ -70,6 +70,7 @@ describe('Pizzeria product edition', () => {
     it('given a modal form with edited fields when it is closed with the close button then no changes are made to the product', async () => {
         await registerPizzeriaWithOneProductAndGoToHome(page)
 
+        await page.waitForSelector('.card-container')
         const originalProductCard = await page.$eval('.card-container', element => element.innerHTML)
         
         await page.waitForSelector(editProductButtonSelector)
