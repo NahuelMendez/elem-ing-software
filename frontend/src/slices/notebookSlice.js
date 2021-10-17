@@ -1,21 +1,20 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, current } from '@reduxjs/toolkit';
 
 export const slice = createSlice({
   name: 'notebookInfo',
   initialState: {
-    products: [],
-    total: 0
+    products: []
   },
   reducers: {
     addProduct: (state, action) => {
-      const productToAdd = state.products.find(i => i.name === action.payload.name)
-      state.total = state.total + action.payload.price
-      if (!productToAdd) {
-        state.products = [...state.products, action.payload]
+      const  products = current(state).products
+      const productToAdd = products.find(i => i.name === action.payload.name)
+      if (productToAdd === undefined) {
+        state.products = [...products, { ...action.payload, cant: 1 }]
       }
       else {
-        const productsCopy = state.products.splice(state.products.indexOf(productToAdd), 1);
-        state.products = [...productsCopy, { ...action.payload, cant: productToAdd.cant }]
+        const productsClean = products.filter(i => i.name !== action.payload.name)
+        state.products = [...productsClean, { ...action.payload, cant: productToAdd.cant + 1 }]
       }
     }
   }
@@ -23,5 +22,4 @@ export const slice = createSlice({
 
 export const { addProduct } = slice.actions;
 export const productsState = (state) => state.notebookInfo.products;
-export const totalState = (state) => state.notebookInfo.total;
 export default slice.reducer;

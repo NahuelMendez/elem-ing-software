@@ -5,39 +5,39 @@ import Notebook from "../Notebook";
 
 const getPizzeriaName = () => localStorage.getItem('username')
 
-const MenuContainer = () => {
+const MenuContainer = () =>{
 
-  const [products, setProducts] = useState([]);
-  const [error, setError] = useState("");
+    const [products, setProducts] = useState([]);
+    const [error, setError] = useState("");
 
-  useEffect(() => {
-    getMenu();
-  }, [])
+    useEffect(() =>{
+        getMenu();
+    }, [])
 
-  const getMenu = () => {
-    api.getMenu(getPizzeriaName())
-      .then(response => {
-        setProducts(response.data)
-        setError("")
-      })
-      .catch(_ => {
-        setError("Error")
-      })
-  }
+    const getMenu = () => {
+        api.getMenu(getPizzeriaName())
+        .then(response => {
+            setProducts(response.data)
+            setError("")
+        })
+        .catch(_ => {
+            setError("Error")
+        })
+    }
 
-  const deleteProduct = (productName) => {
-    api.deleteProduct(getPizzeriaName(), productName);
-    const newProducts = products.filter((product) => product.name !== productName);
-    setProducts(newProducts);
-  }
+    const deleteProduct = (productName) => {
+        api.deleteProduct(getPizzeriaName(), productName);
+        const newProducts = products.filter((product) => product.name !== productName);
+        setProducts(newProducts);
+    }
 
-  return (
-    <div>
-      {error ? <h3>Ocurrio un error al cargar los productos</h3> :
-        <ViewProducts products={products} deleteProduct={deleteProduct} />
-      }
-    </div>
-  );
+    return (
+        <div>
+            { error? <h3>Ocurrio un error al cargar los productos</h3>:
+            <ViewProducts products={products} deleteProduct={deleteProduct} editMode={true}/>  
+            }
+        </div>
+    );
 
 
 }

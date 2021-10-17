@@ -1,17 +1,13 @@
 import { useEffect, useState } from "react"
 import { useSelector } from "react-redux"
+import { useParams } from "react-router"
 import { productsState } from "../../slices/notebookSlice"
 
-const Notebook = ({ pizzeriaName }) => {
+const Notebook = () => {
   const [productsToShow, setProductsToShow] = useState([])
   const [total, setTotal] = useState(0)
-  //const products = useSelector(productsState)
-
-  const products = [
-    {name: 'pizza', price: 900, cant: 2, pizzeriaName: 'pizzeria'}, 
-    {name: 'pizza b', price: 900, cant: 2, pizzeriaName: 'pizzeriaB'}, 
-    {name: 'pizza', price: 900, cant: 2, pizzeriaName: 'pizzeria'}
-  ]
+  const products = useSelector(productsState)
+  const { pizzeriaName } = useParams();
 
   const getTotal = () => {
     let totalSum = 0
@@ -25,7 +21,7 @@ const Notebook = ({ pizzeriaName }) => {
   useEffect(() => {
     const toShow = products.filter(i => i.pizzeriaName === pizzeriaName)
     setProductsToShow(toShow)
-  }, [])
+  }, [products])
 
   useEffect(() => {
     const totalToSave = getTotal()
@@ -33,11 +29,11 @@ const Notebook = ({ pizzeriaName }) => {
   }, [productsToShow])
 
   return (
-    <div className="border-gray-500 border w-1/5 p-4 flex flex-col">
+    <div className="card border-gray-500 border w-1/5 p-4 flex flex-col">
       {
         productsToShow.map((i, index) => (
-          <div className="flex justify-between mb-4">
-            <div key={index} className="mr-4">
+          <div key={index} className="flex justify-between mb-4">
+            <div className="mr-4">
               <p className="m-0">{i.name}</p>
               <p className="m-0">$ {i.price}</p>
             </div>
