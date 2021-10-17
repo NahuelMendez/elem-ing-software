@@ -25,7 +25,7 @@ const PizzeriaView = () => {
       <NavBar />
       <PizzeriaInfo pizzeriaName={pizzeriaName} />
       {menu.length === 0 ? <h3 className="text-center mt-8">No se ingresaron productos en el menú</h3> :
-      <ViewProducts products={menu} mode="view" />}
+      <ViewProducts products={menu} editMode={false} />}
     </div>
   );
 
