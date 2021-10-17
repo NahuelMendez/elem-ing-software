@@ -1,3 +1,5 @@
+const { createPizzeriaRegistrationData, createPizzaData } = require('../../test/testObjects')
+
 async function goto(page, path) {
     await page.goto('http://localhost:3000' + path)
 }
@@ -83,6 +85,31 @@ async function registerAsPizzeriaAndGoToMenu(page, pizzeriaData) {
     await goToMenuForPizzeria(page)
 }
 
+async function registerPizzeriaWithAmountOfProducts(page, amountOfProducts) {
+    const pizzeriaData = createPizzeriaRegistrationData({})
+    const pizzasData = Array.from(Array(amountOfProducts)).map(() => createPizzaData({}))
+
+    await registerAsPizzeriaAndGoToMenu(page, pizzeriaData)
+
+    for (let pizzaData of pizzasData) {
+        await addProduct(page, pizzaData)
+    }
+
+    return { pizzeriaData, pizzasData }
+}
+
+async function registerPizzeriaWithOneProductAndGoToHome(page) {
+    const { pizzeriaData, pizzasData } = await registerPizzeriaWithAmountOfProductsAndGoToHome(page, 1)
+    return { pizzeriaData, pizzaData: pizzasData[0] }
+}
+
+async function registerPizzeriaWithAmountOfProductsAndGoToHome(page, amountOfProducts) {
+    const { pizzeriaData, pizzasData } = await registerPizzeriaWithAmountOfProducts(page, amountOfProducts)
+    await goto(page, '/home')
+
+    return { pizzeriaData, pizzasData }
+}
+
 async function addProduct(page, { name, description, price, imageURL }) {
     await page.type('input[name="name"]', name)
     await page.type('input[name="description"]', description)
@@ -119,6 +146,18 @@ async function expectTextContents(page, selector, expectedTextContents) {
     expect(textContents).toEqual(expectedTextContents)
 }
 
+async function clearInputFields(page, inputFieldsSelectors) {
+    for(let inputFieldSelector of inputFieldsSelectors) {
+        await clearInputField(page, inputFieldSelector)
+    }
+}
+
+async function clearInputField(page, inputFieldSelector) {
+    const inputField = await page.$(inputFieldSelector)
+    await inputField.click({clickCount: 3})
+    await inputField.press('Backspace')
+}
+
 module.exports = {
     goto,
     clickAndWait,
@@ -130,6 +169,9 @@ module.exports = {
     clickHomeCircularThing,
     registerPizzeria,
     registerAndLoginPizzeria,
+    registerPizzeriaWithAmountOfProducts,
+    registerPizzeriaWithOneProductAndGoToHome,
+    registerPizzeriaWithAmountOfProductsAndGoToHome,
     registerAndLoginConsumer,
     fillPizzeriaRegistrationForm,
     fillConsumerRegistrationForm,
@@ -141,5 +183,7 @@ module.exports = {
     chooseToRegisterAsConsumer,
     expectH1,
     expectTextContent,
-    expectTextContents
+    expectTextContents,
+    clearInputFields,
+    clearInputField
 }
