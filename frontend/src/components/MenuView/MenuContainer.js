@@ -33,7 +33,7 @@ const MenuContainer = () =>{
     return (
         <div>
             { error? <h3>Ocurrio un error al cargar los productos</h3>:
-            <ViewProducts products={products} deleteProduct={deleteProduct}/>  
+            <ViewProducts products={products} deleteProduct={deleteProduct} editMode={true}/>  
             }
         </div>
     );

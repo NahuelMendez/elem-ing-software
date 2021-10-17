@@ -1,8 +1,6 @@
 import Product from "./Product";
 
-const ViewProducts = ({ products, deleteProduct }) => {
-
-    
+const ViewProducts = ({ products, deleteProduct, editMode }) => {
 
     return(
         <div className="container pizza-menu">
@@ -14,7 +12,8 @@ const ViewProducts = ({ products, deleteProduct }) => {
                             description={product.description}
                             price={product.price}
                             imageURL={product.imageURL}
-                            deleteProduct={deleteProduct}/>
+                            deleteProduct={deleteProduct}
+                            editMode={editMode}/>
                     </div>
                 )}
             </div>

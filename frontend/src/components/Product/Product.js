@@ -1,22 +1,26 @@
 import React, { useState } from 'react';
-
 import api from '../../Api/ApiObject'
-
 import Modal from '../Modal'
-
 import EditProductButton from './EditProductButton'
 import DeleteProductButton from './DeleteProductButton';
 import EditProductForm from './EditProductForm'
 
-const Product = ({ name, description, price, imageURL, deleteProduct }) => {
+
+const Product = ({ name, description, price, imageURL, deleteProduct, editMode }) => {
+
   const [showEditionForm, setShowEditionForm] = useState(false)
 
   return (
     <>
       <div className="card card-container">
         <div className="flex justify-end">
-          <EditProductButton onClick={ () => setShowEditionForm(true) } />
-          <DeleteProductButton productName={name} deleteProduct={deleteProduct} />
+          {editMode?
+            <div>
+            <EditProductButton onClick={ () => setShowEditionForm(true) } />
+            <DeleteProductButton productName={name} deleteProduct={deleteProduct} />
+            </div>
+            :
+            <></>}
         </div>
         
         <div className="card-img-cont">
