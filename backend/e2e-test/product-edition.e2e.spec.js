@@ -162,28 +162,3 @@ async function expectInputValue(page, inputSelector, expectedValue) {
     const actualValue = await page.$eval(inputSelector, input => input.value)
     expect(actualValue).toEqual(expectedValue.toString())
 }
-//
-// async function registerPizzeriaWithAmountOfProducts(page, amountOfProducts) {
-//     const pizzeriaData = createPizzeriaRegistrationData({})
-//     const pizzasData = Array.from(Array(amountOfProducts)).map(() => createPizzaData({}))
-//
-//     await registerAsPizzeriaAndGoToMenu(page, pizzeriaData)
-//
-//     for (let pizzaData of pizzasData) {
-//         await addProduct(page, pizzaData)
-//     }
-//
-//     return { pizzeriaData, pizzasData }
-// }
-//
-// async function registerPizzeriaWithOneProductAndGoToHome(page) {
-//     const { pizzeriaData, pizzasData } = await registerPizzeriaWithAmountOfProductsAndGoToHome(page, 1)
-//     return { pizzeriaData, pizzaData: pizzasData[0] }
-// }
-//
-// async function registerPizzeriaWithAmountOfProductsAndGoToHome(page, amountOfProducts) {
-//     const { pizzeriaData, pizzasData } = await registerPizzeriaWithAmountOfProducts(page, amountOfProducts)
-//     await goto(page, '/home')
-//
-//     return { pizzeriaData, pizzasData }
-// }
