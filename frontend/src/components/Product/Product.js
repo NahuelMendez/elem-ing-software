@@ -26,7 +26,7 @@ const Product = ({ name, description, price, imageURL, deleteProduct, editMode }
 
   return (
     <>
-      <div className="card card-container">
+      <div className="card card-container product-container">
         <div className="flex justify-end">
           {editMode ?
             <div>
@@ -34,7 +34,7 @@ const Product = ({ name, description, price, imageURL, deleteProduct, editMode }
               <DeleteProductButton productName={name} deleteProduct={deleteProduct} />
             </div>
             :
-            <button type="btn" className="w-8 pt-2 pr-2 h-8" onClick={handleAddToNotebook}>
+            <button type="btn" className="w-8 pt-2 pr-2 h-8 button-add" onClick={handleAddToNotebook}>
               <img src={addIcon} />
             </button>}
         </div>

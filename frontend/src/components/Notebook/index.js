@@ -29,23 +29,23 @@ const Notebook = () => {
   }, [productsToShow])
 
   return (
-    <div className="card border-gray-500 border w-1/5 p-4 flex flex-col">
+    <div className=" border-gray-500 border w-1/5 p-4 flex flex-col notebook-container">
       {
         productsToShow.map((i, index) => (
           <div key={index} className="flex justify-between mb-4">
             <div className="mr-4">
-              <p className="m-0">{i.name}</p>
-              <p className="m-0">$ {i.price}</p>
+              <p className="m-0 name-product">{i.name}</p>
+              <p className="m-0 price-product">$ {i.price}</p>
             </div>
             <div>
-              <p className="m-0">x{i.cant}</p>
+              <p className="m-0 unit-product">x{i.cant}</p>
             </div>
           </div>
         ))
       }
       <div className="flex justify-between">
         <p>TOTAL</p>
-        <p>${total}</p>
+        <p className="total">${total}</p>
       </div>
     </div>
   )
