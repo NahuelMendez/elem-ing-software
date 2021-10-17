@@ -12,12 +12,12 @@ jest.setTimeout(10000)
 
 const editProductButtonSelector = '.card-container > div > .edit-product-btn > img'
 const editProductModalFormSelector = '.pizzap-modal [name="edit-product-form"]'
-const editProductFormNameSelector = editProductModalFormSelector + ' input[name="name"]'
-const editProductFormDescriptionSelector = editProductModalFormSelector + ' input[name="description"]'
-const editProductFormPriceSelector = editProductModalFormSelector + ' input[name="price"]'
-const editProductFormImageURLSelector = editProductModalFormSelector + ' input[name="imageURL"]'
+const nameInputSelector = editProductModalFormSelector + ' input[name="name"]'
+const descriptionInputSelector = editProductModalFormSelector + ' input[name="description"]'
+const priceInputSelector = editProductModalFormSelector + ' input[name="price"]'
+const imageURLInputSelector = editProductModalFormSelector + ' input[name="imageURL"]'
 
-const editProductFormConfirmButtonSelector = editProductModalFormSelector + ' button[type="submit"]'
+const confirmButtonSelector = editProductModalFormSelector + ' button[type="submit"]'
 
 const modalCloseButton = '.pizzap-modal [name="modal-close-btn"]'
 
@@ -58,10 +58,10 @@ describe('Pizzeria product edition', () => {
 
         await page.waitForSelector(editProductModalFormSelector)
         
-        await expectInputValue(page, editProductFormNameSelector, pizzaData.name)
-        await expectInputValue(page, editProductFormDescriptionSelector, pizzaData.description)
-        await expectInputValue(page, editProductFormPriceSelector, pizzaData.price)
-        await expectInputValue(page, editProductFormImageURLSelector, pizzaData.imageURL)
+        await expectInputValue(page, nameInputSelector, pizzaData.name)
+        await expectInputValue(page, descriptionInputSelector, pizzaData.description)
+        await expectInputValue(page, priceInputSelector, pizzaData.price)
+        await expectInputValue(page, imageURLInputSelector, pizzaData.imageURL)
     })
 
     it('when the close button of the modal edition form is clicked it is closed', async () => {
@@ -99,10 +99,10 @@ describe('Pizzeria product edition', () => {
 
         await page.waitForSelector(editProductModalFormSelector)
 
-        await page.type(editProductFormNameSelector, 'aaa')
-        await page.type(editProductFormDescriptionSelector, 'bbbb')
-        await page.type(editProductFormPriceSelector, '9999')
-        await page.type(editProductFormImageURLSelector, 'http://change.com/image.jpg')
+        await page.type(nameInputSelector, 'aaa')
+        await page.type(descriptionInputSelector, 'bbbb')
+        await page.type(priceInputSelector, '9999')
+        await page.type(imageURLInputSelector, 'http://change.com/image.jpg')
 
         await page.click(modalCloseButton)
 
@@ -123,12 +123,12 @@ describe('Pizzeria product edition', () => {
 
         await page.waitForSelector(editProductModalFormSelector)
 
-        await page.type(editProductFormNameSelector, "!!!")
-        await page.type(editProductFormDescriptionSelector, "!!!")
-        await page.type(editProductFormPriceSelector, '99')
-        await page.type(editProductFormImageURLSelector, '.png')
+        await page.type(nameInputSelector, "!!!")
+        await page.type(descriptionInputSelector, "!!!")
+        await page.type(priceInputSelector, '99')
+        await page.type(imageURLInputSelector, '.png')
 
-        await page.click(editProductFormConfirmButtonSelector)
+        await page.click(confirmButtonSelector)
         await page.waitForNavigation('/home')
 
         await expectTextContent(page, '.card-tittle', pizzaData.name + '!!!')
@@ -151,11 +151,11 @@ describe('Pizzeria product edition', () => {
 
         await page.waitForSelector(editProductModalFormSelector)
 
-        const nameField = await page.$(editProductFormNameSelector)
+        const nameField = await page.$(nameInputSelector)
         nameField.value = ''
 
-        await page.type(editProductFormNameSelector, anotherPizzaData.name)
-        await page.click(editProductFormConfirmButtonSelector)
+        await page.type(nameInputSelector, anotherPizzaData.name)
+        await page.click(confirmButtonSelector)
         
         await page.waitForSelector('[name="form-alert"]')
         await expectTextContent(page, '[name="form-alert"]', 'A menu cannot have repeated product names')
@@ -176,10 +176,10 @@ describe('Pizzeria product edition', () => {
 
         
         const fieldSelectors = [
-            editProductFormNameSelector,
-            editProductFormDescriptionSelector,
-            editProductFormPriceSelector,
-            editProductFormImageURLSelector
+            nameInputSelector,
+            descriptionInputSelector,
+            priceInputSelector,
+            imageURLInputSelector
         ]
         
         for(fieldSelector of fieldSelectors) {
@@ -188,7 +188,7 @@ describe('Pizzeria product edition', () => {
             await inputField.press('Backspace')
         }
         
-        await page.click(editProductFormConfirmButtonSelector)
+        await page.click(confirmButtonSelector)
         
         await page.waitForSelector('[name="input-error-message"]')
         const errorMessages = await page.$$eval('[name="input-error-message"]', elements => elements.map(element => element.innerText))
