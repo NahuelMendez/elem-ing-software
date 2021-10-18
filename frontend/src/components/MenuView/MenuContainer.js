@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import api from "../../Api/ApiObject";
 import ViewProducts from "../Product/ViewProducts";
+import Notebook from "../Notebook";
 
 const getPizzeriaName = () => localStorage.getItem('username')
 
@@ -33,7 +34,7 @@ const MenuContainer = () =>{
     return (
         <div>
             { error? <h3>Ocurrio un error al cargar los productos</h3>:
-            <ViewProducts products={products} deleteProduct={deleteProduct}/>  
+            <ViewProducts products={products} deleteProduct={deleteProduct} editMode={true}/>  
             }
         </div>
     );

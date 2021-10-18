@@ -2,10 +2,12 @@ const puppeteer = require('puppeteer')
 const {
     goto,
     registerPizzeria,
-    expectTextContent
+    expectTextContent,
+    addProduct,
+    registerAsPizzeriaAndGoToMenu
 } = require('./helpers/helpers')
 
-const { createPizzeriaRegistrationData } = require('../test/testObjects')
+const { createPizzeriaRegistrationData, createPizzaData } = require('../test/testObjects')
 
 describe('Pizzeria data visualization', () => {
     let browser
@@ -36,6 +38,33 @@ describe('Pizzeria data visualization', () => {
         await goto(page, `/pizzeria/NOT_REGISTERED_PIZZERIA_NAME`)
 
         await expectTextContent(page, '.error-piz-nf', 'No se encontro la pizzeria')
+    })
+
+    it('when a user visits the route /pizzeria/:pizzeria_name with the name of a registered pizzeria, but who doesnt have products, the page should show the not products found message', async () => {
+        const pizzeriaData = createPizzeriaRegistrationData({})
+        await registerPizzeria(page, pizzeriaData)
+
+        await goto(page, `/pizzeria/${pizzeriaData.name}`)
+
+        await expectTextContent(page, '.not-found-products', 'No se ingresaron productos en el menú')
+    })
+
+    it('when a user visits the route /pizzeria/:pizzeria_name with the name of a registered pizzeria, the page should contain the info of the products wich offers', async () => {
+        const pizzeriaData = createPizzeriaRegistrationData({})
+        const pizzaData = createPizzaData({})
+        await registerAsPizzeriaAndGoToMenu(page, pizzeriaData)
+        await addProduct(page, pizzaData)
+
+        await goto(page, `/pizzeria/${pizzeriaData.name}`)
+        await page.waitForSelector('.card-container')
+        const productsData = await page.$$eval('.card-container', elements => elements.map(element => element.innerHTML))
+
+        expect(productsData).toHaveLength(1)
+
+        expect(productsData[0]).toContain(pizzaData.name)
+        expect(productsData[0]).toContain(pizzaData.description)
+        expect(productsData[0]).toContain(pizzaData.price)
+        expect(productsData[0]).toContain(pizzaData.imageURL)
     })
 
 })
