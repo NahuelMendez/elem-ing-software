@@ -9,22 +9,13 @@ const Notebook = () => {
   const products = useSelector(productsState)
   const { pizzeriaName } = useParams();
 
-  const getTotal = () => {
-    let totalSum = 0
-    for (let index = 0; index < productsToShow.length; index++) {
-      const product = productsToShow[index]
-      totalSum += (product.price * product.cant)
-    }
-    return totalSum
-  }
-
   useEffect(() => {
     const toShow = products.filter(i => i.pizzeriaName === pizzeriaName)
     setProductsToShow(toShow)
   }, [products])
 
   useEffect(() => {
-    const totalToSave = getTotal()
+    const totalToSave = productsToShow.reduce((subTotal, product) => subTotal + product.price * product.cant, 0)
     setTotal(totalToSave)
   }, [productsToShow])
 
