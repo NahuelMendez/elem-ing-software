@@ -65,8 +65,7 @@ describe("Consumer order", () => {
             orderService.placeOrder(orderData)
         ).rejects.toThrow(`Consumer ${notRegisteredConsumerName} not found`)
 
-        const foundOrders = await orderService.findOrdersByPizzeriaName(registeredPizzeria.getName())
-        expect(foundOrders).toHaveLength(0)
+        await expectPizzeriaHasNoOrders(orderService, registeredPizzeria.getName())
     })
 
     it("a registered consumer cannot place an order to a not registered pizzeria", async () => {
@@ -82,8 +81,7 @@ describe("Consumer order", () => {
             orderService.placeOrder(orderData)
         ).rejects.toThrow(`Pizzeria ${notRegisteredPizzeriaName} not found`)
 
-        const foundOrders = await orderService.findOrdersByConsumerName(registeredConsumer.getName())
-        expect(foundOrders).toHaveLength(0)
+        await expectConsumerHasNoOrders(orderService, registeredConsumer.getName())
     })
 
     it("a registered consumer cannot place an order with no products", async () => {
@@ -97,8 +95,8 @@ describe("Consumer order", () => {
             orderService.placeOrder(orderData)
         ).rejects.toThrow(`Cannot place an order with no products`)
 
-        const foundOrders = await orderService.findOrdersByConsumerName(registeredConsumer.getName())
-        expect(foundOrders).toHaveLength(0)
+        await expectConsumerHasNoOrders(orderService, registeredConsumer.getName())
+        await expectPizzeriaHasNoOrders(orderService, registeredPizzeria.getName())
     })
 
     it("line items quantity cannot be less than one", async () => {
@@ -112,8 +110,18 @@ describe("Consumer order", () => {
             orderService.placeOrder(orderData)
         ).rejects.toThrow(`Line items quantity cannot be less than one`)
 
-        const foundOrders = await orderService.findOrdersByConsumerName(registeredConsumer.getName())
-        expect(foundOrders).toHaveLength(0)
+        await expectConsumerHasNoOrders(orderService, registeredConsumer.getName())
+        await expectPizzeriaHasNoOrders(orderService, registeredPizzeria.getName())
     })
 
 })
+
+async function expectConsumerHasNoOrders(orderService, consumerName) {
+    const foundOrders = await orderService.findOrdersByConsumerName(consumerName)
+    expect(foundOrders).toHaveLength(0)
+}
+
+async function expectPizzeriaHasNoOrders(orderService, pizzeriaName) {
+    const foundOrders = await orderService.findOrdersByPizzeriaName(pizzeriaName)
+    expect(foundOrders).toHaveLength(0)
+}
