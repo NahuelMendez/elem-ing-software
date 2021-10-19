@@ -37,19 +37,22 @@ describe("Consumer order", () => {
     })
 
     it("a registered consumer can place an order", async () => {
+        const lineItems = [{ productName: pepperoniPizza.getName(), quantity: 1 }]
         const orderData = {
             consumerName: registeredConsumer.getName(),
             pizzeriaName: registeredPizzeria.getName(),
-            lineItems: [{ productName: pepperoniPizza.getName(), quantity: 1 }]
+            lineItems
         }
 
         await orderService.placeOrder(orderData)
 
         const foundOrders = await orderService.findOrdersByConsumerName(registeredConsumer.getName())
         expect(foundOrders).toHaveLength(1)
-        expect(foundOrders[0].wasMadeBy(registeredConsumer)).toBe(true)
-        expect(foundOrders[0].wasMadeTo(registeredPizzeria)).toBe(true)
-        expect(foundOrders[0].getLineItems()).toEqual(orderData.lineItems)
+
+        expectToContainOrderWith(
+            { consumer: registeredConsumer,  pizzeria: registeredPizzeria, lineItems },
+            foundOrders
+        )
     })
 
     it("a not registered consumer cannot place an order", async () => {
@@ -124,4 +127,14 @@ async function expectConsumerHasNoOrders(orderService, consumerName) {
 async function expectPizzeriaHasNoOrders(orderService, pizzeriaName) {
     const foundOrders = await orderService.findOrdersByPizzeriaName(pizzeriaName)
     expect(foundOrders).toHaveLength(0)
+}
+
+async function expectToContainOrderWith({ consumer, pizzeria, lineItems }, actualOrders) {
+    expect(
+        actualOrders.some(order =>
+            order.wasMadeBy(consumer) &&
+            order.wasMadeTo(pizzeria) &&
+            order.hasLineItems(lineItems)
+        )
+    ).toBe(true)
 }

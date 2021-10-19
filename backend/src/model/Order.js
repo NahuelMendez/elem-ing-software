@@ -14,6 +14,10 @@ class Order {
         return true
     }
 
+    hasLineItems(lineItems) {
+        return this.lineItems(lineItem => lineItems.includes(lineItem))
+    }
+
     getLineItems() {
         return this.lineItems
     }
