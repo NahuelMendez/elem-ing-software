@@ -1,6 +1,6 @@
 const request = require('supertest')
 const {createApp} = require('../../src/api/app')
-const {OK, NOT_FOUND} = require("../../src/api/statusCode")
+const {OK, FORBIDDEN} = require("../../src/api/statusCode")
 const testObjects = require('../testObjects')
 
 const { kentRegistrationData } = testObjects.consumersRegistrationData
@@ -29,6 +29,15 @@ describe('Consumer profile API', () => {
             telephone: kentRegistrationData.telephone,
             email: kentRegistrationData.email
         })
+    })
+
+    it(`an authenticated pizzeria cannot ask for a consumer's personal data`, async () => {
+        const pizzeriaToken = await loginToken(requester, bancheroRegistrationData)
+
+        const response = await requester.get('/api/consumer').send().set('Authorization', pizzeriaToken)
+
+        expect(response.status).toBe(FORBIDDEN)
+        expect(response.body).toEqual({ error: 'invalid token or unauthorized user' })
     })
 
 
