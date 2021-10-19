@@ -24,7 +24,7 @@ describe("Consumer order", () => {
         const usersRepository = new TransientUsersRepository()
         userService = new UserService(usersRepository)
         menuService = new MenuService(usersRepository)
-        orderService = new OrderService()
+        orderService = new OrderService(usersRepository)
 
         pepperoniPizza = productFactory.createPepperoniPizza()
         meatPizza = productFactory.createMeatPizza()
@@ -50,6 +50,23 @@ describe("Consumer order", () => {
         expect(foundOrders[0].wasMadeBy(kentBeck)).toBe(true)
         expect(foundOrders[0].wasMadeTo(banchero)).toBe(true)
         expect(foundOrders[0].getLineItems()).toEqual(orderData.lineItems)
+    })
+
+    it("a not registered consumer cannot place an order", async () => {
+        const notRegisteredConsumerName = 'NOT REGISTERED CONSUMER NAME'
+
+        const orderData = {
+            consumerName: notRegisteredConsumerName,
+            pizzeriaName: banchero.getName(),
+            lineItems: [{ productName: pepperoniPizza.getName(), quantity: 1 }]
+        }
+
+        await expect(
+            orderService.placeOrder(orderData)
+        ).rejects.toThrow(`Consumer ${notRegisteredConsumerName} not found`)
+
+        const foundOrders = await orderService.findOrdersByPizzeriaName(banchero.getName())
+        expect(foundOrders).toHaveLength(0)
     })
 
 })
