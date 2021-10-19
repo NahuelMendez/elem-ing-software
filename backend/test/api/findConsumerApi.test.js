@@ -40,5 +40,16 @@ describe('Api find consumer', () => {
         })
     })
 
+    it("cannot find consumer by name for a registered pizzeria name", async () => {
+        await registerUser(requester, bancheroRegistrationData)
+
+        const response = await getConsumer(requester, bancheroRegistrationData)
+
+        expect(response.status).toBe(NOT_FOUND)
+        expect(response.body).toEqual({
+            error: `Consumer ${bancheroRegistrationData.name} not found`
+        })
+    })
+
 })
 
