@@ -17,8 +17,8 @@ describe("Consumer order", () => {
     let pepperoniPizza
     let meatPizza
 
-    let banchero
-    let kentBeck
+    let registeredPizzeria
+    let registeredConsumer
 
     beforeEach(async () => {
         const usersRepository = new TransientUsersRepository()
@@ -29,26 +29,26 @@ describe("Consumer order", () => {
         pepperoniPizza = productFactory.createPepperoniPizza()
         meatPizza = productFactory.createMeatPizza()
 
-        banchero = await userService.registerPizzeria(bancheroRegistrationData)
+        registeredPizzeria = await userService.registerPizzeria(bancheroRegistrationData)
         await menuService.addToMenuOf(bancheroRegistrationData.name, pepperoniPizza)
         await menuService.addToMenuOf(bancheroRegistrationData.name, meatPizza)
 
-        kentBeck = await userService.registerConsumer(kentRegistrationData)
+        registeredConsumer = await userService.registerConsumer(kentRegistrationData)
     })
 
     it("a registered consumer can place an order", async () => {
         const orderData = {
-            consumerName: kentBeck.getName(),
-            pizzeriaName: banchero.getName(),
+            consumerName: registeredConsumer.getName(),
+            pizzeriaName: registeredPizzeria.getName(),
             lineItems: [{ productName: pepperoniPizza.getName(), quantity: 1 }]
         }
 
         await orderService.placeOrder(orderData)
 
-        const foundOrders = await orderService.findOrdersByConsumerName(kentBeck.getName())
+        const foundOrders = await orderService.findOrdersByConsumerName(registeredConsumer.getName())
         expect(foundOrders).toHaveLength(1)
-        expect(foundOrders[0].wasMadeBy(kentBeck)).toBe(true)
-        expect(foundOrders[0].wasMadeTo(banchero)).toBe(true)
+        expect(foundOrders[0].wasMadeBy(registeredConsumer)).toBe(true)
+        expect(foundOrders[0].wasMadeTo(registeredPizzeria)).toBe(true)
         expect(foundOrders[0].getLineItems()).toEqual(orderData.lineItems)
     })
 
@@ -57,7 +57,7 @@ describe("Consumer order", () => {
 
         const orderData = {
             consumerName: notRegisteredConsumerName,
-            pizzeriaName: banchero.getName(),
+            pizzeriaName: registeredPizzeria.getName(),
             lineItems: [{ productName: pepperoniPizza.getName(), quantity: 1 }]
         }
 
@@ -65,7 +65,7 @@ describe("Consumer order", () => {
             orderService.placeOrder(orderData)
         ).rejects.toThrow(`Consumer ${notRegisteredConsumerName} not found`)
 
-        const foundOrders = await orderService.findOrdersByPizzeriaName(banchero.getName())
+        const foundOrders = await orderService.findOrdersByPizzeriaName(registeredPizzeria.getName())
         expect(foundOrders).toHaveLength(0)
     })
 
@@ -73,7 +73,7 @@ describe("Consumer order", () => {
         const notRegisteredPizzeriaName = 'NOT REGISTERED PIZZERIA NAME'
 
         const orderData = {
-            consumerName: kentBeck.getName(),
+            consumerName: registeredConsumer.getName(),
             pizzeriaName: notRegisteredPizzeriaName,
             lineItems: [{ productName: pepperoniPizza.getName(), quantity: 1 }]
         }
@@ -82,14 +82,14 @@ describe("Consumer order", () => {
             orderService.placeOrder(orderData)
         ).rejects.toThrow(`Pizzeria ${notRegisteredPizzeriaName} not found`)
 
-        const foundOrders = await orderService.findOrdersByConsumerName(kentBeck.getName())
+        const foundOrders = await orderService.findOrdersByConsumerName(registeredConsumer.getName())
         expect(foundOrders).toHaveLength(0)
     })
 
     it("a registered consumer cannot place an order with no products", async () => {
         const orderData = {
-            consumerName: kentBeck.getName(),
-            pizzeriaName: banchero.getName(),
+            consumerName: registeredConsumer.getName(),
+            pizzeriaName: registeredPizzeria.getName(),
             lineItems: []
         }
 
@@ -97,7 +97,7 @@ describe("Consumer order", () => {
             orderService.placeOrder(orderData)
         ).rejects.toThrow(`Cannot place an order with no products`)
 
-        const foundOrders = await orderService.findOrdersByConsumerName(kentBeck.getName())
+        const foundOrders = await orderService.findOrdersByConsumerName(registeredConsumer.getName())
         expect(foundOrders).toHaveLength(0)
     })
 
