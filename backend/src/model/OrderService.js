@@ -18,6 +18,7 @@ class OrderService {
 
     async placeOrder({ consumerName, pizzeriaName, lineItems }) {
         this.assertHasSomeProducts(lineItems)
+        this.assertHasValidQuantities(lineItems)
 
         const consumer = await this.usersRepository.findConsumerByName(consumerName)
         const pizzeria = await this.usersRepository.findPizzeriaByName(pizzeriaName)
@@ -28,6 +29,11 @@ class OrderService {
     assertHasSomeProducts(lineItems) {
         if (lineItems.length === 0)
             throw new ModelException('Cannot place an order with no products')
+    }
+
+    assertHasValidQuantities(lineItems) {
+        if (lineItems.some(lineItem => lineItem.quantity < 1))
+            throw new ModelException('Line items quantity cannot be less than one')
     }
 }
 

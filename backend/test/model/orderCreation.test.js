@@ -101,4 +101,19 @@ describe("Consumer order", () => {
         expect(foundOrders).toHaveLength(0)
     })
 
+    it("line items quantity cannot be less than one", async () => {
+        const orderData = {
+            consumerName: registeredConsumer.getName(),
+            pizzeriaName: registeredPizzeria.getName(),
+            lineItems: [{ productName: pepperoniPizza.getName(), quantity: 0 }]
+        }
+
+        await expect(
+            orderService.placeOrder(orderData)
+        ).rejects.toThrow(`Line items quantity cannot be less than one`)
+
+        const foundOrders = await orderService.findOrdersByConsumerName(registeredConsumer.getName())
+        expect(foundOrders).toHaveLength(0)
+    })
+
 })
