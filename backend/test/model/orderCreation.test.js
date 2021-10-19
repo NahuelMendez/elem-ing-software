@@ -69,4 +69,21 @@ describe("Consumer order", () => {
         expect(foundOrders).toHaveLength(0)
     })
 
+    it("a registered consumer cannot place an order to a not registered pizzeria", async () => {
+        const notRegisteredPizzeriaName = 'NOT REGISTERED PIZZERIA NAME'
+
+        const orderData = {
+            consumerName: kentBeck.getName(),
+            pizzeriaName: notRegisteredPizzeriaName,
+            lineItems: [{ productName: pepperoniPizza.getName(), quantity: 1 }]
+        }
+
+        await expect(
+            orderService.placeOrder(orderData)
+        ).rejects.toThrow(`Pizzeria ${notRegisteredPizzeriaName} not found`)
+
+        const foundOrders = await orderService.findOrdersByConsumerName(kentBeck.getName())
+        expect(foundOrders).toHaveLength(0)
+    })
+
 })

@@ -17,7 +17,7 @@ class OrderService {
 
     async placeOrder({ consumerName, pizzeriaName, lineItems }) {
         const consumer = await this.usersRepository.findConsumerByName(consumerName)
-        const pizzeria = null
+        const pizzeria = await this.usersRepository.findPizzeriaByName(pizzeriaName)
         this.orders = [new Order({ consumer, pizzeria, lineItems })]
     }
 
