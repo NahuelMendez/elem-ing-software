@@ -3,17 +3,17 @@ const {ModelException} = require("./ModelException");
 
 class OrderService {
 
-    constructor(usersRepository) {
+    constructor(usersRepository, ordersRepository) {
         this.usersRepository = usersRepository
-        this.orders = []
+        this.ordersRepository = ordersRepository
     }
 
     async findOrdersByConsumerName(consumerName) {
-        return this.orders
+        return this.ordersRepository.findOrdersByConsumerName(consumerName)
     }
 
     async findOrdersByPizzeriaName(pizzeriaName) {
-        return this.orders
+        return this.ordersRepository.findOrdersByPizzeriaName(pizzeriaName)
     }
 
     async placeOrder({ consumerName, pizzeriaName, lineItems }) {
@@ -23,7 +23,9 @@ class OrderService {
         const consumer = await this.usersRepository.findConsumerByName(consumerName)
         const pizzeria = await this.usersRepository.findPizzeriaByName(pizzeriaName)
 
-        this.orders = [new Order({ consumer, pizzeria, lineItems })]
+        const newOrder = new Order({ consumer, pizzeria, lineItems })
+
+        return this.ordersRepository.save(newOrder)
     }
 
     assertHasSomeProducts(lineItems) {

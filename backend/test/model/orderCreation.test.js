@@ -1,4 +1,5 @@
 const { TransientUsersRepository } = require("../../src/model/TransientUsersRepository");
+const { TransientOrdersRepository } = require("../../src/model/TransientOrdersRepository");
 const { UserService } = require('../../src/model/UserService')
 const { MenuService } = require("../../src/model/MenuService")
 const { OrderService } = require("../../src/model/OrderService")
@@ -22,9 +23,10 @@ describe("Consumer order", () => {
 
     beforeEach(async () => {
         const usersRepository = new TransientUsersRepository()
+        const ordersRepository = new TransientOrdersRepository()
         userService = new UserService(usersRepository)
         menuService = new MenuService(usersRepository)
-        orderService = new OrderService(usersRepository)
+        orderService = new OrderService(usersRepository, ordersRepository)
 
         pepperoniPizza = productFactory.createPepperoniPizza()
         meatPizza = productFactory.createMeatPizza()
