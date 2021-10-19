@@ -5,6 +5,9 @@ const {
     kentRegistrationData
 } = require('../testObjects').consumersRegistrationData
 
+const { bancheroRegistrationData } = require('../testObjects').pizzeriasRegistrationData
+
+
 describe('Consumer search', () => {
     let userService
 
@@ -27,6 +30,14 @@ describe('Consumer search', () => {
         await expect(
             userService.findConsumerByName(kentRegistrationData.name)
         ).rejects.toThrow(`Consumer ${kentRegistrationData.name} not found`)
+    })
+
+    it("cannot find consumer by name for a registered pizzeria name", async () => {
+        await userService.registerPizzeria(bancheroRegistrationData)
+
+        await expect(
+            userService.findConsumerByName(bancheroRegistrationData.name)
+        ).rejects.toThrow(`Consumer ${bancheroRegistrationData.name} not found`)
     })
 
 })
