@@ -23,4 +23,10 @@ describe('Consumer search', () => {
         expect(foundConsumer.getRoleName()).toEqual('consumer')
     })
 
+    it("cannot find a consumer by name when it's not registered", async () => {
+        await expect(
+            userService.findConsumerByName(kentRegistrationData.name)
+        ).rejects.toThrow(`Consumer ${kentRegistrationData.name} not found`)
+    })
+
 })
