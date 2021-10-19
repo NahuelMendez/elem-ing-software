@@ -9,7 +9,7 @@ const {MenuService} = require("../model/MenuService");
 const {TransientUsersRepository} = require("../model/TransientUsersRepository");
 const {Product} = require('../model/Product')
 const {OK, CREATED, BAD_REQUEST, NOT_FOUND} = require("./statusCode")
-const {authenticatePizzeria} = require("./authenticate")
+const {authenticatePizzeria, authenticateConsumer} = require("./authenticate")
 
 const {
     registerPizzeriaRequestValidation,
@@ -44,7 +44,7 @@ const createApp = () => {
         usersService.login(loginData)
             .then(user => 
                 response
-                .header("Authorization", jwt.sign({email: user.getEmail(), role: user.getRoleName()}, 'secret'))
+                .header("Authorization", jwt.sign({username: user.getName(), email: user.getEmail(), role: user.getRoleName()}, 'secret'))
                 .status(OK).json({
                     email: user.getEmail(), 
                     username: user.getName(), 
@@ -117,6 +117,18 @@ const createApp = () => {
         menuService.updateProduct(dataToUpdate)
             .then(() => response.status(OK).json({message: "The product was updated successfully"}))
             .catch( error => response.status(BAD_REQUEST).json({error: error.message}))
+    })
+
+    app.get('/api/consumer', authenticateConsumer, (request, response) => {
+        const { user } = request
+        console.log(user)
+
+        usersService.findConsumerByName(user.username)
+            .then(consumer => response.status(OK).json({
+                username: consumer.getName(),
+                telephone: consumer.getTelephone(),
+                email: consumer.getEmail()
+            }))
     })
 
     const menuToJson = (menu) => {
