@@ -4,6 +4,7 @@ const {OK, NOT_FOUND} = require("../../src/api/statusCode")
 const testObjects = require('../testObjects')
 
 const { kentRegistrationData } = testObjects.consumersRegistrationData
+const { bancheroRegistrationData } = testObjects.pizzeriasRegistrationData
 
 const {
     registerUser,
@@ -27,6 +28,15 @@ describe('Api find consumer', () => {
             username: kentRegistrationData.name,
             telephone: kentRegistrationData.telephone,
             email: kentRegistrationData.email
+        })
+    })
+
+    it("cannot find consumer by name when it's not registered", async () => {
+        const response = await getConsumer(requester, kentRegistrationData)
+
+        expect(response.status).toBe(NOT_FOUND)
+        expect(response.body).toEqual({
+            error: `Consumer ${kentRegistrationData.name} not found`
         })
     })
 

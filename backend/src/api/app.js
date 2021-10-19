@@ -95,6 +95,7 @@ const createApp = () => {
                 telephone: consumer.getTelephone(),
                 email: consumer.getEmail()
             }))
+            .catch( error => response.status(NOT_FOUND).json({error : error.message}) )
     })
 
     app.get(searchPizzeriaPath, (request, response) => {
