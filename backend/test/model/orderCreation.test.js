@@ -86,4 +86,19 @@ describe("Consumer order", () => {
         expect(foundOrders).toHaveLength(0)
     })
 
+    it("a registered consumer cannot place an order with no products", async () => {
+        const orderData = {
+            consumerName: kentBeck.getName(),
+            pizzeriaName: banchero.getName(),
+            lineItems: []
+        }
+
+        await expect(
+            orderService.placeOrder(orderData)
+        ).rejects.toThrow(`Cannot place an order with no products`)
+
+        const foundOrders = await orderService.findOrdersByConsumerName(kentBeck.getName())
+        expect(foundOrders).toHaveLength(0)
+    })
+
 })
