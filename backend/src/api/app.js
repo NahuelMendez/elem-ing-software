@@ -3,7 +3,7 @@ const express = require('express')
 var cors = require('cors')
 const path = require('path')
 const bodyParser = require('body-parser')
-const {registerPath, loginPath, menuPath, pizzeriaPath, consumerPath, searchPizzeriaPath, updateProductPath} = require("./path")
+const {registerPath, loginPath, menuPath, pizzeriaPath, searchPizzeriaPath, updateProductPath} = require("./path")
 const {UserService} = require("../model/UserService");
 const {MenuService} = require("../model/MenuService");
 const {TransientUsersRepository} = require("../model/TransientUsersRepository");
@@ -82,18 +82,6 @@ const createApp = () => {
                 username: pizzeria.name,
                 telephone: pizzeria.telephone,
                 email: pizzeria.email
-            }))
-            .catch( error => response.status(NOT_FOUND).json({error : error.message}) )
-    })
-
-    app.get(consumerPath, (request, response) => {
-        const {consumerName} = request.params
-
-        usersService.findConsumerByName(consumerName)
-            .then(consumer => response.status(OK).json({
-                username: consumer.getName(),
-                telephone: consumer.getTelephone(),
-                email: consumer.getEmail()
             }))
             .catch( error => response.status(NOT_FOUND).json({error : error.message}) )
     })
