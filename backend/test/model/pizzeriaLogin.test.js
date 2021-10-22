@@ -1,5 +1,4 @@
-const {UserService} = require('../../src/model/UserService')
-const {TransientUsersRepository} = require("../../src/model/TransientUsersRepository");
+const { createServices } = require('../../src/model/serviceFactory')
 
 const {
     bancheroRegistrationData,
@@ -10,7 +9,8 @@ describe('Pizzeria login', () => {
     let userService
 
     beforeEach(() => {
-        userService = new UserService(new TransientUsersRepository())
+        const services = createServices()
+        userService = services.userService
     })
 
     it('can login a registered pizzeria with valid credentials', async () => {

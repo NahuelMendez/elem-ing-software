@@ -1,5 +1,4 @@
-const {UserService} = require('../../src/model/UserService')
-const {TransientUsersRepository} = require("../../src/model/TransientUsersRepository");
+const { createServices } = require('../../src/model/serviceFactory')
 
 const { createPizzeriaRegistrationData } = require('../testObjects')
 const { createConsumerRegistrationData } = require('../testObjects')
@@ -12,7 +11,8 @@ describe('Find Pizzerias matching partial name', () => {
     let muchaPizzaPizzeriaData
 
     beforeEach(() => {
-        userService = new UserService(new TransientUsersRepository())
+        const services = createServices()
+        userService = services.userService
 
         kentuckyPizzeriaData = createPizzeriaRegistrationData({name: 'Kentucky'})
         kePizzaPizzeriaData = createPizzeriaRegistrationData({name: 'Ke Pizza'})

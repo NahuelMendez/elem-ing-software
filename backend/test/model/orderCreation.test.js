@@ -1,8 +1,4 @@
-const { TransientUsersRepository } = require("../../src/model/TransientUsersRepository");
-const { TransientOrdersRepository } = require("../../src/model/TransientOrdersRepository");
-const { UserService } = require('../../src/model/UserService')
-const { MenuService } = require("../../src/model/MenuService")
-const { OrderService } = require("../../src/model/OrderService")
+const { createServices } = require('../../src/model/serviceFactory')
 
 const testObjects = require('../testObjects')
 const productFactory = require('../helpers/productFactory')
@@ -22,11 +18,10 @@ describe("Consumer order", () => {
     let registeredConsumer
 
     beforeEach(async () => {
-        const usersRepository = new TransientUsersRepository()
-        const ordersRepository = new TransientOrdersRepository()
-        userService = new UserService(usersRepository)
-        menuService = new MenuService(usersRepository)
-        orderService = new OrderService(usersRepository, ordersRepository)
+        const services = createServices()
+        userService = services.userService
+        menuService = services.menuService
+        orderService = services.orderService
 
         pepperoniPizza = productFactory.createPepperoniPizza()
         meatPizza = productFactory.createMeatPizza()
