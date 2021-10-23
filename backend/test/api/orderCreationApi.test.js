@@ -69,4 +69,90 @@ describe('Api create Order', () => {
         })
     })
 
+    it("cannot create a order if the pizzeriaName is not of type String", async () => {
+        const order = [{ productName: mozzarella.name, quantity: 1 }]
+        
+        const response = await createOrder(requester, {...bancheroRegistrationData, name: 123}, order, tokenConsumer)
+
+        expect(response.status).toBe(BAD_REQUEST)
+        expect(response.body).toEqual({
+            error: '"pizzeriaName" must be a string'
+        })
+    })
+
+    it("cannot create a order if a pizzeriaName is not provided", async () => {
+        const order = [{ productName: mozzarella.name, quantity: 1 }]
+        
+        const response = await createOrder(requester, {...bancheroRegistrationData, name: undefined}, order, tokenConsumer)
+
+        expect(response.status).toBe(BAD_REQUEST)
+        expect(response.body).toEqual({
+            error: '"pizzeriaName" is required'
+        })
+    })
+
+    it("cannot create a order if the order is not of type Array", async () => {
+        const order = 'order'
+        
+        const response = await createOrder(requester, bancheroRegistrationData, order, tokenConsumer)
+
+        expect(response.status).toBe(BAD_REQUEST)
+        expect(response.body).toEqual({
+            error: '"order" must be an array'
+        })
+    })
+
+    it("cannot create a order if a order is not provided", async () => {
+        const response = await createOrder(requester, bancheroRegistrationData, undefined, tokenConsumer)
+
+        expect(response.status).toBe(BAD_REQUEST)
+        expect(response.body).toEqual({
+            error: '"order" is required'
+        })
+    })
+
+    it("cannot create a order if a product name in line items is not provided", async () => {
+        const lineItems = [{ productName: undefined, quantity: 1 }]
+
+        const response = await createOrder(requester, bancheroRegistrationData, lineItems, tokenConsumer)
+
+        expect(response.status).toBe(BAD_REQUEST)
+        expect(response.body).toEqual({
+            error: '"product name in line items" is required'
+        })
+    })
+
+    it("cannot create a order if a quantity in line items is not provided", async () => {
+        const lineItems = [{ productName: mozzarella.name, quantity: undefined }]
+
+        const response = await createOrder(requester, bancheroRegistrationData, lineItems, tokenConsumer)
+
+        expect(response.status).toBe(BAD_REQUEST)
+        expect(response.body).toEqual({
+            error: '"quantity in line items" is required'
+        })
+    })
+
+    it("cannot create a order if the product name in line items is not of type String", async () => {
+        const lineItems = [{ productName: 1223, quantity: 1 }]
+
+        const response = await createOrder(requester, bancheroRegistrationData, lineItems, tokenConsumer)
+
+        expect(response.status).toBe(BAD_REQUEST)
+        expect(response.body).toEqual({
+            error: '"product name in line items" must be a string'
+        })
+    })
+
+    it("cannot create a order if the quantity in line items is not of type Number", async () => {
+        const lineItems = [{ productName: mozzarella.name, quantity: 'quantity' }]
+
+        const response = await createOrder(requester, bancheroRegistrationData, lineItems, tokenConsumer)
+
+        expect(response.status).toBe(BAD_REQUEST)
+        expect(response.body).toEqual({
+            error: '"quantity in line items" must be a number'
+        })
+    })
+
 })

@@ -16,7 +16,8 @@ const {authenticatePizzeria, authenticateConsumer} = require("./authenticate")
 const {
     registerPizzeriaRequestValidation,
     loginRequestValidation,
-    productRequestValidation
+    productRequestValidation,
+    orderRequestValidation
 } = require('./requestValidations')
 
 const createApp = () => {
@@ -147,7 +148,7 @@ const createApp = () => {
             }))
     })
 
-    app.post(createOrderPath, authenticateConsumer, (request, response) => {
+    app.post(createOrderPath, orderRequestValidation, authenticateConsumer, (request, response) => {
         const { user } = request
         const {pizzeriaName, order} = request.body
         
