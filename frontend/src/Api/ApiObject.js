@@ -46,6 +46,10 @@ const api = {
   
   getPizzeria: (pizzeriaName) => {
     return axios.get(`${baseURL}/api/pizzeria/${pizzeriaName}`);
+  },
+
+  confirmOrder: (data) => {
+    return axios.post(`${baseURL}/api/order`, data, createHeadesrWithToken());
   }
 
 };

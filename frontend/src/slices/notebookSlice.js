@@ -21,10 +21,15 @@ export const slice = createSlice({
       const  products = current(state).products
       const productsClean = products.filter(i => i.name !== action.payload.name || i.pizzeriaName !== action.payload.pizzeriaName)
       state.products = productsClean
+    },
+    removeAllFromPizzeria: (state, action) => {
+      const  products = current(state).products
+      const productsClean = products.filter(i => i.pizzeriaName !== action.payload)
+      state.products = productsClean
     }
   }
 });
 
-export const { addProduct, removeProduct } = slice.actions;
+export const { addProduct, removeProduct, removeAllFromPizzeria } = slice.actions;
 export const productsState = (state) => state.notebookInfo.products;
 export default slice.reducer;
