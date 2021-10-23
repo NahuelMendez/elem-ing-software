@@ -3,10 +3,12 @@ const express = require('express')
 var cors = require('cors')
 const path = require('path')
 const bodyParser = require('body-parser')
-const {registerPath, loginPath, menuPath, pizzeriaPath, consumerPath, searchPizzeriaPath, updateProductPath} = require("./path")
+const {registerPath, loginPath, menuPath, pizzeriaPath, consumerPath, searchPizzeriaPath, updateProductPath, createOrderPath} = require("./path")
 const {UserService} = require("../model/UserService");
 const {MenuService} = require("../model/MenuService");
+const {OrderService} = require("../model/OrderService");
 const {TransientUsersRepository} = require("../model/TransientUsersRepository");
+const {TransientOrdersRepository} = require("../model/TransientOrdersRepository");
 const {Product} = require('../model/Product')
 const {OK, CREATED, BAD_REQUEST, NOT_FOUND} = require("./statusCode")
 const {authenticatePizzeria, authenticateConsumer} = require("./authenticate")
@@ -20,8 +22,10 @@ const {
 const createApp = () => {
 
     const usersRepository = new TransientUsersRepository()
+    const ordersRepository = new TransientOrdersRepository()
     const usersService = new UserService(usersRepository)
     const menuService = new MenuService(usersRepository)
+    const orderService = new OrderService(usersRepository, ordersRepository)
     const app = express()
 
     app.use(cors({ exposedHeaders: 'Authorization' }))
@@ -141,6 +145,15 @@ const createApp = () => {
                 telephone: consumer.getTelephone(),
                 email: consumer.getEmail()
             }))
+    })
+
+    app.post(createOrderPath, authenticateConsumer, (request, response) => {
+        const { user } = request
+        const {pizzeriaName, order} = request.body
+        
+        orderService.placeOrder({consumerName: user.username, pizzeriaName: pizzeriaName ,lineItems: order})
+            .then(() => response.status(OK).json({message: "the order was confirmed"}))
+            .catch((error) => response.status(BAD_REQUEST).json({error: error.message}))
     })
 
     const menuToJson = (menu) => {
