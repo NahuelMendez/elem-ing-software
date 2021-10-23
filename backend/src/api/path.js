@@ -13,5 +13,15 @@ const searchPizzeriaPath = '/api/search/pizzeria'
 
 const updateProductPath = '/api/pizzeria/:pizzeriaName/menu/:productName'
 
+const createOrderPath = '/api/order'
 
-module.exports = {registerPath, menuPath, loginPath, pizzeriaPath, consumerPath, searchPizzeriaPath, updateProductPath}
+module.exports = {
+    registerPath, 
+    menuPath, 
+    loginPath, 
+    pizzeriaPath, 
+    consumerPath, 
+    searchPizzeriaPath, 
+    updateProductPath,
+    createOrderPath
+}
