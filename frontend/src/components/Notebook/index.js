@@ -37,7 +37,7 @@ const Notebook = () => {
             <div>
               <p className="text-xs m-0 unit-product text-gray-500">x{i.cant}</p>
             </div>
-            <img src={deleteIcon} className="h-6 w-auto cursor-pointer" onClick={() => handleDeleteProduct(i)} alt="delete-icon"/>
+            <img src={deleteIcon} className="delete-product h-6 w-auto cursor-pointer" onClick={() => handleDeleteProduct(i)} alt="delete-icon"/>
           </div>
         ))
       }
