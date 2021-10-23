@@ -1,6 +1,6 @@
 const request = require('supertest')
 const {createApp} = require('../../src/api/app')
-const {OK, BAD_REQUEST, FORBIDDEN} = require("../../src/api/statusCode")
+const {CREATED, BAD_REQUEST, FORBIDDEN} = require("../../src/api/statusCode")
 
 const testObjects = require('../testObjects')
 
@@ -32,7 +32,7 @@ describe('Api create Order', () => {
         
         const response = await createOrder(requester, bancheroRegistrationData, order, tokenConsumer)
 
-        expect(response.status).toBe(OK)
+        expect(response.status).toBe(CREATED)
         expect(response.body).toEqual({
             message: "the order was confirmed"
         })

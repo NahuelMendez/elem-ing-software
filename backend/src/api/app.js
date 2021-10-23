@@ -153,7 +153,7 @@ const createApp = () => {
         const {pizzeriaName, order} = request.body
         
         orderService.placeOrder({consumerName: user.username, pizzeriaName: pizzeriaName ,lineItems: order})
-            .then(() => response.status(OK).json({message: "the order was confirmed"}))
+            .then(() => response.status(CREATED).json({message: "the order was confirmed"}))
             .catch((error) => response.status(BAD_REQUEST).json({error: error.message}))
     })
 
