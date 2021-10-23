@@ -13,13 +13,18 @@ export const slice = createSlice({
         state.products = [...products, { ...action.payload, cant: 1 }]
       }
       else {
-        const productsClean = products.filter(i => i.name !== action.payload.name)
+        const productsClean = products.filter(i => i.name !== action.payload.name || i.pizzeriaName !== action.payload.pizzeriaName)
         state.products = [...productsClean, { ...action.payload, cant: productToAdd.cant + 1 }]
       }
+    },
+    removeProduct: (state, action) => {
+      const  products = current(state).products
+      const productsClean = products.filter(i => i.name !== action.payload.name || i.pizzeriaName !== action.payload.pizzeriaName)
+      state.products = productsClean
     }
   }
 });
 
-export const { addProduct } = slice.actions;
+export const { addProduct, removeProduct } = slice.actions;
 export const productsState = (state) => state.notebookInfo.products;
 export default slice.reducer;
