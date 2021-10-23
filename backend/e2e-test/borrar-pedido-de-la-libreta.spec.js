@@ -22,7 +22,7 @@ describe('Consumidor - delete product from notebook', () => {
         await browser.close()
     })
 
-    it.only(`when a user clicks the delete button next to a product, that product and all its units disappear from the notebook`, async () => {
+    it(`when a user clicks the delete button next to a product, that product and all its units disappear from the notebook`, async () => {
         const pizzeriaData = createPizzeriaRegistrationData({})
         const pizzaData = createPizzaData({})
         await registerAsPizzeriaAndGoToMenu(page, pizzeriaData)
@@ -32,8 +32,8 @@ describe('Consumidor - delete product from notebook', () => {
         await page.waitForSelector('.product-container .button-add > img')
         await page.click('.product-container .button-add > img')
 
-        await page.waitForSelector('.notebook-container .delete-product > img')
-        await page.click('.notebook-container .delete-product > img')
+        await page.waitForSelector('.notebook-container .delete-product')
+        await page.click('.notebook-container .delete-product')
 
         await expectTextContent(page, '.notebook-container .total', "0")
     })
