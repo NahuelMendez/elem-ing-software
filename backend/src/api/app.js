@@ -22,6 +22,7 @@ const createApp = () => {
     const services = createServices()
     const usersService = services.userService
     const menuService = services.menuService
+    const orderService = services.orderService
 
     const app = express()
 
@@ -48,7 +49,7 @@ const createApp = () => {
                 .header("Authorization", jwt.sign({username: user.getName(), email: user.getEmail(), role: user.getRoleName()}, 'secret'))
                 .status(OK).json({
                     email: user.getEmail(), 
-                    username: user.getName(), 
+                    username: user.getName(),
                     rol: user.getRoleName()
                 }))
             .catch(error => response.status(NOT_FOUND).json({error: error.message}))
