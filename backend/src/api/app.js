@@ -4,12 +4,10 @@ var cors = require('cors')
 const path = require('path')
 const bodyParser = require('body-parser')
 const {registerPath, loginPath, menuPath, pizzeriaPath, consumerPath, searchPizzeriaPath, updateProductPath, createOrderPath} = require("./path")
-const {UserService} = require("../model/UserService");
-const {MenuService} = require("../model/MenuService");
-const {OrderService} = require("../model/OrderService");
-const {TransientUsersRepository} = require("../model/TransientUsersRepository");
-const {TransientOrdersRepository} = require("../model/TransientOrdersRepository");
+
+const { createServices } = require('../../src/model/serviceFactory')
 const {Product} = require('../model/Product')
+
 const {OK, CREATED, BAD_REQUEST, NOT_FOUND} = require("./statusCode")
 const {authenticatePizzeria, authenticateConsumer} = require("./authenticate")
 
@@ -21,12 +19,11 @@ const {
 } = require('./requestValidations')
 
 const createApp = () => {
+    const services = createServices()
+    const usersService = services.userService
+    const menuService = services.menuService
+    const orderService = services.orderService
 
-    const usersRepository = new TransientUsersRepository()
-    const ordersRepository = new TransientOrdersRepository()
-    const usersService = new UserService(usersRepository)
-    const menuService = new MenuService(usersRepository)
-    const orderService = new OrderService(usersRepository, ordersRepository)
     const app = express()
 
     app.use(cors({ exposedHeaders: 'Authorization' }))
@@ -52,7 +49,7 @@ const createApp = () => {
                 .header("Authorization", jwt.sign({username: user.getName(), email: user.getEmail(), role: user.getRoleName()}, 'secret'))
                 .status(OK).json({
                     email: user.getEmail(), 
-                    username: user.getName(), 
+                    username: user.getName(),
                     rol: user.getRoleName()
                 }))
             .catch(error => response.status(NOT_FOUND).json({error: error.message}))
@@ -151,7 +148,7 @@ const createApp = () => {
     app.post(createOrderPath, orderRequestValidation, authenticateConsumer, (request, response) => {
         const { user } = request
         const {pizzeriaName, order} = request.body
-        
+
         orderService.placeOrder({consumerName: user.username, pizzeriaName: pizzeriaName ,lineItems: order})
             .then(() => response.status(CREATED).json({message: "the order was confirmed"}))
             .catch((error) => response.status(BAD_REQUEST).json({error: error.message}))
