@@ -20,6 +20,7 @@ function App() {
       <Route path="/register" component={RegisterView}/>
       <Route path="/busquedas" component={SearchResult}/>
       <Route path="/pizzeria/:pizzeriaName" component={PizzeriaView}/>
+      <Route path="/profile" component={Profile}/>
     </Router>
   );
 }
