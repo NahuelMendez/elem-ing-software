@@ -25,7 +25,7 @@ const Profile = () => {
     <div className="pb-4">
       <NavBar />
       <ConsumerInfo 
-        name={consumer.username}
+        username={consumer.username}
         email={consumer.email}
         telephone={consumer.telephone} />
     </div>

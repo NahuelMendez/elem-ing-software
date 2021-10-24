@@ -11,9 +11,9 @@ const ConsumerInfo = ({ username, email, telephone }) => {
                     </div>
                     <div className="cmr-info-dtl">
                         <ul>
-                            <li>{username}</li>
-                            <li>{telephone}</li>
-                            <li>{email}</li>
+                            <li className="mb-3"><b>Nombre:</b> {username}</li>
+                            <li className="mb-3"><b>Telefono:</b> {telephone}</li>
+                            <li className="mb-3"><b>Email:</b> {email}</li>
                         </ul>
                     </div>
                 </div>
