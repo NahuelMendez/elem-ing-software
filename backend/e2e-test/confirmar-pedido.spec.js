@@ -9,6 +9,8 @@ const {
 
 const { createPizzeriaRegistrationData, createPizzaData, createConsumerRegistrationData } = require('../test/testObjects')
 
+jest.setTimeout(15000)
+
 describe('Consumidor - confirm order in notebook', () => {
     let browser
     let page
@@ -20,6 +22,17 @@ describe('Consumidor - confirm order in notebook', () => {
     
     afterEach(async () => {
         await browser.close()
+    })
+
+    it(`a notebook with no products should not have a confirm button`, async () => {
+        const pizzeriaData = createPizzeriaRegistrationData({})
+        const pizzaData = createPizzaData({})
+        await registerAsPizzeriaAndGoToMenu(page, pizzeriaData)
+        await addProduct(page, pizzaData)
+        await goto(page, `/pizzeria/${pizzeriaData.name}`)
+
+        const foundElements = await page.$$('[name="confirm-button"]')
+        expect(foundElements).toHaveLength(0)
     })
 
     it(`when a notebook has at least one product, a confirm button appears`, async () => {
