@@ -41,7 +41,7 @@ describe('Consumidor - delete product from notebook', () => {
         await expectTextContent(page, '.notebook-container .total', "0")
     })
 
-    it(`when a user clicks the delete button next to a product, total is modified`, async () => {
+    it(`when a consumer clicks the delete button next to a product on a notebook, total is modified`, async () => {
         const pizzeriaData = createPizzeriaRegistrationData({})
         const pizzaData = createPizzaData({})
         await registerAsPizzeriaAndGoToMenu(page, pizzeriaData)
