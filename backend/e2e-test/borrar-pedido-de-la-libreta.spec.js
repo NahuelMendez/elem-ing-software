@@ -22,7 +22,7 @@ describe('Consumidor - delete product from notebook', () => {
         await browser.close()
     })
 
-    it.only(`when a user clicks the delete button next to a product, that product and all its units disappear from the notebook`, async () => {
+    it(`when a user clicks the delete button next to a product, that product and all its units disappear from the notebook`, async () => {
         const pizzeriaData = createPizzeriaRegistrationData({})
         const pizzaData = createPizzaData({})
         await registerAsPizzeriaAndGoToMenu(page, pizzeriaData)
