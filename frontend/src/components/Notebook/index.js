@@ -16,6 +16,9 @@ const Notebook = () => {
   useEffect(() => {
     const toShow = products.filter(i => i.pizzeriaName === pizzeriaName)
     setProductsToShow(toShow)
+    if(products.length > 0 && result){
+      handleCloseAlert()
+    }
   }, [products])
 
   useEffect(() => {
@@ -62,7 +65,7 @@ const Notebook = () => {
             </div>
           ))
         }
-        {result && products.length == 0 &&
+        {result && 
           <div className={`alert ${result.error ? "alert-danger" : "alert-success"} alert-confirm flex flex-col`} role="alert">
             <div onClick={handleCloseAlert} className="flex justify-end font-bold cursor-pointer">x</div>
             <p className="m-0 p-0 text-sm">{result.message}</p>
