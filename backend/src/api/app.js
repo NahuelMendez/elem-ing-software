@@ -3,25 +3,27 @@ const express = require('express')
 var cors = require('cors')
 const path = require('path')
 const bodyParser = require('body-parser')
-const {registerPath, loginPath, menuPath, pizzeriaPath, searchPizzeriaPath, updateProductPath} = require("./path")
-const {UserService} = require("../model/UserService");
-const {MenuService} = require("../model/MenuService");
-const {TransientUsersRepository} = require("../model/TransientUsersRepository");
+const {registerPath, loginPath, menuPath, pizzeriaPath, searchPizzeriaPath, updateProductPath, createOrderPath} = require("./path")
+
+const { createServices } = require('../../src/model/serviceFactory')
 const {Product} = require('../model/Product')
+
 const {OK, CREATED, BAD_REQUEST, NOT_FOUND} = require("./statusCode")
-const {authenticatePizzeria} = require("./authenticate")
+const {authenticatePizzeria, authenticateConsumer} = require("./authenticate")
 
 const {
     registerPizzeriaRequestValidation,
     loginRequestValidation,
-    productRequestValidation
+    productRequestValidation,
+    orderRequestValidation
 } = require('./requestValidations')
 
 const createApp = () => {
+    const services = createServices()
+    const usersService = services.userService
+    const menuService = services.menuService
+    const orderService = services.orderService
 
-    const usersRepository = new TransientUsersRepository()
-    const usersService = new UserService(usersRepository)
-    const menuService = new MenuService(usersRepository)
     const app = express()
 
     app.use(cors({ exposedHeaders: 'Authorization' }))
@@ -44,10 +46,10 @@ const createApp = () => {
         usersService.login(loginData)
             .then(user => 
                 response
-                .header("Authorization", jwt.sign({email: user.getEmail(), role: user.getRoleName()}, 'secret'))
+                .header("Authorization", jwt.sign({username: user.getName(), email: user.getEmail(), role: user.getRoleName()}, 'secret'))
                 .status(OK).json({
                     email: user.getEmail(), 
-                    username: user.getName(), 
+                    username: user.getName(),
                     rol: user.getRoleName()
                 }))
             .catch(error => response.status(NOT_FOUND).json({error: error.message}))
@@ -117,6 +119,27 @@ const createApp = () => {
         menuService.updateProduct(dataToUpdate)
             .then(() => response.status(OK).json({message: "The product was updated successfully"}))
             .catch( error => response.status(BAD_REQUEST).json({error: error.message}))
+    })
+
+    app.get('/api/consumer', authenticateConsumer, (request, response) => {
+        const { user } = request
+        console.log(user)
+
+        usersService.findConsumerByName(user.username)
+            .then(consumer => response.status(OK).json({
+                username: consumer.getName(),
+                telephone: consumer.getTelephone(),
+                email: consumer.getEmail()
+            }))
+    })
+
+    app.post(createOrderPath, orderRequestValidation, authenticateConsumer, (request, response) => {
+        const { user } = request
+        const {pizzeriaName, order} = request.body
+
+        orderService.placeOrder({consumerName: user.username, pizzeriaName: pizzeriaName ,lineItems: order})
+            .then(() => response.status(CREATED).json({message: "the order was confirmed"}))
+            .catch((error) => response.status(BAD_REQUEST).json({error: error.message}))
     })
 
     const menuToJson = (menu) => {

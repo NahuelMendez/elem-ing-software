@@ -41,6 +41,7 @@ const NavBar = () => {
       {showProfileOptions &&
         <div onMouseLeave={handleShowProfileOptions} className="absolute flex flex-col right-0 mt-10 w-40 bg-white rounded-md border-2 border-gray-secundary z-10">
           {role === 'pizzeria' && <Link name="go-to-menu" className="p-2" to="/menu">Editar Menú</Link>}
+          {role !== 'pizzeria' && <Link name="profile-button" className="p-2 profile-button" to="/profile">Mi Perfil</Link>}
           <Link onClick={handleDeleteUserInfo} name="logout-button" className="p-2" to="/login">Cerrar sesión</Link>
         </div>
       }

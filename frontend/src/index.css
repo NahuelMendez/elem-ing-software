@@ -92,8 +92,6 @@ code {
   text-align: center;
 }
 
-
-
 .pizzap-modal {
   position: fixed;
   z-index: 1;
@@ -106,4 +104,27 @@ code {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.cmr-info-container {
+  align-items: center;
+  display: grid;
+  grid-template-columns: 20% 60% 20%;
+}
+
+.cmr-info-body-container {
+  display: flex;
+  grid-column: 2/3;
+}
+
+.cmr-info-body {
+  display: table;
+  align-self: center;
+  border: solid 1px grey;
+}
+
+.cmr-info-dtl {
+  margin-top: 15px;
+  font-size: larger;
+  text-align: justify;
 }

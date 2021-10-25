@@ -1,5 +1,4 @@
-const {UserService} = require('../../src/model/UserService')
-const {TransientUsersRepository} = require("../../src/model/TransientUsersRepository");
+const { createServices } = require('../../src/model/serviceFactory')
 
 const {
     kentRegistrationData,
@@ -10,7 +9,8 @@ describe('Consumer registration', () => {
     let userService
 
     beforeEach(() => {
-        userService = new UserService(new TransientUsersRepository())
+        const services = createServices()
+        userService = services.userService
     })
 
     it('can register a new consumer with valid registration data', async () => {

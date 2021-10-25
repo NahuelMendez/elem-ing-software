@@ -1,5 +1,5 @@
-const {UserService} = require('../../src/model/UserService')
-const {TransientUsersRepository} = require("../../src/model/TransientUsersRepository");
+const { createServices } = require('../../src/model/serviceFactory')
+
 const testObjects = require('../testObjects')
 
 const { bancheroRegistrationData } = testObjects.pizzeriasRegistrationData
@@ -9,7 +9,8 @@ describe('Find Pizzeria', () => {
     let userService
 
     beforeEach(() => {
-        userService = new UserService(new TransientUsersRepository())
+        const services = createServices()
+        userService = services.userService
     })
 
     it("can find pizzeria by name when it's registered", async () => {
