@@ -3,10 +3,11 @@ const {
     goto,
     registerAsPizzeriaAndGoToMenu,
     addProduct,
-    expectTextContent
+    expectTextContent,
+    registerAndLoginConsumer
 } = require('./helpers/helpers')
 
-const { createPizzeriaRegistrationData, createPizzaData } = require('../test/testObjects')
+const { createPizzeriaRegistrationData, createPizzaData, createConsumerRegistrationData } = require('../test/testObjects')
 
 describe('Consumidor - confirm order in notebook', () => {
     let browser
@@ -31,7 +32,7 @@ describe('Consumidor - confirm order in notebook', () => {
         await page.waitForSelector('.product-container .button-add > img')
         await page.click('.product-container .button-add > img')
 
-        await page.waitForSelector('.notebook-container .confirm-button > button')
+        await page.waitForSelector('[name="confirm-button"]')
     })
 
     it(`when a user clicks the confirm button and its correct, a success message appears`, async () => {
@@ -39,13 +40,14 @@ describe('Consumidor - confirm order in notebook', () => {
         const pizzaData = createPizzaData({})
         await registerAsPizzeriaAndGoToMenu(page, pizzeriaData)
         await addProduct(page, pizzaData)
+        await registerAndLoginConsumer(page, createConsumerRegistrationData({}))
         await goto(page, `/pizzeria/${pizzeriaData.name}`)
 
         await page.waitForSelector('.product-container .button-add > img')
         await page.click('.product-container .button-add > img')
        
-        await page.waitForSelector('.notebook-container .confirm-button > button')
-        await page.click('.notebook-container .confirm-button > button')
+        await page.waitForSelector('[name="confirm-button"]')
+        await page.evaluate(() => document.querySelector('[name="confirm-button"]').click())
 
         await page.waitForSelector('.notebook-container .alert-confirm')
         await expectTextContent(page, '.notebook-container .alert-confirm > p', "Tú pedido fue confirmado")
@@ -56,13 +58,14 @@ describe('Consumidor - confirm order in notebook', () => {
         const pizzaData = createPizzaData({})
         await registerAsPizzeriaAndGoToMenu(page, pizzeriaData)
         await addProduct(page, pizzaData)
+        await registerAndLoginConsumer(page, createConsumerRegistrationData({}))
         await goto(page, `/pizzeria/${pizzeriaData.name}`)
 
         await page.waitForSelector('.product-container .button-add > img')
         await page.click('.product-container .button-add > img')
        
-        await page.waitForSelector('.notebook-container .confirm-button > button')
-        await page.click('.notebook-container .confirm-button > button')
+        await page.waitForSelector('[name="confirm-button"]')
+        await page.evaluate(() => document.querySelector('[name="confirm-button"]').click())
 
         await page.waitForSelector('.notebook-container .alert-confirm')
         await expectTextContent(page, '.notebook-container .alert-confirm > p', "Tú pedido fue confirmado")

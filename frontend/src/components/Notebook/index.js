@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useParams } from "react-router"
-import { addProduct, productsState, removeAllFromPizzeria, removeProduct } from "../../slices/notebookSlice"
+import { productsState, removeAllFromPizzeria, removeProduct } from "../../slices/notebookSlice"
 import deleteIcon from "../../assets/delete-icon.png"
 import api from "../../Api/ApiObject"
 
@@ -74,8 +74,8 @@ const Notebook = () => {
         </div>
       </div>
       {products.length !== 0 &&
-        <div className="w-full flex confirm-button justify-center">
-          <button onClick={handleConfirm} className="button-principal w-4/5">Confirmar</button>
+        <div className="w-full flex justify-center">
+          <button name="confirm-button" onClick={handleConfirm} className="button-principal w-4/5">Confirmar</button>
         </div>
       }
     </div>
