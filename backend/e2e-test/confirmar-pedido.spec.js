@@ -74,7 +74,6 @@ describe('Consumidor - confirm order in notebook', () => {
         await page.evaluate(() => document.querySelector('[name="confirm-button"]').click())
 
         await page.waitForSelector('.notebook-container .alert-confirm')
-        await expectTextContent(page, '.notebook-container .alert-confirm > p', "Tú pedido fue confirmado")
         await expectTextContent(page, '.notebook-container .total', "0")
     })
 
