@@ -27,6 +27,8 @@ describe('Consumidor - confirm order in notebook', () => {
 
     it(`a notebook with no products should not have a confirm button`, async () => {
         const { pizzeriaData } = await registerPizzeriaWithAmountOfProducts(page, 1)
+        await registerAndLoginConsumer(page, createConsumerRegistrationData({}))
+        
         await goto(page, `/pizzeria/${pizzeriaData.name}`)
 
         const foundElements = await page.$$('[name="confirm-button"]')
@@ -35,6 +37,7 @@ describe('Consumidor - confirm order in notebook', () => {
 
     it(`when a notebook has at least one product, a confirm button appears`, async () => {
         const { pizzeriaData } = await registerPizzeriaWithAmountOfProducts(page, 1)
+        await registerAndLoginConsumer(page, createConsumerRegistrationData({}))
         await goto(page, `/pizzeria/${pizzeriaData.name}`)
 
         await page.waitForSelector('.product-container .button-add > img')
