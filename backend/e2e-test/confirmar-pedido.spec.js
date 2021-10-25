@@ -94,4 +94,22 @@ describe('Consumidor - confirm order in notebook', () => {
         expect(foundElements).toHaveLength(0)
     })
 
+    it('given a notebook with an order confirmation message, when a new product is added to the notebook, then the message dissapear', async () => {
+        const { pizzeriaData } = await registerPizzeriaWithAmountOfProducts(page, 1)
+        await registerAndLoginConsumer(page, createConsumerRegistrationData({}))
+
+        await goto(page, `/pizzeria/${pizzeriaData.name}`)
+        await page.waitForSelector('.product-container .button-add > img')
+        await page.click('.product-container .button-add > img')
+       
+        await page.waitForSelector('[name="confirm-button"]')
+        await page.evaluate(() => document.querySelector('[name="confirm-button"]').click())
+
+        await page.click('.product-container .button-add > img')
+
+        await page.waitForSelector('.name-product')
+        const foundElements = await page.$$('.notebook-container .alert-confirm')
+        expect(foundElements).toHaveLength(0)
+    })
+
 })

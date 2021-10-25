@@ -62,7 +62,7 @@ const Notebook = () => {
             </div>
           ))
         }
-        {result &&
+        {result && products.length == 0 &&
           <div className={`alert ${result.error ? "alert-danger" : "alert-success"} alert-confirm flex flex-col`} role="alert">
             <div onClick={handleCloseAlert} className="flex justify-end font-bold cursor-pointer">x</div>
             <p className="m-0 p-0 text-sm">{result.message}</p>
