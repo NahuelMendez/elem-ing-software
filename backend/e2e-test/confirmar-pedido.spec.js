@@ -2,6 +2,7 @@ const puppeteer = require('puppeteer')
 const {
     goto,
     registerAsPizzeriaAndGoToMenu,
+    registerPizzeriaWithAmountOfProducts,
     addProduct,
     expectTextContent,
     registerAndLoginConsumer
@@ -25,10 +26,7 @@ describe('Consumidor - confirm order in notebook', () => {
     })
 
     it(`a notebook with no products should not have a confirm button`, async () => {
-        const pizzeriaData = createPizzeriaRegistrationData({})
-        const pizzaData = createPizzaData({})
-        await registerAsPizzeriaAndGoToMenu(page, pizzeriaData)
-        await addProduct(page, pizzaData)
+        const { pizzeriaData } = await registerPizzeriaWithAmountOfProducts(page, 1)
         await goto(page, `/pizzeria/${pizzeriaData.name}`)
 
         const foundElements = await page.$$('[name="confirm-button"]')
@@ -36,10 +34,7 @@ describe('Consumidor - confirm order in notebook', () => {
     })
 
     it(`when a notebook has at least one product, a confirm button appears`, async () => {
-        const pizzeriaData = createPizzeriaRegistrationData({})
-        const pizzaData = createPizzaData({})
-        await registerAsPizzeriaAndGoToMenu(page, pizzeriaData)
-        await addProduct(page, pizzaData)
+        const { pizzeriaData } = await registerPizzeriaWithAmountOfProducts(page, 1)
         await goto(page, `/pizzeria/${pizzeriaData.name}`)
 
         await page.waitForSelector('.product-container .button-add > img')
@@ -49,10 +44,8 @@ describe('Consumidor - confirm order in notebook', () => {
     })
 
     it(`when a user clicks the confirm button and its correct, a success message appears`, async () => {
-        const pizzeriaData = createPizzeriaRegistrationData({})
-        const pizzaData = createPizzaData({})
-        await registerAsPizzeriaAndGoToMenu(page, pizzeriaData)
-        await addProduct(page, pizzaData)
+        const { pizzeriaData } = await registerPizzeriaWithAmountOfProducts(page, 1)
+
         await registerAndLoginConsumer(page, createConsumerRegistrationData({}))
         await goto(page, `/pizzeria/${pizzeriaData.name}`)
 
@@ -67,10 +60,7 @@ describe('Consumidor - confirm order in notebook', () => {
     })
 
     it(`when a user clicks the confirm button and its successful, the products in the notebook dissapear`, async () => {
-        const pizzeriaData = createPizzeriaRegistrationData({})
-        const pizzaData = createPizzaData({})
-        await registerAsPizzeriaAndGoToMenu(page, pizzeriaData)
-        await addProduct(page, pizzaData)
+        const { pizzeriaData } = await registerPizzeriaWithAmountOfProducts(page, 1)
         await registerAndLoginConsumer(page, createConsumerRegistrationData({}))
         await goto(page, `/pizzeria/${pizzeriaData.name}`)
 
