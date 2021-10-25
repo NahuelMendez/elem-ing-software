@@ -32,8 +32,8 @@ describe('Consumidor - delete product from notebook', () => {
         await page.waitForSelector('.product-container .button-add > img')
         await page.click('.product-container .button-add > img')
 
-        await page.waitForSelector('.notebook-container .delete-product > img')
-        await page.click('.notebook-container .delete-product > img')
+        await page.waitForSelector('.notebook-container .delete-product')
+        await page.click('.notebook-container .delete-product')
 
         await expectTextContent(page, '.notebook-container .total', "0")
     })

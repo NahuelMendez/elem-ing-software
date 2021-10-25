@@ -40,6 +40,10 @@ class UserService {
         })
     }
 
+    async findConsumerByName(name) {
+        return await this.usersRepository.findConsumerByName(name)
+    }
+
     async findPizzeriaByName(name) {
         return await this.usersRepository.findPizzeriaByName(name)
     }

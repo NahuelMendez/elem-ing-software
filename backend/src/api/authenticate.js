@@ -17,4 +17,7 @@ const authenticate = role => (request, response, next) => {
     }
 }
 
-module.exports = { authenticatePizzeria: authenticate('pizzeria')}
+module.exports = {
+    authenticatePizzeria: authenticate('pizzeria'),
+    authenticateConsumer: authenticate('consumer')
+}

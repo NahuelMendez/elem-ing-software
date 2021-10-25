@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useParams } from "react-router"
-import { addProduct, productsState, removeAllFromPizzeria, removeProduct } from "../../slices/notebookSlice"
+import { productsState, removeAllFromPizzeria, removeProduct } from "../../slices/notebookSlice"
 import deleteIcon from "../../assets/delete-icon.png"
 import api from "../../Api/ApiObject"
 
@@ -28,14 +28,17 @@ const Notebook = () => {
   }
 
   const handleConfirm = () => {
-    api.confirmOrder({pizzeriaName, order: JSON.stringify(productsToShow)})
-    .then(() => {
-      setResult({ error: false, message: "Tú pedido fue confirmado" })
-      dispatch(removeAllFromPizzeria(pizzeriaName))
+    const productsToSend = productsToShow.map(i => {
+      return { productName: i.name, quantity: i.cant }
     })
-    .catch(() => {
-      setResult({ error: true, message: "Tú pedido no pudo ser confirmado. Por favor, intente nuevamente." })
-    })
+    api.confirmOrder({ pizzeriaName, order: productsToSend })
+      .then(() => {
+        setResult({ error: false, message: "Tú pedido fue confirmado" })
+        dispatch(removeAllFromPizzeria(pizzeriaName))
+      })
+      .catch(() => {
+        setResult({ error: true, message: "Tú pedido no pudo ser confirmado. Por favor, intente nuevamente." })
+      })
   }
 
   const handleCloseAlert = () => {
@@ -43,7 +46,7 @@ const Notebook = () => {
   }
 
   return (
-    <div className="card border-gray-500 border w-1/5 p-4 flex flex-col  justify-between notebook-container">
+    <div className="card border-gray-500 border w-1/5 p-4 flex flex-col justify-between notebook-container">
       <div>
         {
           productsToShow.map((i, index) => (
@@ -55,12 +58,12 @@ const Notebook = () => {
               <div>
                 <p className="text-xs m-0 unit-product text-gray-500">x{i.cant}</p>
               </div>
-              <img src={deleteIcon} className="delete-product h-6 w-auto cursor-pointer" onClick={() => handleDeleteProduct(i)} alt="delete-icon" />
+              <img onClick={() => handleDeleteProduct(i)} src={deleteIcon} className="delete-product h-6 w-auto cursor-pointer" alt="delete-icon" />
             </div>
           ))
         }
         {result &&
-          <div className={`alert ${result.error ? "alert-danger" : "alert-success"} flex flex-col`} role="alert">
+          <div className={`alert ${result.error ? "alert-danger" : "alert-success"} alert-confirm flex flex-col`} role="alert">
             <div onClick={handleCloseAlert} className="flex justify-end font-bold cursor-pointer">x</div>
             <p className="m-0 p-0 text-sm">{result.message}</p>
           </div>
@@ -72,7 +75,7 @@ const Notebook = () => {
       </div>
       {products.length !== 0 &&
         <div className="w-full flex justify-center">
-          <button onClick={handleConfirm} className="button-principal w-4/5">Confirmar</button>
+          <button name="confirm-button" onClick={handleConfirm} className="button-principal w-4/5">Confirmar</button>
         </div>
       }
     </div>
