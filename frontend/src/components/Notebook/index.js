@@ -28,7 +28,10 @@ const Notebook = () => {
   }
 
   const handleConfirm = () => {
-    api.confirmOrder({ pizzeriaName, order: JSON.stringify(productsToShow) })
+    const productsToSend = productsToShow.map(i => {
+      return { productName: i.name, quantity: i.cant }
+    })
+    api.confirmOrder({ pizzeriaName, order: productsToSend })
       .then(() => {
         setResult({ error: false, message: "Tú pedido fue confirmado" })
         dispatch(removeAllFromPizzeria(pizzeriaName))
