@@ -5,8 +5,6 @@ const loginPath = '/api/login'
 
 const menuPath = '/api/pizzeria/:pizzeriaName/menu'
 
-const consumerPath = '/api/consumer/:consumerName'
-
 const pizzeriaPath = '/api/pizzeria/:pizzeriaName'
 
 const searchPizzeriaPath = '/api/search/pizzeria'
@@ -19,8 +17,7 @@ module.exports = {
     registerPath, 
     menuPath, 
     loginPath, 
-    pizzeriaPath, 
-    consumerPath, 
+    pizzeriaPath,
     searchPizzeriaPath, 
     updateProductPath,
     createOrderPath
