@@ -22,6 +22,8 @@ class User {
 
     isPizzeria() { return this.getRoleName() === 'pizzeria' }
 
+    isConsumer() { return this.getRoleName() === 'consumer' }
+
     getName() { return this.name }
 
     getTelephone() { return this.telephone }

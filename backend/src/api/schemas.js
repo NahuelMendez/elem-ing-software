@@ -21,4 +21,18 @@ const productSchema =
         imageURL: Joi.string().required().label('product imageURL')
     })
 
-module.exports = {userSchema, productSchema, loginSchema}
+const lineItemsSchema =
+    Joi.object({
+        productName: Joi.string().required().label('product name in line items'),
+        quantity: Joi.number().required().label('quantity in line items')
+    })
+
+const orderSchema =
+    Joi.object({
+        pizzeriaName: Joi.string().required(),
+        order: Joi.array().required().items(lineItemsSchema)
+    })
+
+
+
+module.exports = {userSchema, productSchema, loginSchema, orderSchema}

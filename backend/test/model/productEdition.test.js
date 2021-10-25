@@ -1,6 +1,5 @@
-const {UserService} = require('../../src/model/UserService')
-const {MenuService} = require("../../src/model/MenuService");
-const {TransientUsersRepository} = require("../../src/model/TransientUsersRepository");
+const { createServices } = require('../../src/model/serviceFactory')
+
 const productFactory = require("../helpers/productFactory");
 
 const {
@@ -16,9 +15,9 @@ describe(`Edit product of pizzeria's menu`, () => {
     let meatPizza
 
     beforeEach(() => {
-        usersRepository = new TransientUsersRepository()
-        userService = new UserService(usersRepository)
-        menuService = new MenuService(usersRepository)
+        const services = createServices()
+        userService = services.userService
+        menuService = services.menuService
 
         pepperoniPizza = productFactory.createPepperoniPizza()
         meatPizza = productFactory.createMeatPizza()
