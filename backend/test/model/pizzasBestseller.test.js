@@ -49,9 +49,44 @@ describe('Pizzas bestseller', () => {
         })
 
         const topThree = await orderService.pizzasBestsellers({ limit: 3 })
+        expect(topThree).toHaveLength(3)
         expect(topThree[0]).toEqual({ pizzeria: banchero, product: pizzas[2], totalSellsQuantity: 30 })
         expect(topThree[1]).toEqual({ pizzeria: banchero, product: pizzas[1], totalSellsQuantity: 20 })
         expect(topThree[2]).toEqual({ pizzeria: banchero, product: pizzas[0], totalSellsQuantity: 10 })
     })
 
+    it('given there are many order with repeated products of the same pizzeria, when ask for the pizzas with the most sells, then the total sells quantity for these pizzas should be added', async () => {
+        await userService.registerConsumer(kentRegistrationData)
+        const banchero = await userService.registerPizzeria(bancheroRegistrationData)
+
+        const pizzas = [
+            createProductWith({name: 'Product A'}),
+            createProductWith({name: 'Product B'})
+        ]
+
+        for (let pizza of pizzas)
+            await menuService.addToMenuOf(bancheroRegistrationData.name, pizza)
+
+        await orderService.placeOrder({
+            consumerName: kentRegistrationData.name,
+            pizzeriaName: bancheroRegistrationData.name,
+            lineItems: [
+                { productName: pizzas[0].getName(), quantity: 11 },
+                { productName: pizzas[1].getName(), quantity: 10 }
+            ]
+        })
+
+        await orderService.placeOrder({
+            consumerName: kentRegistrationData.name,
+            pizzeriaName: bancheroRegistrationData.name,
+            lineItems: [
+                { productName: pizzas[1].getName(), quantity: 9 }
+            ]
+        })
+
+        const topThree = await orderService.pizzasBestsellers({ limit: 3 })
+        expect(topThree).toHaveLength(2)
+        expect(topThree[0]).toEqual({ pizzeria: banchero, product: pizzas[1], totalSellsQuantity: 19 })
+        expect(topThree[1]).toEqual({ pizzeria: banchero, product: pizzas[0], totalSellsQuantity: 11 })
+    })
 })

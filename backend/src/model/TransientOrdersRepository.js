@@ -5,7 +5,7 @@ class TransientOrdersRepository {
     }
 
     async pizzasBestsellers({ limit }) {
-        return this.orders
+        const quantityMap = this.orders
             .flatMap(order =>
                 order
                     .getLineItems()
@@ -17,8 +17,25 @@ class TransientOrdersRepository {
                         })
                     )
             )
-            .sort((aProductSells, anotherProductSells) => anotherProductSells.totalSellsQuantity - aProductSells.totalSellsQuantity)
-            .slice(0, limit)
+            .reduce(
+                (quantityMap, { pizzeria, product, totalSellsQuantity }) => {
+                    const key = product.getName()
+
+                    const acumulatedQuantity = quantityMap.has(key) ? quantityMap.get(key).totalSellsQuantity : 0
+
+                    quantityMap.set(key, {
+                        pizzeria,
+                        product,
+                        totalSellsQuantity: totalSellsQuantity + acumulatedQuantity
+                    })
+                    return quantityMap
+                },
+                new Map())
+
+        return Array
+                .from(quantityMap.values())
+                .sort((aProductSells, anotherProductSells) => anotherProductSells.totalSellsQuantity - aProductSells.totalSellsQuantity)
+                .slice(0, limit)
     }
 
     async findOrdersByConsumerName(consumerName) {
