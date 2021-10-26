@@ -18,6 +18,10 @@ class Order {
         return this.lineItems(lineItem => lineItems.includes(lineItem))
     }
 
+    getPizzeria() {
+        return this.pizzeria
+    }
+
     getLineItems() {
         return this.lineItems
     }

@@ -8,6 +8,10 @@ class OrderService {
         this.ordersRepository = ordersRepository
     }
 
+    async pizzasBestsellers({ limit }) {
+        return this.ordersRepository.pizzasBestsellers({ limit })
+    }
+
     async findOrdersByConsumerName(consumerName) {
         return this.ordersRepository.findOrdersByConsumerName(consumerName)
     }
