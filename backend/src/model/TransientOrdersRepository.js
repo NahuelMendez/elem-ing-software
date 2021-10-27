@@ -5,7 +5,7 @@ class TransientOrdersRepository {
     }
 
     async pizzasBestsellers({ limit }) {
-        const quantityMap = this.orders
+        const productsQuantitiesByPizzerias = this.orders
             .flatMap(order =>
                 order
                     .getLineItems()
@@ -18,23 +18,36 @@ class TransientOrdersRepository {
                     )
             )
             .reduce(
-                (quantityMap, { pizzeria, product, totalSellsQuantity }) => {
-                    const key = product.getName()
+                (productsQuantitiesByPizzerias, { pizzeria, product, totalSellsQuantity }) => {
+                    const pizzeriaKey = pizzeria.getName()
+                    const productKey = product.getName()
 
-                    const acumulatedQuantity = quantityMap.has(key) ? quantityMap.get(key).totalSellsQuantity : 0
+                    const pizzeriaProductQuantities = productsQuantitiesByPizzerias.get(pizzeriaKey) || new Map()
 
-                    quantityMap.set(key, {
+                    const acumulatedQuantity = pizzeriaProductQuantities.has(productKey) ? pizzeriaProductQuantities.get(productKey).totalSellsQuantity : 0
+
+                    pizzeriaProductQuantities.set(productKey, {
                         pizzeria,
                         product,
                         totalSellsQuantity: totalSellsQuantity + acumulatedQuantity
                     })
-                    return quantityMap
+
+                    productsQuantitiesByPizzerias.set(pizzeriaKey, pizzeriaProductQuantities)
+
+                    return productsQuantitiesByPizzerias
                 },
                 new Map())
 
         return Array
-                .from(quantityMap.values())
-                .sort((aProductSells, anotherProductSells) => anotherProductSells.totalSellsQuantity - aProductSells.totalSellsQuantity)
+                .from(productsQuantitiesByPizzerias.values())
+                .flatMap(entry => Array.from(entry.values()))
+                .sort((aProductSells, anotherProductSells) => {
+                    const sellsQuantityComparationResult = anotherProductSells.totalSellsQuantity - aProductSells.totalSellsQuantity
+
+                    return sellsQuantityComparationResult !== 0
+                        ? sellsQuantityComparationResult
+                        : aProductSells.pizzeria.getName() > anotherProductSells.pizzeria.getName() ? 1 : -1
+                })
                 .slice(0, limit)
     }
 

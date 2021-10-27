@@ -8,6 +8,8 @@ const {
     bancheroRegistrationData
 } = require('../testObjects').pizzeriasRegistrationData
 
+const { createPizzeriaRegistrationData } = require('../testObjects')
+
 const { createProductWith } = require('../helpers/productFactory')
 
 
@@ -89,4 +91,31 @@ describe('Pizzas bestseller', () => {
         expect(topThree[0]).toEqual({ pizzeria: banchero, product: pizzas[1], totalSellsQuantity: 19 })
         expect(topThree[1]).toEqual({ pizzeria: banchero, product: pizzas[0], totalSellsQuantity: 11 })
     })
+
+    it('when many products of different pizzerias with the same name have the same sells quantity those products appears sorted by pizzeria name in the ranking', async () => {
+        await userService.registerConsumer(kentRegistrationData)
+
+        const pizzeriaA = await userService.registerPizzeria(createPizzeriaRegistrationData({name: 'pizzeria a'}))
+        const pizzeriaB = await userService.registerPizzeria(createPizzeriaRegistrationData({name: 'pizzeria b'}))
+        const pizzeriaC = await userService.registerPizzeria(createPizzeriaRegistrationData({name: 'pizzeria c'}))
+
+        const pizza = createProductWith({name: 'Pizza'})
+
+        for (let pizzeria of [pizzeriaB, pizzeriaA, pizzeriaC]) {
+            await menuService.addToMenuOf(pizzeria.getName(), pizza)
+
+            await orderService.placeOrder({
+                consumerName: kentRegistrationData.name,
+                pizzeriaName: pizzeria.getName(),
+                lineItems: [{ productName: pizza.getName(), quantity: 1 }]
+            })
+        }
+
+        const topThree = await orderService.pizzasBestsellers({ limit: 3 })
+        expect(topThree).toHaveLength(3)
+        expect(topThree[0]).toEqual({ pizzeria: pizzeriaA, product: pizza, totalSellsQuantity: 1 })
+        expect(topThree[1]).toEqual({ pizzeria: pizzeriaB, product: pizza, totalSellsQuantity: 1 })
+        expect(topThree[2]).toEqual({ pizzeria: pizzeriaC, product: pizza, totalSellsQuantity: 1 })
+    })
+
 })
