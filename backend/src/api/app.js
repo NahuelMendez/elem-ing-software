@@ -147,7 +147,6 @@ const createApp = () => {
 
         orderService.getOrderHistoryByConsumerName(user.username)
             .then(orderHistory => response.status(OK).json(orderHistory))
-            .catch(error => console.log(error.message))
     })
 
     const menuToJson = (menu) => {
