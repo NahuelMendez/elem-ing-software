@@ -21,18 +21,17 @@ class TransientOrdersRepository {
             )
 
             .groupBy(element => element.pizzeria)
-            .map((pizzeria, valuesGroupedByPizzeria) =>
+            .valuesAsArray()
+            .flatMap(valuesGroupedByPizzeria =>
                 valuesGroupedByPizzeria
                     .groupBy(value => value.product)
-                    .map((product, valuesGroupedByProduct) => ({
-                        pizzeria,
-                        product,
+                    .valuesAsArray()
+                    .map(valuesGroupedByProduct => ({
+                        pizzeria: valuesGroupedByProduct[0].pizzeria,
+                        product: valuesGroupedByProduct[0].product,
                         totalSellsQuantity: valuesGroupedByProduct.sum(value => value.totalSellsQuantity)
                     }))
-                    .valuesAsArray()
             )
-            .valuesAsArray()
-            .flat()
 
             .sort((aProductSells, anotherProductSells) => {
                 const sellsQuantityComparationResult = anotherProductSells.totalSellsQuantity - aProductSells.totalSellsQuantity
