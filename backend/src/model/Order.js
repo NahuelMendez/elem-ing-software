@@ -6,6 +6,10 @@ class Order {
         this.lineItems = lineItems
     }
 
+    getPizzeriaName() {
+        return this.pizzeria.getName()
+    }
+
     wasMadeBy(aConsumer) {
         return true
     }
@@ -20,6 +24,16 @@ class Order {
 
     getLineItems() {
         return this.lineItems
+    }
+
+    getTotal() {
+        const prices = this.lineItems.map ( lineItem => this.calculatePrices(lineItem))
+        
+        return prices.reduce ((previousValue, price) => previousValue + price, 0)
+    }
+
+    calculatePrices(lineItem) {
+        return this.pizzeria.getProductPriceWithName( lineItem.productName) * lineItem.quantity
     }
 
 }
