@@ -16,14 +16,6 @@ class OrderService {
         return this.ordersRepository.findOrdersByPizzeriaName(pizzeriaName)
     }
 
-    async getOrderHistoryByConsumerName(consumerName) {
-        const orders = await this.findOrdersByConsumerName(consumerName)
-        
-        const orderHistory = orders.map ( order => ({pizzeriaName: order.getPizzeriaName(), total: order.getTotal()}))
-        
-        return orderHistory
-    }
-
     async placeOrder({ consumerName, pizzeriaName, lineItems }) {
         this.assertHasSomeProducts(lineItems)
         this.assertHasValidQuantities(lineItems)

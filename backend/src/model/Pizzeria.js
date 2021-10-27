@@ -25,8 +25,7 @@ class Pizzeria extends User {
     }
 
     getProductPriceWithName(productName) {
-        const product = this.getProductNamed(productName)
-        return product.getPrice()
+        return this.getProductNamed(productName).getPrice()
     }
 
     removeProductNamed(productName) {

@@ -145,7 +145,8 @@ const createApp = () => {
     app.get(orderPath, authenticateConsumer, (request, response) => {
         const { user } = request
 
-        orderService.getOrderHistoryByConsumerName(user.username)
+        orderService.findOrdersByConsumerName(user.username)
+            .then (orders => convertToOrderHistory(orders))
             .then(orderHistory => response.status(OK).json(orderHistory))
     })
 
@@ -169,6 +170,10 @@ const createApp = () => {
         } else {
             return usersService.registerConsumer(user)
         }
+    }
+
+    const convertToOrderHistory = (orders) => {
+        return orders.map(order => ({ pizzeriaName: order.getPizzeriaName(), total: order.getTotal() }))
     }
 
     return app

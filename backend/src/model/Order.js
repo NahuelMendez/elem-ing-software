@@ -10,8 +10,8 @@ class Order {
         return this.pizzeria.getName()
     }
 
-    wasMadeBy(aConsumer) {
-        return true
+    wasMadeBy(consumerName) {
+        return this.consumer.isNamed(consumerName)
     }
 
     wasMadeTo(aPizzeria) {
