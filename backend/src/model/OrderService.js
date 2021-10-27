@@ -23,7 +23,7 @@ class OrderService {
     async placeOrder({ consumerName, pizzeriaName, lineItems }) {
         this.assertHasSomeProducts(lineItems)
         this.assertHasValidQuantities(lineItems)
-
+        
         const consumer = await this.usersRepository.findConsumerByName(consumerName)
         const pizzeria = await this.usersRepository.findPizzeriaByName(pizzeriaName)
 

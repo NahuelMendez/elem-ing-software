@@ -3,7 +3,7 @@ const express = require('express')
 var cors = require('cors')
 const path = require('path')
 const bodyParser = require('body-parser')
-const {registerPath, loginPath, menuPath, pizzeriaPath, searchPizzeriaPath, updateProductPath, createOrderPath} = require("./path")
+const {registerPath, loginPath, menuPath, pizzeriaPath, searchPizzeriaPath, updateProductPath, orderPath} = require("./path")
 
 const { createServices } = require('../../src/model/serviceFactory')
 const {Product} = require('../model/Product')
@@ -133,13 +133,21 @@ const createApp = () => {
             }))
     })
 
-    app.post(createOrderPath, orderRequestValidation, authenticateConsumer, (request, response) => {
+    app.post(orderPath, orderRequestValidation, authenticateConsumer, (request, response) => {
         const { user } = request
         const {pizzeriaName, order} = request.body
 
         orderService.placeOrder({consumerName: user.username, pizzeriaName: pizzeriaName ,lineItems: order})
             .then(() => response.status(CREATED).json({message: "the order was confirmed"}))
             .catch((error) => response.status(BAD_REQUEST).json({error: error.message}))
+    })
+
+    app.get(orderPath, authenticateConsumer, (request, response) => {
+        const { user } = request
+
+        orderService.findOrdersByConsumerName(user.username)
+            .then (orders => convertToOrderHistory(orders))
+            .then(orderHistory => response.status(OK).json(orderHistory))
     })
 
     const menuToJson = (menu) => {
@@ -162,6 +170,10 @@ const createApp = () => {
         } else {
             return usersService.registerConsumer(user)
         }
+    }
+
+    const convertToOrderHistory = (orders) => {
+        return orders.map(order => ({ pizzeriaName: order.getPizzeriaName(), total: order.getTotal() }))
     }
 
     return app

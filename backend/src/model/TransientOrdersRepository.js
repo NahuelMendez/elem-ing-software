@@ -44,7 +44,7 @@ class TransientOrdersRepository {
     }
 
     async findOrdersByConsumerName(consumerName) {
-        return this.orders
+        return this.orders.filter (order => order.wasMadeBy(consumerName))
     }
 
     async findOrdersByPizzeriaName(consumerName) {
