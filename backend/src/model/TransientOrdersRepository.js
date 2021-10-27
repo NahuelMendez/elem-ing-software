@@ -1,3 +1,5 @@
+require('../javascript-collections-extensions')
+
 class TransientOrdersRepository {
 
     constructor() {
@@ -5,50 +7,41 @@ class TransientOrdersRepository {
     }
 
     async pizzasBestsellers({ limit }) {
-        const productsQuantitiesByPizzerias = this.orders
+        return this.orders
             .flatMap(order =>
                 order
                     .getLineItems()
                     .map(({productName, quantity}) =>
                         ({
                             pizzeria: order.getPizzeria(),
-                            product: order.getPizzeria().getProductsInMenu().find(product => product.isNamed(productName)),
+                            product: order.getPizzeria().getProductsInMenu().find(product => product.isNamed(productName)), // TODO: estoy rompiendo el encapsulamiento como un animal. Corregir cuando este arreglado lo de Order
                             totalSellsQuantity: quantity
                         })
                     )
             )
-            .reduce(
-                (productsQuantitiesByPizzerias, { pizzeria, product, totalSellsQuantity }) => {
-                    const pizzeriaKey = pizzeria.getName()
-                    const productKey = product.getName()
 
-                    const pizzeriaProductQuantities = productsQuantitiesByPizzerias.get(pizzeriaKey) || new Map()
-
-                    const acumulatedQuantity = pizzeriaProductQuantities.has(productKey) ? pizzeriaProductQuantities.get(productKey).totalSellsQuantity : 0
-
-                    pizzeriaProductQuantities.set(productKey, {
+            .groupBy(element => element.pizzeria)
+            .map((pizzeria, valuesGroupedByPizzeria) =>
+                valuesGroupedByPizzeria
+                    .groupBy(value => value.product)
+                    .map((product, valuesGroupedByProduct) => ({
                         pizzeria,
                         product,
-                        totalSellsQuantity: totalSellsQuantity + acumulatedQuantity
-                    })
+                        totalSellsQuantity: valuesGroupedByProduct.sum(value => value.totalSellsQuantity)
+                    }))
+                    .valuesAsArray()
+            )
+            .valuesAsArray()
+            .flat()
 
-                    productsQuantitiesByPizzerias.set(pizzeriaKey, pizzeriaProductQuantities)
+            .sort((aProductSells, anotherProductSells) => {
+                const sellsQuantityComparationResult = anotherProductSells.totalSellsQuantity - aProductSells.totalSellsQuantity
 
-                    return productsQuantitiesByPizzerias
-                },
-                new Map())
-
-        return Array
-                .from(productsQuantitiesByPizzerias.values())
-                .flatMap(entry => Array.from(entry.values()))
-                .sort((aProductSells, anotherProductSells) => {
-                    const sellsQuantityComparationResult = anotherProductSells.totalSellsQuantity - aProductSells.totalSellsQuantity
-
-                    return sellsQuantityComparationResult !== 0
-                        ? sellsQuantityComparationResult
-                        : aProductSells.pizzeria.getName() > anotherProductSells.pizzeria.getName() ? 1 : -1
-                })
-                .slice(0, limit)
+                return sellsQuantityComparationResult !== 0
+                    ? sellsQuantityComparationResult
+                    : aProductSells.pizzeria.getName() > anotherProductSells.pizzeria.getName() ? 1 : -1
+            })
+            .slice(0, limit)
     }
 
     async findOrdersByConsumerName(consumerName) {
@@ -63,7 +56,7 @@ class TransientOrdersRepository {
         this.orders.push(newOrder)
         return newOrder
     }
-    
+
 
 
 }
