@@ -49,7 +49,7 @@ describe('Consumer data edition', () => {
         expect(consumer.getEmail()).toEqual(kentRegistrationData.email)
     })
 
-    it ('cannot edit consumer data when email already exists', async () => {
+    it ('cannot edit consumer data when the new email is associated with another user', async () => {
         await userService.registerConsumer(martinRegistrationData)
 
         const validData = {name: 'Kent', telephone: 1122334455, email: 'martin@gmail.com'}
