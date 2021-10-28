@@ -7,10 +7,15 @@ import OrdersHistory from "./OrdersHistory"
 const Profile = () => {
 
   const [consumer, setConsumer] = useState({});
+  const [ordersHistory, setOrdersHistory] = useState([]);
 
   useEffect(() =>{
     getConsumer();
   }, []);
+
+  useEffect(() =>
+    getOrdersHistory()
+  , [])
 
   const getConsumer = () => {
     api.getConsumer()
@@ -22,6 +27,16 @@ const Profile = () => {
     });
   }
 
+  const getOrdersHistory = () => {
+    api.getOrdersHistory()
+      .then(response =>
+        setOrdersHistory(response.data)
+      )
+      .catch(err =>
+        console.log(err)
+      )
+  }
+
   return (
     <div className="pb-4">
       <NavBar />
@@ -29,7 +44,7 @@ const Profile = () => {
         username={consumer.username}
         email={consumer.email}
         telephone={consumer.telephone} />
-      <OrdersHistory />
+      <OrdersHistory ordersHistory={ordersHistory}/>
     </div>
   )
 }

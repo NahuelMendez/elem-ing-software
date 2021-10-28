@@ -54,7 +54,14 @@ const api = {
 
   confirmOrder: (data) => {
     return axios.post(`${baseURL}/api/order`, data, createHeadesrWithToken());
-  }
+  },
+
+  getOrdersHistory: () =>
+    axios.get(`${baseURL}/api/order`, {
+      headers: {
+        'Authorization': localStorage.getItem("token")
+      }
+    })
 
 };
 
