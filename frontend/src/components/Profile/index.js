@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import api from "../../Api/ApiObject";
 import NavBar from "../Navbar";
 import ConsumerInfo from "./ConsumerInfo";
+import OrdersHistory from "./OrdersHistory"
 
 const Profile = () => {
 
@@ -28,6 +29,7 @@ const Profile = () => {
         username={consumer.username}
         email={consumer.email}
         telephone={consumer.telephone} />
+      <OrdersHistory />
     </div>
   )
 }
