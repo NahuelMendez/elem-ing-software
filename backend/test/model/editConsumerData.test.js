@@ -57,6 +57,8 @@ describe('Consumer data edition', () => {
         await expect(
             userService.editConsumerData(kentRegistrationData.name, validData.name, validData.telephone, validData.email)
         ).rejects.toThrow(`A user with email ${validData.email} is already registered`)
+
+        await assertPersonalDataDidNotChange(kentRegistrationData)
     })
 
     it ('cannot edit consumer data when name is blank', async () => {
@@ -65,6 +67,8 @@ describe('Consumer data edition', () => {
         await expect(
             userService.editConsumerData(kentRegistrationData.name, invalidData.name, invalidData.telephone, invalidData.email)
         ).rejects.toThrow("User's name cannot be blank")
+
+        await assertPersonalDataDidNotChange(kentRegistrationData)
     })
 
     it ('cannot edit consumer data with invalid email', async () => {
@@ -73,11 +77,7 @@ describe('Consumer data edition', () => {
         await expectToFailConsumerDataEditionWithInvalidEmail(kentRegistrationData, 'user@domain')
         await expectToFailConsumerDataEditionWithInvalidEmail(kentRegistrationData, 'user')
 
-        const consumer = await userService.findConsumerByName(kentRegistrationData.name)
-
-        expect(consumer.getName()).toEqual(kentRegistrationData.name)
-        expect(consumer.getTelephone()).toEqual(kentRegistrationData.telephone)
-        expect(consumer.getEmail()).toEqual(kentRegistrationData.email)
+        await assertPersonalDataDidNotChange(kentRegistrationData)
     })
 
     function expectToFailConsumerDataEditionWithInvalidEmail(consumer, invalidEmail) {
@@ -86,6 +86,13 @@ describe('Consumer data edition', () => {
         ).rejects.toThrow("Invalid email")
     }
 
-})
+    async function assertPersonalDataDidNotChange(consumerData) {
+        const consumer = await userService.findConsumerByName(consumerData.name)
+    
+        expect(consumer.getName()).toEqual(consumerData.name)
+        expect(consumer.getTelephone()).toEqual(consumerData.telephone)
+        expect(consumer.getEmail()).toEqual(consumerData.email)
+    }
 
+})
 
