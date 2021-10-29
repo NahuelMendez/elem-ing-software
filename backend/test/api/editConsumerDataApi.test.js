@@ -1,9 +1,10 @@
 const request = require('supertest')
 const {createApp} = require('../../src/api/app')
 const testObjects = require('../testObjects')
-const {OK, BAD_REQUEST} = require("../../src/api/statusCode")
+const {OK, BAD_REQUEST, FORBIDDEN} = require("../../src/api/statusCode")
 
 const { kentRegistrationData, martinRegistrationData } = testObjects.consumersRegistrationData
+const { bancheroRegistrationData } = testObjects.pizzeriasRegistrationData
 
 const { loginToken, editConsumerData, registerUser } = require('../helpers/apiHelperFunctions')
 
@@ -46,6 +47,28 @@ describe('Api consumer data edition', () => {
         expect(response.status).toBe(BAD_REQUEST)
         expect(response.body).toEqual({
             error: "User's name cannot be blank"
+        })
+    })
+
+    it ('cannot edit consumer data when name is blank', async () => {
+        const newConsumerData = {...kentRegistrationData, name: ' '}
+
+        const response = await editConsumerData(requester, newConsumerData, tokenConsumer)
+
+        expect(response.status).toBe(BAD_REQUEST)
+        expect(response.body).toEqual({
+            error: "User's name cannot be blank"
+        })
+    })
+
+    it('cannot edit consumer data for a unauthorized consumer', async () => {
+        const tokenPizzeria = loginToken(requester, bancheroRegistrationData)
+
+        const response = await editConsumerData(requester, kentRegistrationData, tokenPizzeria)
+
+        expect(response.status).toBe(FORBIDDEN)
+        expect(response.body).toEqual({
+            error: 'invalid token or unauthorized user'
         })
     })
 
