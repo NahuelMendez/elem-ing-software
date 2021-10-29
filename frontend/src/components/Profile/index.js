@@ -40,11 +40,13 @@ const Profile = () => {
   return (
     <div className="pb-4">
       <NavBar />
-      <ConsumerInfo 
-        username={consumer.username}
-        email={consumer.email}
-        telephone={consumer.telephone} />
-      <OrdersHistory ordersHistory={ordersHistory}/>
+      <main className="flex flex-inline">
+        <ConsumerInfo 
+          username={consumer.username}
+          email={consumer.email}
+          telephone={consumer.telephone} />
+        <OrdersHistory ordersHistory={ordersHistory}/>
+      </main>
     </div>
   )
 }
