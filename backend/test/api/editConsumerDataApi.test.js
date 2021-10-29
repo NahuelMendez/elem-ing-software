@@ -9,17 +9,17 @@ const { loginToken, editConsumerData, registerUser } = require('../helpers/apiHe
 
 describe('Api consumer data edition', () => {
     let requester
+    let tokenConsumer
 
     beforeEach(async () => {
         requester = request(createApp())
+        tokenConsumer = await loginToken(requester, kentRegistrationData)
     })
 
     it(`can edit consumer data with valid data`, async () => {
-        const token = await loginToken(requester, kentRegistrationData)
-
         const newConsumerData = {...kentRegistrationData, name: 'kent', email: 'kent-beck@gmail.com',telephone: 1122334455}
 
-        const response = await editConsumerData(requester, newConsumerData, token)
+        const response = await editConsumerData(requester, newConsumerData, tokenConsumer)
 
         expect(response.status).toBe(OK)
         expect(response.body).toEqual('the data was successfully modified')
@@ -27,16 +27,25 @@ describe('Api consumer data edition', () => {
 
     it ('cannot edit consumer data when the new email is associated with another user', async () => {
         await registerUser(requester, martinRegistrationData)
-        
-        const token = await loginToken(requester, kentRegistrationData)
 
         const newConsumerData = {...kentRegistrationData,email: martinRegistrationData.email}
 
-        const response = await editConsumerData(requester, newConsumerData, token)
+        const response = await editConsumerData(requester, newConsumerData, tokenConsumer)
 
         expect(response.status).toBe(BAD_REQUEST)
         expect(response.body).toEqual({
             error: `A user with email ${martinRegistrationData.email} is already registered`
+        })
+    })
+
+    it ('cannot edit consumer data when name is blank', async () => {
+        const newConsumerData = {...kentRegistrationData, name: ' '}
+
+        const response = await editConsumerData(requester, newConsumerData, tokenConsumer)
+
+        expect(response.status).toBe(BAD_REQUEST)
+        expect(response.body).toEqual({
+            error: "User's name cannot be blank"
         })
     })
 

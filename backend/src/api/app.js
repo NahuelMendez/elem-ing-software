@@ -165,7 +165,7 @@ const createApp = () => {
 
         usersService.editConsumerData(user.username ,name ,telephone ,email)
             .then(() => response.status(OK).json('the data was successfully modified'))
-            .catch( error => response.status(BAD_REQUEST).json({error: `A user with email ${email} is already registered`}))
+            .catch( error => response.status(BAD_REQUEST).json({error: error.message}))
     })
 
     const menuToJson = (menu) => {
