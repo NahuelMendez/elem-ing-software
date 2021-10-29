@@ -18,7 +18,7 @@ describe('Consumer - orders history', () => {
     let page
 
     beforeEach(async () => {
-        browser = await puppeteer.launch({headless: true})
+        browser = await puppeteer.launch({headless: false})
         page = await browser.newPage()
     })
     
@@ -38,41 +38,53 @@ describe('Consumer - orders history', () => {
   
         await registerAndLoginConsumer(page, createConsumerRegistrationData({}))
 
-        await goto(page, `/pizzeria/${pizzeriaData.name}`)
-
-        await page.waitForSelector(addProductButtonSelector)
-        await page.click(addProductButtonSelector)
-
-        await page.waitForSelector('[name="confirm-button"]')
-        await page.evaluate(() => document.querySelector('[name="confirm-button"]').click())
-        await page.waitForSelector('.notebook-container .alert-confirm')
-
-        await goto(page, `/pizzeria/${pizzeriaData.name}`)
-
-        await page.waitForSelector(addProductButtonSelector)
-        await page.click(addProductButtonSelector)
-        await page.click(addProductButtonSelector)
-
-        await page.waitForSelector('[name="confirm-button"]')
-        await page.evaluate(() => document.querySelector('[name="confirm-button"]').click())
-        await page.waitForSelector('.notebook-container .alert-confirm')
+        await placeOrder(page, { pizzeriaName: pizzeriaData.name, unitsOfProducts: 1 })
+        await placeOrder(page, { pizzeriaName: pizzeriaData.name, unitsOfProducts: 2 })
 
         await goto(page, `/profile`)
 
-        await page.waitForSelector(ordersHistorySelector + ' ul > li')
-        const ordersCards = await page.$$(ordersHistorySelector + ' ul > li')
-
-        expect(ordersCards).toHaveLength(2)
-        const nodesInnerHTML = await Promise.all([
-            ordersCards[0].evaluate(node => node.innerHTML),
-            ordersCards[1].evaluate(node => node.innerHTML)
+        await expectOrdersHistoryItems(page, [
+            { pizzeriaName: pizzeriaData.name, total: pizzaData.price },
+            { pizzeriaName: pizzeriaData.name, total: pizzaData.price * 2 }
         ])
-
-        expect(nodesInnerHTML[0]).toContain(pizzeriaData.name)
-        expect(nodesInnerHTML[0]).toContain(`${pizzaData.price}`)
-
-        expect(nodesInnerHTML[1]).toContain(pizzeriaData.name)
-        expect(nodesInnerHTML[1]).toContain(`${pizzaData.price}`)
     })
 
 })
+
+
+async function placeOrder(page, { pizzeriaName, unitsOfProducts }) {
+    await goto(page, `/pizzeria/${pizzeriaName}`)
+    await page.waitForSelector(addProductButtonSelector)
+
+    for (let i=0; i < unitsOfProducts; i++) {
+        await page.click(addProductButtonSelector)
+    }
+    
+    await page.waitForSelector('[name="confirm-button"]')
+    await page.evaluate(() => document.querySelector('[name="confirm-button"]').click())
+    await page.waitForSelector('.notebook-container .alert-confirm')
+}
+
+async function findOrdersListItems(page) {
+    await page.waitForSelector(ordersHistorySelector + ' ul > li')
+
+    return page
+            .$$(ordersHistorySelector + ' ul > li')
+            .then(ordersListItems =>
+                Promise.all(
+                    ordersListItems.map(orderListItem =>
+                        orderListItem.evaluate(node => node.innerHTML))
+                )
+            )
+}
+
+async function expectOrdersHistoryItems(page, expectedOrdersHistoryEntries) {
+    const ordersListItemsHTML = await findOrdersListItems(page)
+
+    expect(ordersListItemsHTML).toHaveLength(expectedOrdersHistoryEntries.length)
+
+    ordersListItemsHTML.forEach((orderHistoryItem, index) => {
+        expect(orderHistoryItem).toContain(expectedOrdersHistoryEntries[index].pizzeriaName)
+        expect(orderHistoryItem).toContain(`${expectedOrdersHistoryEntries[index].total}`)    
+    })
+}
