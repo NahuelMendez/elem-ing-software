@@ -24,6 +24,8 @@ class User {
 
     isConsumer() { return this.getRoleName() === 'consumer' }
 
+    hasEmail(email) { return this.getEmail() === email}
+
     getName() { return this.name }
 
     getTelephone() { return this.telephone }
