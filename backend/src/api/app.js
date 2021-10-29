@@ -24,7 +24,8 @@ const {
     registerPizzeriaRequestValidation,
     loginRequestValidation,
     productRequestValidation,
-    orderRequestValidation
+    orderRequestValidation,
+    editConsumerDataRequestValidation
 } = require('./requestValidations')
 
 const createApp = () => {
@@ -159,7 +160,7 @@ const createApp = () => {
             .then(orderHistory => response.status(OK).json(orderHistory))
     })
 
-    app.put(consumerPath, authenticateConsumer, (request, response) => {
+    app.put(consumerPath, editConsumerDataRequestValidation, authenticateConsumer, (request, response) => {
         const { user } = request
         const {name , telephone , email } = request.body
 

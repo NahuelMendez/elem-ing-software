@@ -50,17 +50,6 @@ describe('Api consumer data edition', () => {
         })
     })
 
-    it ('cannot edit consumer data when name is blank', async () => {
-        const newConsumerData = {...kentRegistrationData, name: ' '}
-
-        const response = await editConsumerData(requester, newConsumerData, tokenConsumer)
-
-        expect(response.status).toBe(BAD_REQUEST)
-        expect(response.body).toEqual({
-            error: "User's name cannot be blank"
-        })
-    })
-
     it('cannot edit consumer data for a unauthorized consumer', async () => {
         const tokenPizzeria = loginToken(requester, bancheroRegistrationData)
 
@@ -69,6 +58,61 @@ describe('Api consumer data edition', () => {
         expect(response.status).toBe(FORBIDDEN)
         expect(response.body).toEqual({
             error: 'invalid token or unauthorized user'
+        })
+    })
+
+    it('cannot edit consumer data if the name is not of type string', async () => {
+        const newConsumerData = {...kentRegistrationData, name: 1234}
+
+        const response = await editConsumerData(requester, newConsumerData, tokenConsumer)
+
+        expect(response.status).toBe(BAD_REQUEST)
+        expect(response.body).toEqual({
+            error: '"name" must be a string'
+        })
+    })
+
+    it('cannot edit consumer data if the email is not of type string', async () => {
+        const newConsumerData = {...kentRegistrationData, email: 1234}
+
+        const response = await editConsumerData(requester, newConsumerData, tokenConsumer)
+
+        expect(response.status).toBe(BAD_REQUEST)
+        expect(response.body).toEqual({
+            error: '"email" must be a string'
+        })
+    })
+
+    it('cannot edit consumer data if a name is not provided', async () => {
+        const newConsumerData = {...kentRegistrationData, name: undefined}
+
+        const response = await editConsumerData(requester, newConsumerData, tokenConsumer)
+
+        expect(response.status).toBe(BAD_REQUEST)
+        expect(response.body).toEqual({
+            error: '"name" is required'
+        })
+    })
+
+    it('cannot edit consumer data if a email is not provided', async () => {
+        const newConsumerData = {...kentRegistrationData, email: undefined}
+
+        const response = await editConsumerData(requester, newConsumerData, tokenConsumer)
+
+        expect(response.status).toBe(BAD_REQUEST)
+        expect(response.body).toEqual({
+            error: '"email" is required'
+        })
+    })
+
+    it('cannot edit consumer data if a telephone is not provided', async () => {
+        const newConsumerData = {...kentRegistrationData, telephone: undefined}
+
+        const response = await editConsumerData(requester, newConsumerData, tokenConsumer)
+
+        expect(response.status).toBe(BAD_REQUEST)
+        expect(response.body).toEqual({
+            error: '"telephone" is required'
         })
     })
 
