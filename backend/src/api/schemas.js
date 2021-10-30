@@ -8,6 +8,12 @@ const userSchema = Joi.object({
     rol: Joi.valid('consumer', 'pizzeria').required()
 })
 
+const editConsumerDataSchema = Joi.object({
+    name: Joi.string().required(),
+    telephone: Joi.required(),
+    email: Joi.string().required()
+})
+
 const loginSchema = Joi.object({
     email: Joi.string().required(),
     password: Joi.string().required(),
@@ -35,4 +41,4 @@ const orderSchema =
 
 
 
-module.exports = {userSchema, productSchema, loginSchema, orderSchema}
+module.exports = {userSchema, productSchema, loginSchema, orderSchema, editConsumerDataSchema}
