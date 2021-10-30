@@ -3,10 +3,19 @@ const express = require('express')
 var cors = require('cors')
 const path = require('path')
 const bodyParser = require('body-parser')
-const {registerPath, loginPath, menuPath, pizzeriaPath, searchPizzeriaPath, updateProductPath, orderPath} = require("./path")
-
 const { createServices } = require('../../src/model/serviceFactory')
 const {Product} = require('../model/Product')
+
+const {
+    registerPath, 
+    loginPath, 
+    menuPath, 
+    pizzeriaPath, 
+    searchPizzeriaPath, 
+    updateProductPath, 
+    orderPath,
+    consumerPath
+} = require("./path")
 
 const {OK, CREATED, BAD_REQUEST, NOT_FOUND} = require("./statusCode")
 const {authenticatePizzeria, authenticateConsumer} = require("./authenticate")
@@ -15,7 +24,8 @@ const {
     registerPizzeriaRequestValidation,
     loginRequestValidation,
     productRequestValidation,
-    orderRequestValidation
+    orderRequestValidation,
+    editConsumerDataRequestValidation
 } = require('./requestValidations')
 
 const createApp = () => {
@@ -148,6 +158,15 @@ const createApp = () => {
         orderService.findOrdersByConsumerName(user.username)
             .then (orders => convertToOrderHistory(orders))
             .then(orderHistory => response.status(OK).json(orderHistory))
+    })
+
+    app.put(consumerPath, editConsumerDataRequestValidation, authenticateConsumer, (request, response) => {
+        const { user } = request
+        const {name , telephone , email } = request.body
+
+        usersService.editConsumerData(user.username ,name ,telephone ,email)
+            .then(() => response.status(OK).json('the data was successfully modified'))
+            .catch( error => response.status(BAD_REQUEST).json({error: error.message}))
     })
 
     const menuToJson = (menu) => {
