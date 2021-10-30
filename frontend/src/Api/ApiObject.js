@@ -54,6 +54,10 @@ const api = {
 
   confirmOrder: (data) => {
     return axios.post(`${baseURL}/api/order`, data, createHeadesrWithToken());
+  },
+
+  getRanking: () => {
+    return axios.get(`${baseURL}/api/pizza/bestseller`);
   }
 
 };
