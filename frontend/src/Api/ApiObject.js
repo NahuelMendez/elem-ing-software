@@ -54,6 +54,10 @@ const api = {
 
   confirmOrder: (data) => {
     return axios.post(`${baseURL}/api/order`, data, createHeadesrWithToken());
+  },
+
+  updateConsumer: (name, editedProfile) => {
+    return axios.put(`${baseURL}/consumer`, name, editedProfile.username, editedProfile.email, editedProfile.telephone);
   }
 
 };

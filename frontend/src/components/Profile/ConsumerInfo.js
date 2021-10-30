@@ -3,10 +3,16 @@ import userIMG from "../../assets/user.png"
 import EditProfileButton from "../Profile/EditProfileButton"
 import Modal from "../Modal";
 import EditProfileForm from "./EditProfileForm";
+import api from "../../Api/ApiObject";
 
 const ConsumerInfo = ({ username, email, telephone }) => {
 
     const [showEditForm, setShowEditForm] = useState(false);
+
+    const handleSubmit = ({ name, editedProfile }) => {
+        api.updateConsumer(name, editedProfile)
+        .then(() => window.location.reload())
+    }
 
     return (
         <>
@@ -35,7 +41,7 @@ const ConsumerInfo = ({ username, email, telephone }) => {
                                 username={username}
                                 email={email}
                                 telephone={telephone}
-                                handleSubmit={() => console.log("Se actualiza el profile")}/>
+                                handleSubmit={handleSubmit}/>
                         } />
                 }
         </>

@@ -24,9 +24,9 @@ const EditProfileForm = ({ username, email, telephone, handleSubmit }) => {
                 async (values, { setErrors }) => {
                 const errors = {}
 
-                if (values.username.trim() === '') errors.name = 'El nombre de usuario no puede estar vacio'
-                if (values.email.trim() === '') errors.description = 'El email no puede estar vacia'
-                if (values.telephone.trim() === '') errors.price = 'El telefono no puede estar vacio'
+                if (values.username.trim() === '') errors.username = 'El nombre de usuario no puede estar vacio'
+                if (values.email.trim() === '') errors.email = 'El email no puede estar vacio'
+                if (values.telephone.trim() === '') errors.telephone = 'El telefono no puede estar vacio'
                 
 
                 if (Object.keys(errors).length > 0) {
