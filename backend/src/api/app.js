@@ -14,7 +14,8 @@ const {
     searchPizzeriaPath, 
     updateProductPath, 
     orderPath,
-    consumerPath
+    consumerPath,
+    rankingPath
 } = require("./path")
 
 const {OK, CREATED, BAD_REQUEST, NOT_FOUND} = require("./statusCode")
@@ -158,6 +159,11 @@ const createApp = () => {
         orderService.findOrdersByConsumerName(user.username)
             .then (orders => convertToOrderHistory(orders))
             .then(orderHistory => response.status(OK).json(orderHistory))
+    })
+
+    app.get(rankingPath, (request, response) => {
+        orderService.pizzasBestsellers(5)
+            .then(bestsellers => response.status(OK).json(bestsellers))
     })
 
     app.put(consumerPath, editConsumerDataRequestValidation, authenticateConsumer, (request, response) => {
