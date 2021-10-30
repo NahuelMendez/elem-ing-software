@@ -57,7 +57,7 @@ const api = {
   },
 
   getRanking: () => {
-    return axios.get(`${baseURL}/api/pizza/bestseller`);
+    return axios.get(`${baseURL}/api/order/bestseller`);
   }
 
 };
