@@ -6,7 +6,7 @@ const {OK, BAD_REQUEST, FORBIDDEN} = require("../../src/api/statusCode")
 const { kentRegistrationData, martinRegistrationData } = testObjects.consumersRegistrationData
 const { bancheroRegistrationData } = testObjects.pizzeriasRegistrationData
 
-const { loginToken, editConsumerData, registerUser } = require('../helpers/apiHelperFunctions')
+const { loginToken, editConsumerData, registerUser, getConsumerData } = require('../helpers/apiHelperFunctions')
 
 describe('Api consumer data edition', () => {
     let requester
@@ -113,6 +113,21 @@ describe('Api consumer data edition', () => {
         expect(response.status).toBe(BAD_REQUEST)
         expect(response.body).toEqual({
             error: '"telephone" is required'
+        })
+    })
+
+    it('when consumer data is updated the token is also updated', async () => {
+        const newConsumerData = {...kentRegistrationData, name: 'kent', email: 'kent-beck@gmail.com',telephone: 1122334455}
+
+        const responseEdit = await editConsumerData(requester, newConsumerData, tokenConsumer)
+        
+        const response = await getConsumerData(requester, responseEdit.get('Authorization'))
+
+        expect(response.status).toBe(OK)
+        expect(response.body).toEqual({
+            username: newConsumerData.name,
+            telephone: newConsumerData.telephone,
+            email: newConsumerData.email
         })
     })
 

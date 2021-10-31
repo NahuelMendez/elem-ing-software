@@ -7,7 +7,8 @@ const { kentRegistrationData } = testObjects.consumersRegistrationData
 const { bancheroRegistrationData } = testObjects.pizzeriasRegistrationData
 
 const {
-    loginToken
+    loginToken,
+    getConsumerData
 } = require('../helpers/apiHelperFunctions')
 
 
@@ -21,7 +22,7 @@ describe('Consumer profile API', () => {
     it("an authenticated consumer can ask for his personal data", async () => {
         const token = await loginToken(requester, kentRegistrationData)
 
-        const response = await requester.get('/api/consumer').send().set('Authorization', token)
+        const response = await getConsumerData(requester, token)
 
         expect(response.status).toBe(OK)
         expect(response.body).toEqual({
@@ -34,14 +35,14 @@ describe('Consumer profile API', () => {
     it(`an authenticated pizzeria cannot ask for a consumer's personal data`, async () => {
         const pizzeriaToken = await loginToken(requester, bancheroRegistrationData)
 
-        const response = await requester.get('/api/consumer').send().set('Authorization', pizzeriaToken)
+        const response = await getConsumerData(requester, pizzeriaToken)
 
         expect(response.status).toBe(FORBIDDEN)
         expect(response.body).toEqual({ error: 'invalid token or unauthorized user' })
     })
 
     it(`cannot ask for a consumer's personal data without being authenticated`, async () => {
-        const response = await requester.get('/api/consumer').send()
+        const response = await requester.get('/api/consumer')
 
         expect(response.status).toBe(UNAUTHORIZED)
         expect(response.body).toEqual({ error: 'token missing' })
