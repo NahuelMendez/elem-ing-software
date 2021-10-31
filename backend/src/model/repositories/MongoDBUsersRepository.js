@@ -51,7 +51,7 @@ class MongoDBUsersRepository {
     }
 
     async update(user) {
-        user.save()
+        await user.save()
     }
 
 }
