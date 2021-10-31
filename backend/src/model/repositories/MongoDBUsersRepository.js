@@ -11,7 +11,9 @@ class MongoDBUsersRepository {
 
     async users() {
         return await this.runInTransaction(async () => {
-            return await this.connection.ConsumerModel.find({})
+            const consumers = await this.connection.ConsumerModel.find({})
+            const pizzerias = await this.connection.PizzeriaModel.find({})
+            return consumers.concat(pizzerias)
         })
     }
 
@@ -47,7 +49,8 @@ class MongoDBUsersRepository {
 
     async save(newUser) {
         return await this.runInTransaction(async () => {
-            const createdUser = this.connection.ConsumerModel(newUser)
+            const mongooseModel = newUser instanceof Consumer ? this.connection.ConsumerModel : this.connection.PizzeriaModel
+            const createdUser = new mongooseModel(newUser)
             return await createdUser.save()
         })
     }

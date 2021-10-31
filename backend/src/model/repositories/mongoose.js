@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 
 const { Consumer } = require('../Consumer')
+const { Pizzeria } = require('../Pizzeria')
 
 const consumerSchema = mongoose.Schema({
     name: String,
@@ -10,6 +11,15 @@ const consumerSchema = mongoose.Schema({
 })
 
 consumerSchema.loadClass(Consumer)
+
+const pizzeriaSchema = mongoose.Schema({
+    name: String,
+    telephone: Number,
+    email: String,
+    password: String
+})
+
+pizzeriaSchema.loadClass(Pizzeria)
 
 class MongooseConnection {
 
@@ -30,6 +40,7 @@ class MongooseConnection {
         this.mongooseConnection = await mongoose.createConnection('mongodb://localhost:27017/test')
 
         this.ConsumerModel = this.mongooseConnection.model('Consumer', consumerSchema)
+        this.PizzeriaModel = this.mongooseConnection.model('Pizzeria', pizzeriaSchema)
     }
 
     async close() {
