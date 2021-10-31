@@ -1,4 +1,8 @@
-const { createServices } = require('../../src/model/serviceFactory')
+const time = require('../time')
+const sinon = require('sinon')
+sinon.stub(time, 'setTimeout')
+
+const { createServices, afterTestCleaning } = require('../../src/model/serviceFactory')
 
 const {
     bancheroRegistrationData,
@@ -11,6 +15,10 @@ describe('Pizzeria login', () => {
     beforeEach(() => {
         const services = createServices()
         userService = services.userService
+    })
+
+    afterEach(async () => {
+        await afterTestCleaning()
     })
 
     it('can login a registered pizzeria with valid credentials', async () => {
