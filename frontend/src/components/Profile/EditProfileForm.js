@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 
 const FormFieldWithError = ({name, label, type='text'}) =>
-  <div class="mb-4 text-gray-700">
-    <label class="block mb-1" for="forms-validationInputCode_error">{label}</label>
+  <div className="mb-4 text-gray-700">
+    <label className="block mb-1" htmlFor="forms-validationInputCode_error">{label}</label>
     <Field id="name" name={name} type={type} className="w-full h-10 px-3 text-base placeholder-gray-600 border border-red-700 rounded-lg focus:shadow-outline" />
     <ErrorMessage name={name} render={message => <div name="input-error-message" class="bold text-red-500">{message}</div>}/>
   </div>
@@ -21,7 +21,7 @@ const EditProfileForm = ({ username, email, telephone, handleSubmit }) => {
         <Formik
             initialValues = { { username, email, telephone } }
             onSubmit = {
-                async (values, { setErrors }) => {
+              async (values, { setErrors }) => {
                 const errors = {}
 
                 if (values.username.trim() === '') errors.username = 'El nombre de usuario no puede estar vacio'
@@ -35,7 +35,7 @@ const EditProfileForm = ({ username, email, telephone, handleSubmit }) => {
                 else {
                     handleSubmit(values).catch(error => setSubmitError(error.response.data.error))
                 }            
-                }
+              }
             }
             >
             <Form name="edit-profile-form" >

@@ -9,8 +9,8 @@ const ConsumerInfo = ({ username, email, telephone }) => {
 
     const [showEditForm, setShowEditForm] = useState(false);
 
-    const handleSubmit = ({ name, editedProfile }) => {
-        api.updateConsumer(name, editedProfile)
+    const handleSubmit = (editedProfile) => {
+        api.updateConsumer(editedProfile)
         .then(() => window.location.reload())
     }
 

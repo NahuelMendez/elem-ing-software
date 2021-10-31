@@ -56,8 +56,8 @@ const api = {
     return axios.post(`${baseURL}/api/order`, data, createHeadesrWithToken());
   },
 
-  updateConsumer: (name, editedProfile) => {
-    return axios.put(`${baseURL}/consumer`, name, editedProfile.username, editedProfile.email, editedProfile.telephone);
+  updateConsumer: (editedProfile) => {
+    return axios.put(`${baseURL}/api/consumer`, { name: editedProfile.username, email: editedProfile.email, telephone: editedProfile.telephone }, createHeadesrWithToken());
   }
 
 };
