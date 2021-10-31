@@ -1,4 +1,8 @@
-const { createServices } = require('../../src/model/serviceFactory')
+const time = require('../time')
+const sinon = require('sinon')
+sinon.stub(time, 'setTimeout')
+
+const { createServices, afterTestCleaning } = require('../../src/model/serviceFactory')
 
 const testObjects = require('../testObjects')
 
@@ -11,6 +15,10 @@ describe('Find Pizzeria', () => {
     beforeEach(() => {
         const services = createServices()
         userService = services.userService
+    })
+
+    afterEach(async () => {
+        await afterTestCleaning()
     })
 
     it("can find pizzeria by name when it's registered", async () => {
