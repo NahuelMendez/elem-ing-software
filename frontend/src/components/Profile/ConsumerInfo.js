@@ -11,7 +11,14 @@ const ConsumerInfo = ({ username, email, telephone }) => {
 
     const handleSubmit = (editedProfile) => {
         api.updateConsumer(editedProfile)
-        .then(() => window.location.reload())
+        .then((res) => {
+            const role = res.data.rol
+            const username = res.data.username
+            localStorage.setItem("role", role)
+            localStorage.setItem("username", username)
+            localStorage.setItem("token", res.headers.authorization)
+            window.location.reload()
+        })
     }
 
     return (
