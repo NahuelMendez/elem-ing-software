@@ -1,4 +1,8 @@
-const { createServices } = require('../../src/model/serviceFactory')
+const time = require('../time')
+const sinon = require('sinon')
+sinon.stub(time, 'setTimeout')
+
+const { createServices, afterTestCleaning } = require('../../src/model/serviceFactory')
 
 const { createPizzeriaRegistrationData } = require('../testObjects')
 const { createConsumerRegistrationData } = require('../testObjects')
@@ -17,6 +21,10 @@ describe('Find Pizzerias matching partial name', () => {
         kentuckyPizzeriaData = createPizzeriaRegistrationData({name: 'Kentucky'})
         kePizzaPizzeriaData = createPizzeriaRegistrationData({name: 'Ke Pizza'})
         muchaPizzaPizzeriaData = createPizzeriaRegistrationData({name: 'Mucha Pizza'})
+    })
+
+    afterEach(async () => {
+        await afterTestCleaning()
     })
 
     it('can find pizzerias matching a partial name', async () => {
