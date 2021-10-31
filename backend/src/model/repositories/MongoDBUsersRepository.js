@@ -1,20 +1,17 @@
-const { MongooseConnection } = require('./mongoose')
 const { Consumer } = require('../Consumer')
 
 const {ModelException} = require("../ModelException");
 
 class MongoDBUsersRepository {
 
-    constructor() {
-        this.connection = new MongooseConnection()
+    constructor(connection) {
+        this.connection = connection
     }
 
     async users() {
-        return await this.runInTransaction(async () => {
-            const consumers = await this.connection.ConsumerModel.find({})
-            const pizzerias = await this.connection.PizzeriaModel.find({})
-            return consumers.concat(pizzerias)
-        })
+        const consumers = await this.connection.ConsumerModel.find({})
+        const pizzerias = await this.connection.PizzeriaModel.find({})
+        return consumers.concat(pizzerias)
     }
 
     async existsPizzeriaNamed(pizzeriaName) {
@@ -48,21 +45,15 @@ class MongoDBUsersRepository {
     }
 
     async save(newUser) {
-        return await this.runInTransaction(async () => {
-            const mongooseModel = newUser instanceof Consumer ? this.connection.ConsumerModel : this.connection.PizzeriaModel
-            const createdUser = new mongooseModel(newUser)
-            return await createdUser.save()
-        })
+        const mongooseModel = newUser instanceof Consumer ? this.connection.ConsumerModel : this.connection.PizzeriaModel
+        const createdUser = new mongooseModel(newUser)
+        return await createdUser.save()
     }
 
     async update(user) {
         user.save()
     }
 
-    // PRIVATE
-    async runInTransaction(asyncFunction) {
-        return await this.connection.runInTransaction(asyncFunction)
-    }
 }
 
 module.exports = { MongoDBUsersRepository }

@@ -6,14 +6,46 @@ const { TransientUsersRepository } = require("./TransientUsersRepository")
 const { TransientOrdersRepository } = require("./TransientOrdersRepository")
 
 const { MongoDBUsersRepository } = require("./repositories/MongoDBUsersRepository")
-const { afterTestCleaning } = require('./repositories/mongoose')
+const { MongooseConnection, afterTestCleaning } = require('./repositories/mongoose')
+
+const makeServiceTransactional = (service, transactionalMessageNames) => {
+    const handler = {
+        get: function(target, propertyName, receiver) {
+            if (transactionalMessageNames.includes(propertyName))
+                return async function() {
+                    return target.runInTransaction(async () => await target[propertyName](...arguments))
+                }
+            else
+                return target[propertyName]
+        }
+    }
+
+    return new Proxy(service, handler)
+}
 
 function createServices() {
-    const usersRepository = new MongoDBUsersRepository()
+    const connection = new MongooseConnection()
+
+    const usersRepository = new MongoDBUsersRepository(connection)
     const ordersRepository = new TransientOrdersRepository()
 
+    const transactionalUserService = makeServiceTransactional(
+        new UserService(connection, usersRepository),
+        [
+            'existsPizzeriaNamed',
+            'existsUserWithEmail',
+            'registerPizzeria',
+            'registerConsumer',
+            'login',
+            'findConsumerByName',
+            'findPizzeriaByName',
+            'findPizzeriasByPartialName',
+            'editConsumerData'
+        ]
+    )
+
     return {
-        userService: new UserService(usersRepository),
+        userService: transactionalUserService,
         menuService: new MenuService(usersRepository),
         orderService: new OrderService(usersRepository, ordersRepository)
     }

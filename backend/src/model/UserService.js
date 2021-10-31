@@ -4,7 +4,8 @@ const {Consumer} = require("./Consumer");
 
 class UserService {
 
-    constructor(usersRepository) {
+    constructor(connection, usersRepository) {
+        this.connection = connection
         this.usersRepository = usersRepository
     }
 
@@ -86,6 +87,10 @@ class UserService {
     async assertThereIsNotUserWithEmail(email) {
         if (await this.existsUserWithEmail(email))
             throw new ModelException(`A user with email ${email} is already registered`)
+    }
+
+    async runInTransaction(asyncFunction) {
+        return await this.connection.runInTransaction(asyncFunction)
     }
 }
 

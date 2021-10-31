@@ -53,6 +53,5 @@ const afterTestCleaning = async () => new MongooseConnection().deleteAll()
 
 module.exports = {
     MongooseConnection,
-    afterTestCleaning,
-    consumerSchema
+    afterTestCleaning
 }
