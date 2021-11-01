@@ -58,7 +58,14 @@ const api = {
 
   getRanking: () => {
     return axios.get(`${baseURL}/api/order/bestseller`);
-  }
+  },
+  
+  getOrdersHistory: () =>
+    axios.get(`${baseURL}/api/order`, {
+      headers: {
+        'Authorization': localStorage.getItem("token")
+      }
+    })
 
 };
 

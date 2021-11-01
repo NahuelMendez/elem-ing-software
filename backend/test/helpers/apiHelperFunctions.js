@@ -53,9 +53,14 @@ async function getOrderHistory(requester, token) {
 }
 
 async function editConsumerData(requester, consumer, token) {
-    return await requester.put('/api/consumer')
+    return await requester.put(consumerPath)
             .send({name: consumer.name, email: consumer.email, telephone: consumer.telephone})
             .set('Authorization', token)
+}
+
+async function getConsumerData(requester, token) {
+    return await requester.get(consumerPath)
+        .set('Authorization', token)
 }
 
 async function loginToken(requester, user) {
@@ -78,5 +83,6 @@ module.exports = {
     updatedProduct,
     createOrder,
     getOrderHistory,
-    editConsumerData
+    editConsumerData,
+    getConsumerData
 }

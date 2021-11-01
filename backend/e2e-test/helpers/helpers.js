@@ -158,6 +158,20 @@ async function clearInputField(page, inputFieldSelector) {
     await inputField.press('Backspace')
 }
 
+async function placeOrder(page, { pizzeriaName, unitsOfProducts }) {
+    const addProductButtonSelector = '.product-container .button-add > img'
+    await goto(page, `/pizzeria/${pizzeriaName}`)
+    await page.waitForSelector(addProductButtonSelector)
+
+    for (let i=0; i < unitsOfProducts; i++) {
+        await page.click(addProductButtonSelector)
+    }
+    
+    await page.waitForSelector('[name="confirm-button"]')
+    await page.evaluate(() => document.querySelector('[name="confirm-button"]').click())
+    await page.waitForSelector('.notebook-container .alert-confirm')
+}
+
 module.exports = {
     goto,
     clickAndWait,
@@ -185,5 +199,6 @@ module.exports = {
     expectTextContent,
     expectTextContents,
     clearInputFields,
-    clearInputField
+    clearInputField,
+    placeOrder
 }

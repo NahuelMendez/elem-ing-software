@@ -57,7 +57,7 @@ const createApp = () => {
         usersService.login(loginData)
             .then(user => 
                 response
-                .header("Authorization", jwt.sign({username: user.getName(), email: user.getEmail(), role: user.getRoleName()}, 'secret'))
+                .header("Authorization", createToken(user))
                 .status(OK).json({
                     email: user.getEmail(), 
                     username: user.getName(),
@@ -132,7 +132,7 @@ const createApp = () => {
             .catch( error => response.status(BAD_REQUEST).json({error: error.message}))
     })
 
-    app.get('/api/consumer', authenticateConsumer, (request, response) => {
+    app.get(consumerPath, authenticateConsumer, (request, response) => {
         const { user } = request
         console.log(user)
 
@@ -169,9 +169,13 @@ const createApp = () => {
     app.put(consumerPath, editConsumerDataRequestValidation, authenticateConsumer, (request, response) => {
         const { user } = request
         const {name , telephone , email } = request.body
-
+        
         usersService.editConsumerData(user.username ,name ,telephone ,email)
-            .then(() => response.status(OK).json('the data was successfully modified'))
+            .then(() => 
+                response
+                    .header("Authorization", jwt.sign({ username: name, email: email, role: user.role }, 'secret'))
+                    .status(OK)
+                    .json('the data was successfully modified'))
             .catch( error => response.status(BAD_REQUEST).json({error: error.message}))
     })
 
@@ -200,10 +204,16 @@ const createApp = () => {
     const convertToOrderHistory = (orders) => {
         return orders.map(order => ({ pizzeriaName: order.getPizzeriaName(), total: order.getTotal() }))
     }
+    
+    const createToken = (user) => {
+        return jwt.sign({ username: user.getName(), email: user.getEmail(), role: user.getRoleName() }, 'secret')
+    }
 
     return app
 }
 
 
 module.exports = {createApp}
+
+
 
