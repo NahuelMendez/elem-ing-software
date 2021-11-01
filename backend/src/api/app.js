@@ -134,7 +134,6 @@ const createApp = () => {
 
     app.get(consumerPath, authenticateConsumer, (request, response) => {
         const { user } = request
-        console.log(user)
 
         usersService.findConsumerByName(user.username)
             .then(consumer => response.status(OK).json({
@@ -162,7 +161,7 @@ const createApp = () => {
     })
 
     app.get(rankingPath, (request, response) => {
-        orderService.pizzasBestsellers(5)
+        orderService.pizzasBestsellers({limit: 5})
             .then(bestsellers => response.status(OK).json(bestsellers))
     })
 
