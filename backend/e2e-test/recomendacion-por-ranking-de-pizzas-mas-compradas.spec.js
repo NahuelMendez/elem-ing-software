@@ -24,6 +24,15 @@ describe('Consumidor - get ranking of most bought pizzas', () => {
         await browser.close()
     })
 
+    it('when there are no products sold, a consumer should not see the ranking carousel in the main view', async () => {
+        await registerAndLoginConsumer(page, createConsumerRegistrationData({}))
+
+        await goto(page, `/home`)
+
+        const foundElements = await page.$$('[name="carousel-ranking"]')
+        expect(foundElements).toHaveLength(0)
+    })
+
     it(`when there is at least one bought product in the system, a consumer should see a carousel in the main view`, async () => {
         const { pizzeriaData } = await registerPizzeriaWithAmountOfProducts(page, 1)
 
@@ -42,16 +51,10 @@ describe('Consumidor - get ranking of most bought pizzas', () => {
     })
 
     it(`each card in the carousel should show the name of the product, pizzeria name and its position in the ranking`, async () => {
-        const { pizzeriaData } = await registerPizzeriaWithAmountOfProducts(page, 6)
+        const { pizzeriaData } = await registerPizzeriaWithAmountOfProducts(page, 1)
 
         await registerAndLoginConsumer(page, createConsumerRegistrationData({}))
-        await goto(page, `/pizzeria/${pizzeriaData.name}`)
-
-        await page.waitForSelector('.product-container .button-add > img')
-        await page.click('.product-container .button-add > img')
-
-        await page.waitForSelector('[name="confirm-button"]')
-        await page.evaluate(() => document.querySelector('[name="confirm-button"]').click())
+        await placeOrder(page, { pizzeriaName: pizzeriaData.name, unitsOfProducts: 1 })
 
         await goto(page, `/home`)
 
@@ -116,15 +119,6 @@ describe('Consumidor - get ranking of most bought pizzas', () => {
         ]
 
         await expectBestsellers(page, expectedBestsellersEntries)
-    })
-
-    it('when there are no products sold, a consumer should not see the ranking carousel in the main view', async () => {
-        await registerAndLoginConsumer(page, createConsumerRegistrationData({}))
-
-        await goto(page, `/home`)
-
-        const foundElements = await page.$$('[name="carousel-ranking"]')
-        expect(foundElements).toHaveLength(0)
     })
 })
 
