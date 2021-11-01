@@ -17,10 +17,10 @@ describe('Consumidor - get ranking of most bought pizzas', () => {
     let page
 
     beforeEach(async () => {
-        browser = await puppeteer.launch({headless: false})
+        browser = await puppeteer.launch({ headless: false })
         page = await browser.newPage()
     })
-    
+
     afterEach(async () => {
         await browser.close()
     })
@@ -33,7 +33,7 @@ describe('Consumidor - get ranking of most bought pizzas', () => {
 
         await page.waitForSelector('.product-container .button-add > img')
         await page.click('.product-container .button-add > img')
-       
+
         await page.waitForSelector('[name="confirm-button"]')
         await page.evaluate(() => document.querySelector('[name="confirm-button"]').click())
 
@@ -43,14 +43,14 @@ describe('Consumidor - get ranking of most bought pizzas', () => {
     })
 
     it(`each card in the carousel should show the name of the product, pizzeria name and its position in the ranking`, async () => {
-        const { pizzeriaData } = await registerPizzeriaWithAmountOfProducts(page, 1)
+        const { pizzeriaData } = await registerPizzeriaWithAmountOfProducts(page, 6)
 
         await registerAndLoginConsumer(page, createConsumerRegistrationData({}))
         await goto(page, `/pizzeria/${pizzeriaData.name}`)
 
         await page.waitForSelector('.product-container .button-add > img')
         await page.click('.product-container .button-add > img')
-       
+
         await page.waitForSelector('[name="confirm-button"]')
         await page.evaluate(() => document.querySelector('[name="confirm-button"]').click())
 
@@ -65,6 +65,36 @@ describe('Consumidor - get ranking of most bought pizzas', () => {
 
         await page.waitForSelector('[name="product-ranking-pizzeriaName"]')
         await expectTextContent(page, '[name="product-ranking-pizzeriaName"]', pizzeriaData.name)
+    })
+
+    it.only(`a maximum of 5 products are shown in a ranking`, async () => {
+        const { pizzeriaData } = await registerPizzeriaWithAmountOfProducts(page, 6)
+
+        await registerAndLoginConsumer(page, createConsumerRegistrationData({}))
+        await goto(page, `/pizzeria/${pizzeriaData.name}`)
+
+        await page.waitForSelector('.product-container .button-add > img')
+        await page.click('.product-container .button-add > img')
+
+        await page.waitForSelector('[name="confirm-button"]')
+        await page.evaluate(() => document.querySelector('[name="confirm-button"]').click())
+
+        await goto(page, `/home`)
+
+        await page.waitForSelector('[name="carousel-ranking"]')
+
+        for (let index = 1; index < 6; index++) {
+
+            await page.waitForSelector(`[name="ranking-number${index}"]`)
+            await expectTextContent(page, `[name="ranking-number${index}"]`, index)
+        }
+
+
+
+        //await page.waitForSelector('[name="product-ranking-name"]')
+
+        //await page.waitForSelector('[name="product-ranking-pizzeriaName"]')
+        //await expectTextContent(page, '[name="product-ranking-pizzeriaName"]', pizzeriaData.name)
     })
 
     it('when there are no products sold, a consumer should not see the ranking carousel in the main view', async () => {
