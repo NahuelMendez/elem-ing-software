@@ -1,4 +1,4 @@
-const {registerPath, loginPath, orderPath, consumerPath} = require("../../src/api/path")
+const {registerPath, loginPath, orderPath, consumerPath, rankingPath} = require("../../src/api/path")
 
 const { 
     createMenuPath, 
@@ -63,6 +63,10 @@ async function getConsumerData(requester, token) {
         .set('Authorization', token)
 }
 
+async function getBestseller(requester) {
+    return await requester.get(rankingPath)
+}
+
 async function loginToken(requester, user) {
     await registerUser(requester, user)
     const responseLogin = await login(requester, {
@@ -84,5 +88,6 @@ module.exports = {
     createOrder,
     getOrderHistory,
     editConsumerData,
-    getConsumerData
+    getConsumerData,
+    getBestseller
 }
