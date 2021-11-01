@@ -126,11 +126,11 @@ async function expectPizzeriaHasNoOrders(orderService, pizzeriaName) {
     expect(foundOrders).toHaveLength(0)
 }
 
-async function expectToContainOrderWith({ consumer, pizzeria, lineItems }, actualOrders) {
+function expectToContainOrderWith({ consumer, pizzeria, lineItems }, actualOrders) {
     expect(
         actualOrders.some(order =>
-            order.wasMadeBy(consumer) &&
-            order.wasMadeTo(pizzeria) &&
+            order.wasMadeBy(consumer.getName()) &&
+            order.wasMadeTo(pizzeria.getName()) &&
             order.hasLineItems(lineItems)
         )
     ).toBe(true)

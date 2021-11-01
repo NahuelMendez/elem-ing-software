@@ -19,7 +19,7 @@ class Order {
     }
 
     hasLineItems(lineItems) {
-        return this.lineItems(lineItem => lineItems.includes(lineItem))
+        return this.lineItems == lineItems
     }
 
     getPizzeria() {

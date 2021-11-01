@@ -13,6 +13,8 @@ const updateProductPath = '/api/pizzeria/:pizzeriaName/menu/:productName'
 
 const orderPath = '/api/order'
 
+const rankingPath = '/api/order/bestseller'
+
 const consumerPath = '/api/consumer'
 
 module.exports = {
@@ -23,5 +25,6 @@ module.exports = {
     searchPizzeriaPath, 
     updateProductPath,
     orderPath,
-    consumerPath
+    consumerPath,
+    rankingPath
 }
