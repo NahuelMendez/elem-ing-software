@@ -4,6 +4,8 @@ const {
     expectTextContent,
     registerAndLoginConsumer,
     clickHomeCircularThing,
+    clickAndWait,
+    clearInputField,
     expectPath
 } = require('./helpers/helpers')
 
@@ -13,9 +15,10 @@ const editProfileFormSelector = '.pizzap-modal [name="edit-profile-form"]';
 const inputUsernameEditProfileSelector = editProfileFormSelector + ' input[name="username"]';
 const inputEmailEditProfileSelector = editProfileFormSelector + ' input[name="email"]';
 const inputTelephoneEditProfileSelector = editProfileFormSelector + ' input[name="telephone"]';
+const confirmButtonSelector = editProfileFormSelector + ' button[type="submit"]';
 
 
-jest.setTimeout(10000)
+jest.setTimeout(15000)
 describe('Consumer - profile data', () => {
     let browser
     let page
@@ -67,16 +70,75 @@ describe('Consumer - profile data', () => {
         await expectTextContent(page, '[name="consumer-telephone"]', consumerData.telephone.toString());
     })
 
-    it(`The profile page should show the logged consumer data`, async () => {
+    it(`When a consumer try to change his email for another that already exist should show a field with error`, async () => {
+        const anotherConsumerData = createConsumerRegistrationData({});
+        await registerAndLoginConsumer(page, anotherConsumerData);
+        await clickHomeCircularThing(page)
+        await page.waitForSelector('[name="logout-button"]')
+        await clickAndWait(page, '[name="logout-button"]')
+
         const consumerData = createConsumerRegistrationData({});
         await registerAndLoginConsumer(page, consumerData);
         await goto(page, `/profile`)
 
-        await page.waitForSelector('.cmr-info-dtl');
+        await page.waitForSelector('[name="edit-profile-button"]')
+        await page.click('[name="edit-profile-button"]')
 
-        await expectTextContent(page, '[name="consumer-name"]', consumerData.name);
-        await expectTextContent(page, '[name="consumer-email"]', consumerData.email);
-        await expectTextContent(page, '[name="consumer-telephone"]', consumerData.telephone.toString());
+        await page.waitForSelector('.pizzap-modal');
+        await clearInputField(page, inputEmailEditProfileSelector);
+        await page.type(inputEmailEditProfileSelector, anotherConsumerData.email);
+        await page.waitForSelector(confirmButtonSelector)
+        await page.click(confirmButtonSelector);
+
+        await page.waitForSelector('[name="form-alert"]');
+
+        await expectTextContent(page, '[name="form-alert"]', `A user with email ${anotherConsumerData.email} is already registered`)
+    })
+
+    it(`When a consumer update his data correctly, the modal close and should can see the updated personal info`, async () => {
+        const consumerData = createConsumerRegistrationData({});
+        await registerAndLoginConsumer(page, consumerData);
+        await goto(page, `/profile`)
+
+        await page.waitForSelector('[name="edit-profile-button"]')
+        await page.click('[name="edit-profile-button"]')
+
+        await page.waitForSelector(confirmButtonSelector);
+        await clearInputField(page, inputEmailEditProfileSelector);
+        await page.type(inputEmailEditProfileSelector, consumerData.name + "anotherEmail@gmail.com");
+        await page.click(confirmButtonSelector);
+
+        
+        await page.waitForNavigation(`/profile`);
+
+        await expectTextContent(page, '[name="consumer-email"]', "Email: " + consumerData.name + "anotherEmail@gmail.com");
+    })
+
+    it(`When a consumer update tries his data with an empty field, the modal should show an alert for empty field`, async () => {
+        const consumerData = createConsumerRegistrationData({});
+        await registerAndLoginConsumer(page, consumerData);
+        await goto(page, `/profile`)
+
+        await page.waitForSelector('[name="edit-profile-button"]')
+        await page.click('[name="edit-profile-button"]')
+
+        await page.waitForSelector(confirmButtonSelector);
+
+        await clearInputField(page, inputUsernameEditProfileSelector);
+        await page.type(inputUsernameEditProfileSelector, "");
+        await clearInputField(page, inputEmailEditProfileSelector);
+        await page.type(inputEmailEditProfileSelector, "");
+        await clearInputField(page, inputTelephoneEditProfileSelector);
+        await page.type(inputTelephoneEditProfileSelector, "");
+
+        await page.click(confirmButtonSelector);
+
+        await page.waitForSelector('[name="input-error-message"]')
+        const errorMessages = await page.$$eval('[name="input-error-message"]', elements => elements.map(element => element.innerText))
+        
+        expect(errorMessages).toContain('El nombre de usuario no puede estar vacio')
+        expect(errorMessages).toContain('El email no puede estar vacio')
+        expect(errorMessages).toContain('El telefono no puede estar vacio')
     })
 
 })

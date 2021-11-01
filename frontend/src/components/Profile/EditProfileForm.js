@@ -33,7 +33,9 @@ const EditProfileForm = ({ username, email, telephone, handleSubmit }) => {
                     setErrors(errors)
                 }
                 else {
-                    handleSubmit(values).catch(error => setSubmitError(error.response.data.error))
+                    handleSubmit(values).catch(error => {
+                      console.log("ERROR", error)
+                      setSubmitError(error.response.data.error)})
                 }            
               }
             }
