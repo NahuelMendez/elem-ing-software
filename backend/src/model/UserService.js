@@ -16,6 +16,14 @@ class UserService {
         return await this.usersRepository.existsUserWithEmail(email)
     }
 
+    async existsUserWithEmailWithoutCountingTheConsumer(consumer, email) {
+        return await this.usersRepository.existsUserWithEmail(email) && this.consumerDoesNotHaveTheEmail(consumer, email)
+    }
+
+    consumerDoesNotHaveTheEmail(consumer, email) {   
+        return ! consumer.hasEmail(email)
+    }
+
     async registerPizzeria({name, telephone, email, password}) {
         await this.assertThereIsNoPizzeriaNamed(name)
         await this.assertThereIsNotUserWithEmail(email)
@@ -50,6 +58,19 @@ class UserService {
 
     async findPizzeriasByPartialName(name) {
         return await this.usersRepository.findPizzeriasByPartialName(name)
+    }
+
+    async editConsumerData(actualName, name, telephone, email) {
+        const consumer = await this.findConsumerByName(actualName)
+        await this.assertThereIsNotUserWithEmailWithoutCountingTheConsumer(consumer, email)
+        consumer.updateData(name, telephone, email)
+
+        await this.usersRepository.update(consumer)
+    }
+
+    async assertThereIsNotUserWithEmailWithoutCountingTheConsumer(consumer, email) {
+        if (await this.existsUserWithEmailWithoutCountingTheConsumer(consumer, email))
+            throw new ModelException(`A user with email ${email} is already registered`)
     }
 
     async assertThereIsNoPizzeriaNamed(name) {

@@ -20,6 +20,14 @@ class Pizzeria extends User {
         this.products.push(product)
     }
 
+    getProductNamed(productName) {
+        return this.products.find (product => product.isNamed(productName))
+    }
+
+    getProductPriceWithName(productName) {
+        return this.getProductNamed(productName).getPrice()
+    }
+
     removeProductNamed(productName) {
         const index = this.products.findIndex(product => product.isNamed(productName))
         if (index === -1) throw new ModelException(`Product ${productName} not found`)

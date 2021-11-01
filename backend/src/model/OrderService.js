@@ -8,6 +8,10 @@ class OrderService {
         this.ordersRepository = ordersRepository
     }
 
+    async pizzasBestsellers({ limit }) {
+        return this.ordersRepository.pizzasBestsellers({ limit })
+    }
+
     async findOrdersByConsumerName(consumerName) {
         return this.ordersRepository.findOrdersByConsumerName(consumerName)
     }
@@ -19,7 +23,7 @@ class OrderService {
     async placeOrder({ consumerName, pizzeriaName, lineItems }) {
         this.assertHasSomeProducts(lineItems)
         this.assertHasValidQuantities(lineItems)
-
+        
         const consumer = await this.usersRepository.findConsumerByName(consumerName)
         const pizzeria = await this.usersRepository.findPizzeriaByName(pizzeriaName)
 

@@ -65,7 +65,7 @@ const productsData = {
     mozzarella: {
         name : 'mozzarella',
         description : 'mozzarella description',
-        price : 1,
+        price : 10,
         imageURL : 'http://img.com/product.jpg'
     },
     bacon: {

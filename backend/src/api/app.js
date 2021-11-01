@@ -3,10 +3,20 @@ const express = require('express')
 var cors = require('cors')
 const path = require('path')
 const bodyParser = require('body-parser')
-const {registerPath, loginPath, menuPath, pizzeriaPath, searchPizzeriaPath, updateProductPath, createOrderPath} = require("./path")
-
 const { createServices } = require('../../src/model/serviceFactory')
 const {Product} = require('../model/Product')
+
+const {
+    registerPath, 
+    loginPath, 
+    menuPath, 
+    pizzeriaPath, 
+    searchPizzeriaPath, 
+    updateProductPath, 
+    orderPath,
+    consumerPath,
+    rankingPath
+} = require("./path")
 
 const {OK, CREATED, BAD_REQUEST, NOT_FOUND} = require("./statusCode")
 const {authenticatePizzeria, authenticateConsumer} = require("./authenticate")
@@ -15,7 +25,8 @@ const {
     registerPizzeriaRequestValidation,
     loginRequestValidation,
     productRequestValidation,
-    orderRequestValidation
+    orderRequestValidation,
+    editConsumerDataRequestValidation
 } = require('./requestValidations')
 
 const createApp = () => {
@@ -46,7 +57,7 @@ const createApp = () => {
         usersService.login(loginData)
             .then(user => 
                 response
-                .header("Authorization", jwt.sign({username: user.getName(), email: user.getEmail(), role: user.getRoleName()}, 'secret'))
+                .header("Authorization", createToken(user))
                 .status(OK).json({
                     email: user.getEmail(), 
                     username: user.getName(),
@@ -121,9 +132,8 @@ const createApp = () => {
             .catch( error => response.status(BAD_REQUEST).json({error: error.message}))
     })
 
-    app.get('/api/consumer', authenticateConsumer, (request, response) => {
+    app.get(consumerPath, authenticateConsumer, (request, response) => {
         const { user } = request
-        console.log(user)
 
         usersService.findConsumerByName(user.username)
             .then(consumer => response.status(OK).json({
@@ -133,13 +143,39 @@ const createApp = () => {
             }))
     })
 
-    app.post(createOrderPath, orderRequestValidation, authenticateConsumer, (request, response) => {
+    app.post(orderPath, orderRequestValidation, authenticateConsumer, (request, response) => {
         const { user } = request
         const {pizzeriaName, order} = request.body
 
         orderService.placeOrder({consumerName: user.username, pizzeriaName: pizzeriaName ,lineItems: order})
             .then(() => response.status(CREATED).json({message: "the order was confirmed"}))
             .catch((error) => response.status(BAD_REQUEST).json({error: error.message}))
+    })
+
+    app.get(orderPath, authenticateConsumer, (request, response) => {
+        const { user } = request
+
+        orderService.findOrdersByConsumerName(user.username)
+            .then (orders => convertToOrderHistory(orders))
+            .then(orderHistory => response.status(OK).json(orderHistory))
+    })
+
+    app.get(rankingPath, (request, response) => {
+        orderService.pizzasBestsellers({limit: 5})
+            .then(bestsellers => response.status(OK).json(bestsellers))
+    })
+
+    app.put(consumerPath, editConsumerDataRequestValidation, authenticateConsumer, (request, response) => {
+        const { user } = request
+        const {name , telephone , email } = request.body
+        
+        usersService.editConsumerData(user.username ,name ,telephone ,email)
+            .then(() => 
+                response
+                    .header("Authorization", jwt.sign({ username: name, email: email, role: user.role }, 'secret'))
+                    .status(OK)
+                    .json('the data was successfully modified'))
+            .catch( error => response.status(BAD_REQUEST).json({error: error.message}))
     })
 
     const menuToJson = (menu) => {
@@ -164,9 +200,19 @@ const createApp = () => {
         }
     }
 
+    const convertToOrderHistory = (orders) => {
+        return orders.map(order => ({ pizzeriaName: order.getPizzeriaName(), total: order.getTotal() }))
+    }
+    
+    const createToken = (user) => {
+        return jwt.sign({ username: user.getName(), email: user.getEmail(), role: user.getRoleName() }, 'secret')
+    }
+
     return app
 }
 
 
 module.exports = {createApp}
+
+
 

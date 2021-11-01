@@ -6,8 +6,12 @@ class Order {
         this.lineItems = lineItems
     }
 
-    wasMadeBy(aConsumer) {
-        return true
+    getPizzeriaName() {
+        return this.pizzeria.getName()
+    }
+
+    wasMadeBy(consumerName) {
+        return this.consumer.isNamed(consumerName)
     }
 
     wasMadeTo(aPizzeria) {
@@ -15,11 +19,25 @@ class Order {
     }
 
     hasLineItems(lineItems) {
-        return this.lineItems(lineItem => lineItems.includes(lineItem))
+        return this.lineItems == lineItems
+    }
+
+    getPizzeria() {
+        return this.pizzeria
     }
 
     getLineItems() {
         return this.lineItems
+    }
+
+    getTotal() {
+        const prices = this.lineItems.map ( lineItem => this.calculatePrices(lineItem))
+        
+        return prices.reduce ((previousValue, price) => previousValue + price, 0)
+    }
+
+    calculatePrices(lineItem) {
+        return this.pizzeria.getProductPriceWithName( lineItem.productName) * lineItem.quantity
     }
 
 }

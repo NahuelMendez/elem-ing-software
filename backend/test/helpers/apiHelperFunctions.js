@@ -1,10 +1,9 @@
-const {registerPath, loginPath, createOrderPath } = require("../../src/api/path")
+const {registerPath, loginPath, orderPath, consumerPath, rankingPath} = require("../../src/api/path")
 
 const { 
     createMenuPath, 
     deleteProductPath, 
     createPizzeriaPath,
-    createConsumerPath,
     createUpdateProductPath 
 } = require('../helpers/pathFactory')
 
@@ -43,9 +42,29 @@ async function updatedProduct(requester, pizzeria, productToUpdate, product, tok
 }
 
 async function createOrder(requester, pizzeria, order, token) {
-    return await requester.post(createOrderPath)
+    return await requester.post(orderPath)
         .send({pizzeriaName: pizzeria.name, order: order})
         .set('Authorization', token)
+}
+
+async function getOrderHistory(requester, token) {
+    return await requester.get(orderPath)
+        .set('Authorization', token)
+}
+
+async function editConsumerData(requester, consumer, token) {
+    return await requester.put(consumerPath)
+            .send({name: consumer.name, email: consumer.email, telephone: consumer.telephone})
+            .set('Authorization', token)
+}
+
+async function getConsumerData(requester, token) {
+    return await requester.get(consumerPath)
+        .set('Authorization', token)
+}
+
+async function getBestseller(requester) {
+    return await requester.get(rankingPath)
 }
 
 async function loginToken(requester, user) {
@@ -66,5 +85,9 @@ module.exports = {
     getPizzeria,
     loginToken,
     updatedProduct,
-    createOrder
+    createOrder,
+    getOrderHistory,
+    editConsumerData,
+    getConsumerData,
+    getBestseller
 }
