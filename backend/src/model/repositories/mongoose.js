@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 
 const { Consumer } = require('../Consumer')
 const { Pizzeria } = require('../Pizzeria')
+const { Product } = require('../Product')
 
 const consumerSchema = mongoose.Schema({
     name: String,
@@ -12,11 +13,21 @@ const consumerSchema = mongoose.Schema({
 
 consumerSchema.loadClass(Consumer)
 
+const productSchema = mongoose.Schema({
+    name: String,
+    description: String,
+    price: Number,
+    imageURL: String
+})
+
+productSchema.loadClass(Product)
+
 const pizzeriaSchema = mongoose.Schema({
     name: String,
     telephone: Number,
     email: String,
-    password: String
+    password: String,
+    products: [ productSchema ]
 })
 
 pizzeriaSchema.loadClass(Pizzeria)

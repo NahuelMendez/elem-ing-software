@@ -1,4 +1,8 @@
-const { createServices } = require('../../src/model/serviceFactory')
+const time = require('../time')
+const sinon = require('sinon')
+sinon.stub(time, 'setTimeout')
+
+const { createServices, afterTestCleaning } = require('../../src/model/serviceFactory')
 
 const testObjects = require('../testObjects')
 const productFactory = require('../helpers/productFactory')
@@ -19,6 +23,10 @@ describe("Pizzeria's menu creation", () => {
 
         pepperoniPizza = productFactory.createPepperoniPizza()
         meatPizza = productFactory.createMeatPizza()
+    })
+
+    afterEach(async () => {
+        await afterTestCleaning()
     })
 
     it("a registered pizzeria starts with no products on it's menu", async () => {
@@ -72,9 +80,12 @@ describe("Pizzeria's menu creation", () => {
         const foundProducts = await menuService.productsInMenuOf(pizzeriaName)
 
         expect(foundProducts).toHaveLength(expectedProducts.length)
-        expectedProducts.forEach(expectedProduct =>
-            expect(foundProducts).toContain(expectedProduct)
-        )
+
+        expectedProducts.forEach(expectedProduct => {
+            expect(
+                foundProducts.some(foundProduct => foundProduct.equals(expectedProduct)
+            )).toBe(true)
+        })
     }
 
 })

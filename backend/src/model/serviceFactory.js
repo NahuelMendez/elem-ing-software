@@ -44,9 +44,19 @@ function createServices() {
         ]
     )
 
+    const transactionalMenuService = makeServiceTransactional(
+        new MenuService(connection, usersRepository),
+        [
+            'productsInMenuOf',
+            'addToMenuOf',
+            'removeProduct',
+            'updateProduct'
+        ]
+    )
+
     return {
         userService: transactionalUserService,
-        menuService: new MenuService(usersRepository),
+        menuService: transactionalMenuService,
         orderService: new OrderService(usersRepository, ordersRepository)
     }
 }

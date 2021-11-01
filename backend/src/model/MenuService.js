@@ -1,6 +1,7 @@
 class MenuService {
 
-    constructor(usersRepository) {
+    constructor(connection, usersRepository) {
+        this.connection = connection
         this.usersRepository = usersRepository
     }
 
@@ -32,6 +33,10 @@ class MenuService {
         pizzeria.updateProductNamed(nameOfProductToUpdate, referenceProduct)
 
         await this.usersRepository.update(pizzeria)
+    }
+
+    async runInTransaction(asyncFunction) {
+        return await this.connection.runInTransaction(asyncFunction)
     }
 
 }

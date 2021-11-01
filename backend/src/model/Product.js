@@ -15,6 +15,15 @@ class Product {
         this.imageURL = imageURL
     }
 
+    equals(anObject) {
+        return (
+            this.name == anObject.getName() &&
+            this.description == anObject.getDescription() &&
+            this.price == anObject.getPrice() &&
+            this.imageURL == anObject.getImageURL()
+        )
+    }
+
     isNamed(productName) {
         return this.name === productName.trim()
     }
