@@ -1,5 +1,6 @@
 import NavBar from "../Navbar"
 import MenuContainer from "../MenuView/MenuContainer";
+import Ranking from "../Ranking";
 
 const MainView = () => {
   const role = localStorage.getItem("role")
@@ -7,7 +8,7 @@ const MainView = () => {
   return (
     <div>
       <NavBar />
-      {role === "pizzeria" && <MenuContainer />}
+      {role === "pizzeria" ? <MenuContainer /> : <Ranking/>}
     </div>
   )
 }

@@ -43,7 +43,7 @@ const api = {
   searchPizzeria: (data) => {
     return axios.get(`${baseURL}/api/search/pizzeria`, { params: data })
   },
-  
+
   getPizzeria: (pizzeriaName) => {
     return axios.get(`${baseURL}/api/pizzeria/${pizzeriaName}`);
   },
@@ -56,10 +56,14 @@ const api = {
     return axios.post(`${baseURL}/api/order`, data, createHeadesrWithToken());
   },
 
+  getRanking: () => {
+    return axios.get(`${baseURL}/api/order/bestseller`);
+  },
+
   updateConsumer: (editedProfile) => {
     return axios.put(`${baseURL}/api/consumer`, { name: editedProfile.username, email: editedProfile.email, telephone: editedProfile.telephone }, createHeadesrWithToken());
   },
-  
+
   getOrdersHistory: () =>
     axios.get(`${baseURL}/api/order`, {
       headers: {

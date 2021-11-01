@@ -4,12 +4,12 @@ const {
     expectTextContent,
     registerAndLoginConsumer,
     registerPizzeriaWithAmountOfProducts,
+    placeOrder,
 } = require('./helpers/helpers')
 
 const { createConsumerRegistrationData } = require('../test/testObjects')
 
 const ordersHistorySelector = '[name="orders-history"]'
-const addProductButtonSelector = '.product-container .button-add > img'
 
 jest.setTimeout(15000)
 
@@ -50,20 +50,6 @@ describe('Consumer - orders history', () => {
     })
 
 })
-
-
-async function placeOrder(page, { pizzeriaName, unitsOfProducts }) {
-    await goto(page, `/pizzeria/${pizzeriaName}`)
-    await page.waitForSelector(addProductButtonSelector)
-
-    for (let i=0; i < unitsOfProducts; i++) {
-        await page.click(addProductButtonSelector)
-    }
-    
-    await page.waitForSelector('[name="confirm-button"]')
-    await page.evaluate(() => document.querySelector('[name="confirm-button"]').click())
-    await page.waitForSelector('.notebook-container .alert-confirm')
-}
 
 async function findOrdersListItems(page) {
     await page.waitForSelector(ordersHistorySelector + ' ul > li')
