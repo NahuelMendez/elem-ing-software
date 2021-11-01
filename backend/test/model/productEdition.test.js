@@ -1,4 +1,8 @@
-const { createServices } = require('../../src/model/serviceFactory')
+const time = require('../time')
+const sinon = require('sinon')
+sinon.stub(time, 'setTimeout')
+
+const { createServices, afterTestCleaning } = require('../../src/model/serviceFactory')
 
 const productFactory = require("../helpers/productFactory");
 
@@ -21,6 +25,10 @@ describe(`Edit product of pizzeria's menu`, () => {
 
         pepperoniPizza = productFactory.createPepperoniPizza()
         meatPizza = productFactory.createMeatPizza()
+    })
+
+    afterEach(async () => {
+        await afterTestCleaning()
     })
 
     it('a product from the menu of a registered pizzeria can be updated with a reference product with a different name', async () => {
@@ -102,9 +110,12 @@ describe(`Edit product of pizzeria's menu`, () => {
         const foundProducts = await menuService.productsInMenuOf(pizzeriaName)
 
         expect(foundProducts).toHaveLength(expectedProducts.length)
-        expectedProducts.forEach(expectedProduct =>
-            expect(foundProducts).toContain(expectedProduct)
-        )
+
+        expectedProducts.forEach(expectedProduct => {
+            expect(
+                foundProducts.some(foundProduct => foundProduct.equals(expectedProduct)
+                )).toBe(true)
+        })
     }
 
 })
