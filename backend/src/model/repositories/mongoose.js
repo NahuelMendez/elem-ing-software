@@ -3,6 +3,7 @@ const mongoose = require('mongoose')
 const { Consumer } = require('../Consumer')
 const { Pizzeria } = require('../Pizzeria')
 const { Product } = require('../Product')
+const { Order } = require('../Order')
 
 const consumerSchema = mongoose.Schema({
     name: String,
@@ -32,6 +33,19 @@ const pizzeriaSchema = mongoose.Schema({
 
 pizzeriaSchema.loadClass(Pizzeria)
 
+const orderSchema = mongoose.Schema({
+    consumer: consumerSchema,
+    pizzeria: pizzeriaSchema,
+    lineItems: [
+        {
+            productName: String,
+            quantity: Number
+        }
+    ]
+})
+
+orderSchema.loadClass(Order)
+
 class MongooseConnection {
 
     async runInTransaction(asyncFunction) {
@@ -52,6 +66,8 @@ class MongooseConnection {
 
         this.ConsumerModel = this.mongooseConnection.model('Consumer', consumerSchema)
         this.PizzeriaModel = this.mongooseConnection.model('Pizzeria', pizzeriaSchema)
+
+        this.OrderModel = this.mongooseConnection.model('Order', orderSchema)
     }
 
     async close() {

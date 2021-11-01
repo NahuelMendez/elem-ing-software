@@ -3,7 +3,8 @@ const {ModelException} = require("./ModelException");
 
 class OrderService {
 
-    constructor(usersRepository, ordersRepository) {
+    constructor(connection, usersRepository, ordersRepository) {
+        this.connection = connection
         this.usersRepository = usersRepository
         this.ordersRepository = ordersRepository
     }
@@ -40,6 +41,10 @@ class OrderService {
     assertHasValidQuantities(lineItems) {
         if (lineItems.some(lineItem => lineItem.quantity < 1))
             throw new ModelException('Line items quantity cannot be less than one')
+    }
+
+    async runInTransaction(asyncFunction) {
+        return await this.connection.runInTransaction(asyncFunction)
     }
 }
 

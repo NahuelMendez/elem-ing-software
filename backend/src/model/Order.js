@@ -18,8 +18,13 @@ class Order {
         return true
     }
 
-    hasLineItems(lineItems) {
-        return this.lineItems(lineItem => lineItems.includes(lineItem))
+    hasLineItems(expectedLineItems) {
+        return this.lineItems.every(lineItem =>
+            expectedLineItems.some(expectedLineItem =>
+                expectedLineItem.productName== lineItem.productName &&
+                expectedLineItem.quantity == lineItem.quantity
+            )
+        )
     }
 
     getPizzeria() {

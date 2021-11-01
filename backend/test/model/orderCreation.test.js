@@ -1,4 +1,8 @@
-const { createServices } = require('../../src/model/serviceFactory')
+const time = require('../time')
+const sinon = require('sinon')
+sinon.stub(time, 'setTimeout')
+
+const { createServices, afterTestCleaning } = require('../../src/model/serviceFactory')
 
 const testObjects = require('../testObjects')
 const productFactory = require('../helpers/productFactory')
@@ -31,6 +35,10 @@ describe("Consumer order", () => {
         await menuService.addToMenuOf(bancheroRegistrationData.name, meatPizza)
 
         registeredConsumer = await userService.registerConsumer(kentRegistrationData)
+    })
+
+    afterEach(async () => {
+        await afterTestCleaning()
     })
 
     it("a registered consumer can place an order", async () => {
@@ -129,8 +137,8 @@ async function expectPizzeriaHasNoOrders(orderService, pizzeriaName) {
 async function expectToContainOrderWith({ consumer, pizzeria, lineItems }, actualOrders) {
     expect(
         actualOrders.some(order =>
-            order.wasMadeBy(consumer) &&
-            order.wasMadeTo(pizzeria) &&
+            order.wasMadeBy(consumer.getName()) &&
+            order.wasMadeTo(pizzeria.getName()) &&
             order.hasLineItems(lineItems)
         )
     ).toBe(true)

@@ -6,6 +6,7 @@ const { TransientUsersRepository } = require("./TransientUsersRepository")
 const { TransientOrdersRepository } = require("./TransientOrdersRepository")
 
 const { MongoDBUsersRepository } = require("./repositories/MongoDBUsersRepository")
+const { MongoDBOrdersRepository } = require("./repositories/MongoDBOrdersRepository")
 const { MongooseConnection, afterTestCleaning } = require('./repositories/mongoose')
 
 const makeServiceTransactional = (service, transactionalMessageNames) => {
@@ -27,7 +28,7 @@ function createServices() {
     const connection = new MongooseConnection()
 
     const usersRepository = new MongoDBUsersRepository(connection)
-    const ordersRepository = new TransientOrdersRepository()
+    const ordersRepository = new MongoDBOrdersRepository(connection)
 
     const transactionalUserService = makeServiceTransactional(
         new UserService(connection, usersRepository),
@@ -54,10 +55,20 @@ function createServices() {
         ]
     )
 
+    const transactionalOrderService = makeServiceTransactional(
+        new OrderService(connection,usersRepository, ordersRepository),
+        [
+            'pizzasBestsellers',
+            'findOrdersByConsumerName',
+            'findOrdersByPizzeriaName',
+            'placeOrder'
+        ]
+    )
+
     return {
         userService: transactionalUserService,
         menuService: transactionalMenuService,
-        orderService: new OrderService(usersRepository, ordersRepository)
+        orderService: transactionalOrderService
     }
 }
 
