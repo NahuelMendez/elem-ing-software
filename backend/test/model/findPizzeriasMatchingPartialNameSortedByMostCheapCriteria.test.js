@@ -3,6 +3,7 @@ const { Product } = require("../../src/model/Product");
 
 const {
     createPizzeriaRegistrationData,
+    createConsumerRegistrationData,
     createPizzaData
 } = require('../testObjects')
 
@@ -69,6 +70,16 @@ describe('Find Pizzerias matching partial name sorted by most cheap criteria', (
         expect(foundPizzerias).toHaveLength(1)
         expect(foundPizzerias[0].isNamed(pizzeriaA1.name)).toBe(true)
     })
+
+    it('finding pizzerias matching a partial name sorted by most cheap ignore consumers', async () => {
+        const kentConsumerData = createConsumerRegistrationData({name: 'Kent'})
+        await userService.registerConsumer(kentConsumerData)
+
+        const foundPizzerias = await userService.findPizzeriasByPartialNameSortedByMostCheap(kentConsumerData.name[0])
+
+        expect(foundPizzerias).toHaveLength(0)
+    })
+
 
 
 })
