@@ -65,7 +65,7 @@ describe('Find Pizzerias matching partial name sorted by most cheap criteria', (
         await userService.registerPizzeria(pizzeriaA1)
         await menuService.addToMenuOf(pizzeriaA1.name, productWithPrice1Peso)
 
-        const foundPizzerias = await userService.findPizzeriasByPartialName('pIzZeRiA')
+        const foundPizzerias = await userService.findPizzeriasByPartialNameSortedByMostCheap('pIzZeRiA')
 
         expect(foundPizzerias).toHaveLength(1)
         expect(foundPizzerias[0].isNamed(pizzeriaA1.name)).toBe(true)
