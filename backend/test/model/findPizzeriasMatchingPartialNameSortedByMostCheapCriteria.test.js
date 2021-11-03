@@ -80,6 +80,12 @@ describe('Find Pizzerias matching partial name sorted by most cheap criteria', (
         expect(foundPizzerias).toHaveLength(0)
     })
 
+    it('finding pizzerias matching a partial name sorted by most cheap ignore pizzerias without products', async () => {
+        await userService.registerPizzeria(pizzeriaA1)
 
+        const foundPizzerias = await userService.findPizzeriasByPartialNameSortedByMostCheap(pizzeriaA1.name)
+
+        expect(foundPizzerias).toHaveLength(0)
+    })
 
 })

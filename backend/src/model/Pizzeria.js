@@ -10,6 +10,10 @@ class Pizzeria extends User {
         this.products = []
     }
 
+    hasProducts() {
+        return this.products.length !== 0
+    }
+
     getRoleName() {
         return 'pizzeria'
     }

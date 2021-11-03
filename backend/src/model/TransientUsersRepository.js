@@ -37,10 +37,12 @@ class TransientUsersRepository {
     }
 
     async findPizzeriasByPartialNameSortedByMostCheap(pizzeriaName) {
-        return [...await this.findPizzeriasByPartialName(pizzeriaName)]
-                        .sort((aPizzeria, anotherPizzeria) =>
-                            aPizzeria.averageProductPrice() - anotherPizzeria.averageProductPrice()
-                        )
+        return (await this.findPizzeriasByPartialName(pizzeriaName))
+            .filter(pizzeria => pizzeria.hasProducts())
+            .sort((aPizzeria, anotherPizzeria) =>
+                aPizzeria.averageProductPrice() - anotherPizzeria.averageProductPrice()
+            )
+
     }
 
     async save(newUser) {
