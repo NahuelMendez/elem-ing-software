@@ -1,3 +1,5 @@
+require('../javascript-collections-extensions')
+
 const {ModelException} = require('./ModelException')
 const {User} = require("./User")
 
@@ -10,6 +12,10 @@ class Pizzeria extends User {
 
     getRoleName() {
         return 'pizzeria'
+    }
+
+    averageProductPrice() {
+        return this.products.sum(product => product.getPrice()) / this.products.length
     }
 
     getProductsInMenu() { return this.products }
