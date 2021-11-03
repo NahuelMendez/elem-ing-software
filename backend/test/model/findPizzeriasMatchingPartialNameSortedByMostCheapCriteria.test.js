@@ -60,4 +60,15 @@ describe('Find Pizzerias matching partial name sorted by most cheap criteria', (
         expect(foundPizzerias[2].isNamed(pizzeriaA1.name)).toBe(true)
     })
 
+    it('finding pizzerias matching a partial name sorted by most cheap is case insensitive', async () => {
+        await userService.registerPizzeria(pizzeriaA1)
+        await menuService.addToMenuOf(pizzeriaA1.name, productWithPrice1Peso)
+
+        const foundPizzerias = await userService.findPizzeriasByPartialName('pIzZeRiA')
+
+        expect(foundPizzerias).toHaveLength(1)
+        expect(foundPizzerias[0].isNamed(pizzeriaA1.name)).toBe(true)
+    })
+
+
 })
