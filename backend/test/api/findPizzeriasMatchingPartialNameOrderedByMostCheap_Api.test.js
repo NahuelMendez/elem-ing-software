@@ -7,11 +7,11 @@ const { createPizzeriaRegistrationAPIData, createPizzaData} = require('../testOb
 
 const {
     loginToken,
-    addProduct
+    addProduct, registerUser
 } = require('../helpers/apiHelperFunctions')
 const {Product} = require("../../src/model/Product");
 
-describe('Api find Pizzeria matching partial name', () => {
+describe('Api find Pizzeria matching partial name sorted by most cheap', () => {
     let requester
 
     let pizzeriaA1Data
