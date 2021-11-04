@@ -2,6 +2,7 @@ const puppeteer = require('puppeteer')
 const {
     registerPizzeriaWithAmountOfProducts,
     registerAndLoginConsumer,
+    searchPizzerias,
     clickAndWait,
     expectTextContent
 } = require('./helpers/helpers')
@@ -9,9 +10,6 @@ const {
 const { createConsumerRegistrationData } = require('../test/testObjects')
 
 jest.setTimeout(10000)
-
-const searchInputSelector = 'form > input[name="search-input"]'
-const searchButtonSelector = 'form > img[alt="search-icon"]'
 
 const orderByMostCheapOptionSelector = 'select[name="orderBy"] option[value="MOST_CHEAP"]'
 
@@ -33,11 +31,11 @@ describe('Pizzeria search by partial name sorted by most cheap', () => {
   
         await registerAndLoginConsumer(page, createConsumerRegistrationData({}))
 
-        await page.type(searchInputSelector, pizzeriaData.name)
-        await clickAndWait(page, searchButtonSelector)
+        await searchPizzerias(page, pizzeriaData.name)
 
         await page.waitForSelector(orderByMostCheapOptionSelector)
         await expectTextContent(page, orderByMostCheapOptionSelector, 'Mas economica')
     })
 
 })
+
