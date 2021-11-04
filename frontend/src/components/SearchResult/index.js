@@ -3,6 +3,14 @@ import { searchState } from "../../slices/searchSlice";
 import NavBar from "../Navbar";
 import PizzeriaCard from "../UI/PizzeriaCard";
 
+const OrderByDropdown = () =>
+  <form>
+    <select name="orderBy">
+      <option value=""></option>
+      <option value="MOST_CHEAP">Mas economica</option>
+    </select>
+  </form>
+
 const SearchResult = () => {
   const results = useSelector(searchState)
 
@@ -13,6 +21,7 @@ const SearchResult = () => {
       </div>
       <div className="w-5/6 flex flex-wrap justify-center">
         {results.length === 0 && <p className="text-lg mt-8 text-gray-500">No se encontraron pizzerías que coincidan.</p>}
+        {results && <OrderByDropdown />}
         {results && results.map((pizzeria, index) => (
           <PizzeriaCard key={index} name={pizzeria.name} />
         ))}
