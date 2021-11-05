@@ -100,12 +100,21 @@ const createApp = () => {
     })
 
     app.get(searchPizzeriaPath, (request, response) => {
-        const {name} = request.query
-        
-        usersService.findPizzeriasByPartialName(name)
+        const {name, orderBy} = request.query
+
+        findPizzeria(name, orderBy)
             .then(pizzeriasToJson)
             .then( pizzerias => response.status(OK).json(pizzerias))
     })
+
+    function findPizzeria(name, orderBy) {
+        switch (orderBy) {
+            case 'MOST_CHEAP':
+                return usersService.findPizzeriasByPartialNameSortedByMostCheap(name)
+            default:
+                return usersService.findPizzeriasByPartialName(name)
+        }
+    }
         
     app.delete(menuPath + '/:productName', (request, response) => {
         const {pizzeriaName, productName} = request.params
