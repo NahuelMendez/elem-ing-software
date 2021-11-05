@@ -54,7 +54,7 @@ async function getOrderHistory(requester, token) {
 
 async function editConsumerData(requester, consumer, token) {
     return await requester.put(consumerPath)
-            .send({name: consumer.name, email: consumer.email, telephone: consumer.telephone})
+            .send({name: consumer.name, email: consumer.email, telephone: consumer.telephone, image: consumer.image})
             .set('Authorization', token)
 }
 

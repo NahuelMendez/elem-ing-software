@@ -28,7 +28,8 @@ describe('Consumer profile API', () => {
         expect(response.body).toEqual({
             username: kentRegistrationData.name,
             telephone: kentRegistrationData.telephone,
-            email: kentRegistrationData.email
+            email: kentRegistrationData.email,
+            image: ''
         })
     })
 

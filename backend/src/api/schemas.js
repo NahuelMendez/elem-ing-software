@@ -11,7 +11,8 @@ const userSchema = Joi.object({
 const editConsumerDataSchema = Joi.object({
     name: Joi.string().required(),
     telephone: Joi.required(),
-    email: Joi.string().required()
+    email: Joi.string().required(),
+    image: Joi.string()
 })
 
 const loginSchema = Joi.object({
