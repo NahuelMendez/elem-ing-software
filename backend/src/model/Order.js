@@ -10,6 +10,18 @@ class Order {
         return this.pizzeria.getName()
     }
 
+    getConsumerName() {
+        return this.consumer.getName()
+    }
+
+    getConsumerTelephone() {
+        return this.consumer.getTelephone()
+    }
+
+    getConsumerEmail() {
+        return this.consumer.getEmail()
+    }
+
     wasMadeBy(consumerName) {
         return this.consumer.isNamed(consumerName)
     }
@@ -36,8 +48,12 @@ class Order {
         return prices.reduce ((previousValue, price) => previousValue + price, 0)
     }
 
+    getProductPriceWithName(productName) {
+        return this.pizzeria.getProductPriceWithName(productName)
+    }
+
     calculatePrices(lineItem) {
-        return this.pizzeria.getProductPriceWithName( lineItem.productName) * lineItem.quantity
+        return this.getProductPriceWithName(lineItem.productName) * lineItem.quantity
     }
 
 }

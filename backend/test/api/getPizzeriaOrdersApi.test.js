@@ -5,12 +5,13 @@ const {OK, FORBIDDEN, UNAUTHORIZED} = require("../../src/api/statusCode")
 
 const { kentRegistrationData } = testObjects.consumersRegistrationData
 const {bancheroRegistrationData, guerrinRegistrationData} = testObjects.pizzeriasRegistrationData
-const {mozzarella} = testObjects.productsData
+const {mozzarella, bacon} = testObjects.productsData
 
 const { 
     loginToken,
     createOrder,
-    addProduct
+    addProduct,
+    getPizzeriaOrders
 } = require('../helpers/apiHelperFunctions')
 
 describe('Api get pizzeria orders', () => {
@@ -27,17 +28,47 @@ describe('Api get pizzeria orders', () => {
         tokenPizzeriaWithoutProducts = await loginToken(requester, guerrinRegistrationData)
         tokenConsumer = await loginToken(requester, kentRegistrationData)
 
-        const order = [{ productName: mozzarella.name, quantity: 2 }]
+        const order1 = [{ productName: mozzarella.name, quantity: 2 }]
+        const order2 = [{ productName: bacon.name, quantity: 2 }]
 
         await addProduct(requester, bancheroRegistrationData, mozzarella, tokenPizzeria)
-        await createOrder(requester, bancheroRegistrationData, order, tokenConsumer)
+        await addProduct(requester, bancheroRegistrationData, bacon, tokenPizzeria)
+        await createOrder(requester, bancheroRegistrationData, order1, tokenConsumer)
+        await createOrder(requester, bancheroRegistrationData, order2, tokenConsumer)
     })
 
-    it('No order was found in the pizzeria when no order was made in that pizzeria', async () => {
-        const response = await requester.get('/api/pizzeria/order')
+    it('No order was found to the pizzeria when no order was made to that pizzeria', async () => {
+        const response = await getPizzeriaOrders(requester, tokenPizzeriaWithoutProducts)
 
         expect(response.status).toBe(OK)
         expect(response.body).toHaveLength(0)
     })
+
+    it('can find the orders placed from a pizzeria sorted descending when the pizzeria received orders', async () => {
+        const response = await getPizzeriaOrders(requester, tokenPizzeria)
+        
+        const orders = response.body
+
+        expect(response.status).toBe(OK)
+        expect(orders).toHaveLength(2)
+        expect(orders[1]).toEqual({
+            orderNumber: 1, 
+            consumerName: kentRegistrationData.name, 
+            telephone: kentRegistrationData.telephone, 
+            email: kentRegistrationData.email, 
+            total: 20, 
+            lineItems: [{productName: mozzarella.name, quantity: 2, price: 10}]
+        })
+        expect(orders[0]).toEqual({
+            orderNumber: 2, 
+            consumerName: kentRegistrationData.name, 
+            telephone: kentRegistrationData.telephone, 
+            email: kentRegistrationData.email, 
+            total: 2, 
+            lineItems: [{productName: bacon.name, quantity: 2, price: 1}]
+        })
+    })
+
+
 
 })

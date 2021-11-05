@@ -63,6 +63,11 @@ async function getConsumerData(requester, token) {
         .set('Authorization', token)
 }
 
+async function getPizzeriaOrders(requester, token) {
+    return await requester.get('/api/pizzeria/order')
+        .set('Authorization', token)
+}
+
 async function getBestseller(requester) {
     return await requester.get(rankingPath)
 }
@@ -89,5 +94,6 @@ module.exports = {
     getOrderHistory,
     editConsumerData,
     getConsumerData,
-    getBestseller
+    getBestseller,
+    getPizzeriaOrders
 }
