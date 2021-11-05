@@ -25,7 +25,10 @@ const NavBar = () => {
     event.preventDefault()
     if (toSearch.trim().length !== 0) {
       api.searchPizzeria({ name: toSearch }).then(res => {
-        dispatch(setSearchResults(res.data))
+        dispatch(setSearchResults({
+          searchText: toSearch,
+          results: res.data
+        }))
       })
       history.push('/busquedas')
     }
