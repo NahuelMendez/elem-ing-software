@@ -1,12 +1,13 @@
 const puppeteer = require('puppeteer')
 const {
     registerAndLoginPizzeria,
+    registerAndLoginConsumer,
     goto,
     expectPath,
     clickAndWait
 } = require('./helpers/helpers')
 
-const { createPizzeriaRegistrationData } = require('../test/testObjects')
+const { createPizzeriaRegistrationData, createConsumerRegistrationData } = require('../test/testObjects')
 
 jest.setTimeout(15000)
 
@@ -42,5 +43,12 @@ describe('Go to home button', () => {
         await clickAndWait(page, goToHomeButtonSelector)
 
         expectPath(page, '/home')
+    })
+
+    it.only(`a consumer's navbar should have a "home" button`, async () => {
+        const consumerData = createConsumerRegistrationData({})
+        await registerAndLoginConsumer(page, consumerData)
+
+        await page.waitForSelector(goToHomeButtonSelector)
     })
 })
