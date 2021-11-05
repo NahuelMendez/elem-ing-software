@@ -10,7 +10,7 @@ const { createPizzeriaRegistrationData } = require('../test/testObjects')
 
 jest.setTimeout(15000)
 
-describe('Pizzeria home', () => {
+describe('Go to home button', () => {
     let browser
     let page
 
