@@ -69,6 +69,22 @@ describe('Api get pizzeria orders', () => {
         })
     })
 
+    it('find pizzeria orders of a unauthorized user', async () => {
+        const response = await getPizzeriaOrders(requester, tokenConsumer)
 
+        expect(response.status).toBe(FORBIDDEN)
+        expect(response.body).toEqual( {
+            error: 'invalid token or unauthorized user'
+        })
+    })
+
+    it('cannot find pizzeria orders when the token is missing', async () => {
+        const response = await requester.get('/api/pizzeria/order')
+
+        expect(response.status).toBe(UNAUTHORIZED)
+        expect(response.body).toEqual({
+            error: 'token missing'
+        })
+    })
 
 })
