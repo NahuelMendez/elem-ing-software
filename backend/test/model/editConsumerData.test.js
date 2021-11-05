@@ -84,7 +84,7 @@ describe('Consumer data edition', () => {
         await assertPersonalDataDidNotChange(kentRegistrationData)
     })
 
-    it ('can edit consumer data if a image is not provided', async () => {
+    it ('can edit consumer data if an image is not provided', async () => {
         const validData = {name: 'Kent', telephone: 1122334455, email: 'kent-beck@gmail.com'}
 
         await userService.editConsumerData(kentRegistrationData.name, validData.name, validData.telephone, validData.email)
