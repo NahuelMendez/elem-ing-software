@@ -19,13 +19,14 @@ describe('Api get pizzeria orders', () => {
 
     let tokenPizzeria
     let tokenConsumer
+    let tokenPizzeriaWithoutOrders
 
 
     beforeEach(async () => {
         requester = request(createApp())
 
         tokenPizzeria = await loginToken(requester, bancheroRegistrationData)
-        tokenPizzeriaWithoutProducts = await loginToken(requester, guerrinRegistrationData)
+        tokenPizzeriaWithoutOrders = await loginToken(requester, guerrinRegistrationData)
         tokenConsumer = await loginToken(requester, kentRegistrationData)
 
         const order1 = [{ productName: mozzarella.name, quantity: 2 }]
@@ -38,7 +39,7 @@ describe('Api get pizzeria orders', () => {
     })
 
     it('No order was found to the pizzeria when no order was made to that pizzeria', async () => {
-        const response = await getPizzeriaOrders(requester, tokenPizzeriaWithoutProducts)
+        const response = await getPizzeriaOrders(requester, tokenPizzeriaWithoutOrders)
 
         expect(response.status).toBe(OK)
         expect(response.body).toHaveLength(0)
@@ -51,14 +52,6 @@ describe('Api get pizzeria orders', () => {
 
         expect(response.status).toBe(OK)
         expect(orders).toHaveLength(2)
-        expect(orders[1]).toEqual({
-            orderNumber: 1, 
-            consumerName: kentRegistrationData.name, 
-            telephone: kentRegistrationData.telephone, 
-            email: kentRegistrationData.email, 
-            total: 20, 
-            lineItems: [{productName: mozzarella.name, quantity: 2, price: 10}]
-        })
         expect(orders[0]).toEqual({
             orderNumber: 2, 
             consumerName: kentRegistrationData.name, 
@@ -67,9 +60,18 @@ describe('Api get pizzeria orders', () => {
             total: 2, 
             lineItems: [{productName: bacon.name, quantity: 2, price: 1}]
         })
+        expect(orders[1]).toEqual({
+            orderNumber: 1, 
+            consumerName: kentRegistrationData.name, 
+            telephone: kentRegistrationData.telephone, 
+            email: kentRegistrationData.email, 
+            total: 20, 
+            lineItems: [{productName: mozzarella.name, quantity: 2, price: 10}]
+        })
+        
     })
 
-    it('find pizzeria orders of a unauthorized user', async () => {
+    it('cannot find pizzeria orders of a unauthorized user', async () => {
         const response = await getPizzeriaOrders(requester, tokenConsumer)
 
         expect(response.status).toBe(FORBIDDEN)
