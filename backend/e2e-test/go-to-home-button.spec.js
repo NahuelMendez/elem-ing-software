@@ -1,6 +1,9 @@
 const puppeteer = require('puppeteer')
 const {
-    registerAndLoginPizzeria
+    registerAndLoginPizzeria,
+    goto,
+    expectPath,
+    clickAndWait
 } = require('./helpers/helpers')
 
 const { createPizzeriaRegistrationData } = require('../test/testObjects')
@@ -25,5 +28,17 @@ describe('Pizzeria home', () => {
         await registerAndLoginPizzeria(page, pizzeriaData)
 
         await page.waitForSelector('.navBar [name="goto-home-button"]')
+    })
+
+    it(`when an authenticated pizzeria clicks the home button, it should be redirected to it's home page`, async () => {
+        const pizzeriaData = createPizzeriaRegistrationData({})
+        await registerAndLoginPizzeria(page, pizzeriaData)
+
+        await goto(page, '/menu')
+
+        await page.waitForSelector('.navBar [name="goto-home-button"]')
+        await clickAndWait(page, '.navBar [name="goto-home-button"]')
+
+        expectPath(page, '/home')
     })
 })
