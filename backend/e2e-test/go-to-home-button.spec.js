@@ -45,10 +45,22 @@ describe('Go to home button', () => {
         expectPath(page, '/home')
     })
 
-    it.only(`a consumer's navbar should have a "home" button`, async () => {
+    it(`a consumer's navbar should have a "home" button`, async () => {
         const consumerData = createConsumerRegistrationData({})
         await registerAndLoginConsumer(page, consumerData)
 
         await page.waitForSelector(goToHomeButtonSelector)
+    })
+
+    it(`when an authenticated consumer clicks the home button, it should be redirected to it's home page`, async () => {
+        const consumerData = createConsumerRegistrationData({})
+        await registerAndLoginConsumer(page, consumerData)
+
+        await goto(page, '/profile')
+
+        await page.waitForSelector(goToHomeButtonSelector)
+        await clickAndWait(page, goToHomeButtonSelector)
+
+        expectPath(page, '/home')
     })
 })
