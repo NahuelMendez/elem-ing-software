@@ -14,6 +14,7 @@ describe('find pizzeria orders', () => {
 
     let registeredPizzeria
     let registeredConsumer
+    let registeredPizzeriaWithoutOrders
 
     beforeEach(async () => {
         const services = createServices()
@@ -24,7 +25,7 @@ describe('find pizzeria orders', () => {
         pepperoniPizza = productFactory.createPepperoniPizza()
 
         registeredPizzeria = await userService.registerPizzeria(bancheroRegistrationData)
-        registeredPizzeriaWithoutProducts = await userService.registerPizzeria(guerrinRegistrationData)
+        registeredPizzeriaWithoutOrders = await userService.registerPizzeria(guerrinRegistrationData)
 
         await menuService.addToMenuOf(bancheroRegistrationData.name, pepperoniPizza)
 
@@ -41,8 +42,8 @@ describe('find pizzeria orders', () => {
         await orderService.placeOrder(orderData)
     })
 
-    it('No order was found in the pizzeria when no order was made in that pizzeria', async () => {
-        const foundOrders = await orderService.findOrdersByPizzeriaName(registeredPizzeriaWithoutProducts.getName())
+    it('No order was found to the pizzeria when no order was made to that pizzeria', async () => {
+        const foundOrders = await orderService.findOrdersByPizzeriaName(registeredPizzeriaWithoutOrders.getName())
 
         expect(foundOrders).toHaveLength(0)
     })
