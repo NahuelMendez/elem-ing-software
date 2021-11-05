@@ -59,5 +59,21 @@ describe('Pizzeria search by partial name sorted by most cheap', () => {
         await expectTextContent(cardTitles[1], '.card-tittle', pizzeriaDataWith2Products.pizzeriaData.name)
     })
 
+    it('results of pizzerias search sorted by most cheap does not includes pizzerias without products', async () => {
+        const { pizzeriaData } = await registerPizzeriaWithAmountOfProducts(page, 0)
+
+        await registerAndLoginConsumer(page, createConsumerRegistrationData({}))
+
+        await searchPizzerias(page, pizzeriaData.name)
+
+        await page.click(orderByDropdownSelector)
+        await page.select(orderByDropdownSelector, "MOST_CHEAP")
+
+        await page.waitForTimeout(1000)
+        const cardTitles = await page.$$('.card-body')
+
+        expect(cardTitles).toHaveLength(0)
+    })
+
 })
 
