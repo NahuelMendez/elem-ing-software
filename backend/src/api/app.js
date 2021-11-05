@@ -77,6 +77,10 @@ const createApp = () => {
             .catch(error => response.status(BAD_REQUEST).json({error: error.message}))
     })
 
+    app.get('/api/pizzeria/order', (request, response) => {
+        response.status(OK).json([])
+    })
+
     app.get(menuPath, (request, response) => {
         const {pizzeriaName} = request.params
 
@@ -159,6 +163,8 @@ const createApp = () => {
             .then (orders => convertToOrderHistory(orders))
             .then(orderHistory => response.status(OK).json(orderHistory))
     })
+
+    
 
     app.get(rankingPath, (request, response) => {
         orderService.pizzasBestsellers({limit: 5})
