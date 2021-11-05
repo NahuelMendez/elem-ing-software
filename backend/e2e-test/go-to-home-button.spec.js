@@ -10,6 +10,8 @@ const { createPizzeriaRegistrationData } = require('../test/testObjects')
 
 jest.setTimeout(15000)
 
+const goToHomeButtonSelector = '.navBar [name="goto-home-button"]'
+
 describe('Go to home button', () => {
     let browser
     let page
@@ -27,7 +29,7 @@ describe('Go to home button', () => {
         const pizzeriaData = createPizzeriaRegistrationData({})
         await registerAndLoginPizzeria(page, pizzeriaData)
 
-        await page.waitForSelector('.navBar [name="goto-home-button"]')
+        await page.waitForSelector(goToHomeButtonSelector)
     })
 
     it(`when an authenticated pizzeria clicks the home button, it should be redirected to it's home page`, async () => {
@@ -36,8 +38,8 @@ describe('Go to home button', () => {
 
         await goto(page, '/menu')
 
-        await page.waitForSelector('.navBar [name="goto-home-button"]')
-        await clickAndWait(page, '.navBar [name="goto-home-button"]')
+        await page.waitForSelector(goToHomeButtonSelector)
+        await clickAndWait(page, goToHomeButtonSelector)
 
         expectPath(page, '/home')
     })
