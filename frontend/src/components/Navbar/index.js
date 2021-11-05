@@ -6,6 +6,8 @@ import api from "../../Api/ApiObject";
 import { useDispatch } from "react-redux"
 import { setSearchResults } from "../../slices/searchSlice";
 
+import homeIcon from "../../assets/home-icon.png"
+
 const NavBar = () => {
   const [showProfileOptions, setShowProfileOptions] = useState(false)
   const [toSearch, setToSearch] = useState('')
@@ -37,7 +39,12 @@ const NavBar = () => {
 
 
   return (
-    <div className="bg-principal flex justify-end">
+    <div className="navBar bg-principal flex justify-between">
+      <div>
+        <a href="/home">
+            <img src={homeIcon} name="goto-home-button" />
+        </a>
+      </div>
       {showProfileOptions &&
         <div onMouseLeave={handleShowProfileOptions} className="absolute flex flex-col right-0 mt-10 w-40 bg-white rounded-md border-2 border-gray-secundary z-10">
           {role === 'pizzeria' && <Link name="go-to-menu" className="p-2" to="/menu">Editar Menú</Link>}
