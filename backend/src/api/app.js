@@ -15,7 +15,8 @@ const {
     updateProductPath, 
     orderPath,
     consumerPath,
-    rankingPath
+    rankingPath,
+    pizzeriaOrdersPath
 } = require("./path")
 
 const {OK, CREATED, BAD_REQUEST, NOT_FOUND} = require("./statusCode")
@@ -77,7 +78,7 @@ const createApp = () => {
             .catch(error => response.status(BAD_REQUEST).json({error: error.message}))
     })
 
-    app.get('/api/pizzeria/order', authenticatePizzeria, (request, response) => {
+    app.get(pizzeriaOrdersPath, authenticatePizzeria, (request, response) => {
         const { user } = request
 
         orderService.findOrdersByPizzeriaName(user.username)

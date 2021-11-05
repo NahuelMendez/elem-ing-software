@@ -53,7 +53,7 @@ describe('Api get order history', () => {
         const response = await getOrderHistory(requester, tokenPizzeria)
 
         expect(response.status).toBe(FORBIDDEN)
-        expect(response.body).toEqual( {
+        expect(response.body).toEqual({
             error: 'invalid token or unauthorized user'
         })
     })

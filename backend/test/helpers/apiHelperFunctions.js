@@ -1,4 +1,4 @@
-const {registerPath, loginPath, orderPath, consumerPath, rankingPath} = require("../../src/api/path")
+const {registerPath, loginPath, orderPath, consumerPath, rankingPath, pizzeriaOrdersPath} = require("../../src/api/path")
 
 const { 
     createMenuPath, 
@@ -64,7 +64,7 @@ async function getConsumerData(requester, token) {
 }
 
 async function getPizzeriaOrders(requester, token) {
-    return await requester.get('/api/pizzeria/order')
+    return await requester.get(pizzeriaOrdersPath)
         .set('Authorization', token)
 }
 
