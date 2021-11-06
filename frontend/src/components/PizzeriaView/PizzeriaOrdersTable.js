@@ -4,7 +4,7 @@ import PizzeriaOrderDataRow from "./PizzeriaOrderDataRow";
 const PizzeriaOrdersTable = ({ orders }) => {
 
     if (orders.length == 0) {
-        return ( <h2 className="text-center">Todavia no recibiste pedidos.</h2> );
+        return ( <h2 className="text-center mt-10">Todavia no recibiste pedidos.</h2> );
     } else {
         return (
             <>

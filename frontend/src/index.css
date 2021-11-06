@@ -130,6 +130,9 @@ code {
 }
 
 .order-data-row {
+  -webkit-box-shadow: 11px 4px 32px -8px rgba(0,0,0,0.75);
+  -moz-box-shadow: 11px 4px 32px -8px rgba(0,0,0,0.75);
+  box-shadow: 11px 4px 32px -8px rgba(0,0,0,0.75);
 }
 
 .oders-table-top {
@@ -146,7 +149,8 @@ code {
 
 .oders-table-cell {
   height: 30px;
-  border: solid 0.5px grey;
+  border: solid 0.25px grey;
   font-family: 'Cantarell';
   font-size: 110%;
+  background-color: white;
 }
