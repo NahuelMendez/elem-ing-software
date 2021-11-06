@@ -45,7 +45,7 @@ const Profile = () => {
           username={consumer.username}
           email={consumer.email}
           telephone={consumer.telephone}
-          profilePicture={consumer.picture} />
+          profilePicture={consumer.image} />
         <OrdersHistory ordersHistory={ordersHistory}/>
       </main>
     </div>
