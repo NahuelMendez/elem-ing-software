@@ -7,7 +7,7 @@ const PizzeriaOrderDataRow = ({ orderNum, customerName, telephone, email, total,
         <>
             <div className={top ? "container mt-10" : "container"} >
                 <div className="row order-data-row">
-                    <div className={top ? ordersTableTop : orderTableCell}>
+                    <div className={top ? ordersTableTop + " left-t-top" : orderTableCell}>
                         {orderNum}
                     </div>
                     <div className={top ? ordersTableTop : orderTableCell}>
@@ -22,7 +22,7 @@ const PizzeriaOrderDataRow = ({ orderNum, customerName, telephone, email, total,
                     <div className={top ? ordersTableTop : orderTableCell}>
                         {total}
                     </div>
-                    <div className={top ? ordersTableTop : orderTableCell}>
+                    <div className={top ? ordersTableTop + " right-t-top" : orderTableCell}>
                         {details}
                     </div>
                 </div>

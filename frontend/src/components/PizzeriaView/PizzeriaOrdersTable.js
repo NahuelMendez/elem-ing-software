@@ -27,6 +27,7 @@ const PizzeriaOrdersTable = ({ orders }) => {
                             email={order.email}
                             total={order.total}
                             details={<OrderDetailButton
+                                        orderNum={order.orderNumber}
                                         lineItems={order.lineItems}
                                         total={order.total}
                                     />}

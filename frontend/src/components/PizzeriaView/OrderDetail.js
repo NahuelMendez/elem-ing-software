@@ -1,15 +1,24 @@
 const OrderDetail = ({ lineItems, total }) => {
 
     return (
-        <div>
+        <div className="mt-4">
             {lineItems.map((item) => 
-                <div className="border">
-                    <p><b>Producto: </b>{item.productName}</p>
-                    <p><b>Cantidad: </b>{item.quantity}</p>
-                    <p><b>Precio Por unidad: </b>{item.price}</p>
-                </div>
+                <table className="border-bottom margin-2 text-left order-table-dtl">
+                    <tr>
+                        <th>Producto: </th>
+                        <td className="text-right">{item.productName}</td>
+                    </tr>
+                    <tr>
+                        <th>Cantidad: </th>
+                        <td className="text-right">{item.quantity}</td>
+                    </tr>
+                    <tr>
+                        <th>Precio Por unidad: </th>
+                        <td className="text-right">${item.price}</td>
+                    </tr>
+                </table>
             )}
-            <p><b>TOTAL: </b>{total}</p>
+            <p className="mt-4"><b>TOTAL: ${total}</b></p>
         </div>
     );
 
