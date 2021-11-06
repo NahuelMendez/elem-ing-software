@@ -47,8 +47,8 @@ class TransientOrdersRepository {
         return this.orders.filter (order => order.wasMadeBy(consumerName))
     }
 
-    async findOrdersByPizzeriaName(consumerName) {
-        return this.orders
+    async findOrdersByPizzeriaName(pizzeriaName) {
+        return this.orders.filter (order => order.wasMadeTo(pizzeriaName))
     }
 
     async save(newOrder) {

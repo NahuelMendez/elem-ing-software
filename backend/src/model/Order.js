@@ -14,8 +14,8 @@ class Order {
         return this.consumer.isNamed(consumerName)
     }
 
-    wasMadeTo(aPizzeria) {
-        return true
+    wasMadeTo(pizzeriaName) {
+        return this.pizzeria.isNamed(pizzeriaName)
     }
 
     hasLineItems(lineItems) {
