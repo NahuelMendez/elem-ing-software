@@ -6,7 +6,7 @@ const PizzeriaOrderDataRow = ({ orderNum, customerName, telephone, email, total,
     return (
         <>
             <div className={top ? "container mt-10" : "container"} >
-                <div className="row order-data-row">
+                <div className="row shadow-2xl">
                     <div className={top ? ordersTableTop + " left-t-top" : orderTableCell}>
                         {orderNum}
                     </div>

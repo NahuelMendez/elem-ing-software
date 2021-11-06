@@ -7,7 +7,7 @@ const PizzeriaOrdersTable = ({ orders }) => {
         return ( <h2 className="text-center mt-10">Todavia no recibiste pedidos.</h2> );
     } else {
         return (
-            <>
+            <div>
                 <PizzeriaOrderDataRow 
                     orderNum="Numero De Pedido"
                     customerName="Nombre Del Cliente"
@@ -35,7 +35,7 @@ const PizzeriaOrdersTable = ({ orders }) => {
                         />
                     )
                 }
-            </>
+            </div>
         );
     }
 }

@@ -129,12 +129,6 @@ code {
   text-align: justify;
 }
 
-.order-data-row {
-  -webkit-box-shadow: 11px 4px 32px -8px rgba(0,0,0,0.75);
-  -moz-box-shadow: 11px 4px 32px -8px rgba(0,0,0,0.75);
-  box-shadow: 11px 4px 32px -8px rgba(0,0,0,0.75);
-}
-
 .oders-table-top {
   border: solid 1px black;
   height: 35px;
