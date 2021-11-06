@@ -17,6 +17,8 @@ const rankingPath = '/api/order/bestseller'
 
 const consumerPath = '/api/consumer'
 
+const pizzeriaOrdersPath = '/api/pizzeria/order'
+
 module.exports = {
     registerPath, 
     menuPath, 
@@ -26,5 +28,6 @@ module.exports = {
     updateProductPath,
     orderPath,
     consumerPath,
-    rankingPath
+    rankingPath,
+    pizzeriaOrdersPath
 }
