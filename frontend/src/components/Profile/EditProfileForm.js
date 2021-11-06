@@ -13,13 +13,13 @@ const FormAlert = ({text}) =>
     { text ? <div name="form-alert" className="rounded p-1 bg-red-500 text-white" role="alert">{ text }</div> : null }
   </>
 
-const EditProfileForm = ({ username, email, telephone, handleSubmit }) => {
+const EditProfileForm = ({ username, email, telephone, profilePicture, handleSubmit }) => {
 
     const [submitError, setSubmitError] = useState(null)
 
     return (
         <Formik
-            initialValues = { { username, email, telephone } }
+            initialValues = { { username, email, telephone, profilePicture } }
             onSubmit = {
               async (values, { setErrors }) => {
                 const errors = {}
@@ -44,6 +44,7 @@ const EditProfileForm = ({ username, email, telephone, handleSubmit }) => {
                 <FormFieldWithError name="username" label="Nombre de Usuario" />
                 <FormFieldWithError name="email" label="Email" />
                 <FormFieldWithError name="telephone" label="Telefono" type="text"/>
+                <FormFieldWithError name="picture" label="Foto de perfil" type="text"/>
 
                 <FormAlert text={submitError} />
 

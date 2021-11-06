@@ -5,7 +5,7 @@ import Modal from "../Modal";
 import EditProfileForm from "./EditProfileForm";
 import api from "../../Api/ApiObject";
 
-const ConsumerInfo = ({ username, email, telephone }) => {
+const ConsumerInfo = ({ username, email, telephone, profilePicture }) => {
 
     const [showEditForm, setShowEditForm] = useState(false);
 
@@ -27,7 +27,7 @@ const ConsumerInfo = ({ username, email, telephone }) => {
                 <div className="cmr-info-body-container">
                     <div className="cmr-info-body">
                         <div className="cmr-info-image">
-                            <img src={userIMG}></img>
+                            <img src={profilePicture ?  profilePicture : userIMG}></img>
                         </div>
                         <div className="cmr-info-dtl">
                             <ul>
@@ -48,6 +48,7 @@ const ConsumerInfo = ({ username, email, telephone }) => {
                                 username={username}
                                 email={email}
                                 telephone={telephone}
+                                profilePicture={profilePicture}
                                 handleSubmit={handleSubmit}/>
                         } />
                 }
