@@ -1,3 +1,5 @@
+import Modal from "../Modal";
+import OrderDetail from "./OrderDetail";
 import PizzeriaOrderDataRow from "./PizzeriaOrderDataRow";
 
 const PizzeriaOrdersTable = ({ orders }) => {
@@ -15,12 +17,18 @@ const PizzeriaOrdersTable = ({ orders }) => {
             {
                 orders.map(order => 
                     <PizzeriaOrderDataRow 
+                        key={order.orderNumber}
                         orderNum={order.orderNumber}
                         customerName={order.consumerName}
                         telephone={order.telephone}
                         email={order.email}
                         total={order.total}
-                        details={order.orderNumber}
+                        details={<Modal 
+                                    title="Detalles"
+                                    body={<OrderDetail 
+                                            lineItems={order.lineItems}
+                                            total={order.total}/>} 
+                                />}
                         top={false}
                     />
                 )

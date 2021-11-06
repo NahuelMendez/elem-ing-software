@@ -1,24 +1,28 @@
 const PizzeriaOrderDataRow = ({ orderNum, customerName, telephone, email, total, details, top }) => {
+
+    const ordersTableTop = "col oders-table-top text-center";
+    const orderTableCell = "col oders-table-cell text-center"
+
     return (
         <>
-            <div className="container" >
+            <div className={top ? "container mt-10" : "container"} >
                 <div className="row">
-                    <div className={top ? "col" : "col oders-table-top"}>
+                    <div className={top ? ordersTableTop : orderTableCell}>
                         {orderNum}
                     </div>
-                    <div className={top ? "col" : "col oders-table-top"}>
+                    <div className={top ? ordersTableTop : orderTableCell}>
                         {customerName}
                     </div>
-                    <div className={top ? "col" : "col oders-table-top"}>
+                    <div className={top ? ordersTableTop : orderTableCell}>
                         {telephone}
                     </div>
-                    <div className={top ? "col" : "col oders-table-top"}>
+                    <div className={top ? ordersTableTop : orderTableCell}>
                         {email}
                     </div>
-                    <div className={top ? "col" : "col oders-table-top"}>
+                    <div className={top ? ordersTableTop : orderTableCell}>
                         {total}
                     </div>
-                    <div className={top ? "col" : "col oders-table-top"}>
+                    <div className={top ? ordersTableTop : orderTableCell}>
                         {details}
                     </div>
                 </div>
