@@ -15,7 +15,8 @@ const {
     updateProductPath, 
     orderPath,
     consumerPath,
-    rankingPath
+    rankingPath,
+    pizzeriaOrdersPath
 } = require("./path")
 
 const {OK, CREATED, BAD_REQUEST, NOT_FOUND} = require("./statusCode")
@@ -77,6 +78,14 @@ const createApp = () => {
             .catch(error => response.status(BAD_REQUEST).json({error: error.message}))
     })
 
+    app.get(pizzeriaOrdersPath, authenticatePizzeria, (request, response) => {
+        const { user } = request
+
+        orderService.findOrdersByPizzeriaName(user.username)
+            .then(convertToPizzeriaOrders)
+            .then(orders => response.status(OK).json(orders))
+    })
+
     app.get(menuPath, (request, response) => {
         const {pizzeriaName} = request.params
 
@@ -100,12 +109,21 @@ const createApp = () => {
     })
 
     app.get(searchPizzeriaPath, (request, response) => {
-        const {name} = request.query
-        
-        usersService.findPizzeriasByPartialName(name)
+        const {name, orderBy} = request.query
+
+        findPizzeria(name, orderBy)
             .then(pizzeriasToJson)
             .then( pizzerias => response.status(OK).json(pizzerias))
     })
+
+    function findPizzeria(name, orderBy) {
+        switch (orderBy) {
+            case 'MOST_CHEAP':
+                return usersService.findPizzeriasByPartialNameSortedByMostCheap(name)
+            default:
+                return usersService.findPizzeriasByPartialName(name)
+        }
+    }
         
     app.delete(menuPath + '/:productName', (request, response) => {
         const {pizzeriaName, productName} = request.params
@@ -161,6 +179,8 @@ const createApp = () => {
             .then(orderHistory => response.status(OK).json(orderHistory))
     })
 
+    
+
     app.get(rankingPath, (request, response) => {
         orderService.pizzasBestsellers({limit: 5})
             .then(bestsellers => response.status(OK).json(bestsellers))
@@ -204,7 +224,26 @@ const createApp = () => {
     const convertToOrderHistory = (orders) => {
         return orders.map(order => ({ pizzeriaName: order.getPizzeriaName(), total: order.getTotal() }))
     }
-    
+
+    const convertToPizzeriaOrders = (orders) => {
+        return orders.map(order => ({
+            orderNumber: orders.indexOf(order) + 1, 
+            consumerName: order.getConsumerName(), 
+            telephone: order.getConsumerTelephone(), 
+            email: order.getConsumerEmail(), 
+            total: order.getTotal(), 
+            lineItems: convertToLineItems(order)}))
+            .sort((firstOrder, secondOrder) => secondOrder.orderNumber - firstOrder.orderNumber)
+    }
+
+    const convertToLineItems = (order) => {
+        return order.getLineItems().map(lineItem => ({
+            productName: lineItem.productName,
+            quantity: lineItem.quantity,
+            price: order.getProductPriceWithName(lineItem.productName)
+        }))
+    } 
+
     const createToken = (user) => {
         return jwt.sign({ username: user.getName(), email: user.getEmail(), role: user.getRoleName() }, 'secret')
     }

@@ -36,6 +36,15 @@ class TransientUsersRepository {
         return this.users.filter(user => user.getName().match(new RegExp(pizzeriaName, 'i')) && user.isPizzeria())
     }
 
+    async findPizzeriasByPartialNameSortedByMostCheap(pizzeriaName) {
+        return (await this.findPizzeriasByPartialName(pizzeriaName))
+            .filter(pizzeria => pizzeria.hasProducts())
+            .sort((aPizzeria, anotherPizzeria) =>
+                aPizzeria.averageProductPrice() - anotherPizzeria.averageProductPrice()
+            )
+
+    }
+
     async save(newUser) {
         this.users.push(newUser)
         return newUser
