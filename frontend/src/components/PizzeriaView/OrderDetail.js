@@ -3,13 +3,13 @@ const OrderDetail = ({ lineItems, total }) => {
     return (
         <div>
             {lineItems.map((item) => 
-                <div>
-                    <p>{item.productName}</p>
-                    <p>{item.quantity}</p>
-                    <p>{item.price}</p>
-                    <p>{total}</p>
+                <div className="border">
+                    <p><b>Producto: </b>{item.productName}</p>
+                    <p><b>Cantidad: </b>{item.quantity}</p>
+                    <p><b>Precio Por unidad: </b>{item.price}</p>
                 </div>
             )}
+            <p><b>TOTAL: </b>{total}</p>
         </div>
     );
 
