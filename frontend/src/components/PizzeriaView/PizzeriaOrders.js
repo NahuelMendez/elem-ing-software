@@ -23,7 +23,7 @@ const PizzeriaOrders = () => {
     return (
         <>
             <NavBar />
-            <PizzeriaOrdersTable />
+            <PizzeriaOrdersTable orders={orders}/>
         </>
     );
 };
