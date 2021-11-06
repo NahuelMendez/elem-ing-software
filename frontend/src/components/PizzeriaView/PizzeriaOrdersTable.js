@@ -1,5 +1,6 @@
 import Modal from "../Modal";
 import OrderDetail from "./OrderDetail";
+import OrderDetailButton from "./OrderDetailButton";
 import PizzeriaOrderDataRow from "./PizzeriaOrderDataRow";
 
 const PizzeriaOrdersTable = ({ orders }) => {
@@ -23,11 +24,9 @@ const PizzeriaOrdersTable = ({ orders }) => {
                         telephone={order.telephone}
                         email={order.email}
                         total={order.total}
-                        details={<Modal 
-                                    title="Detalles"
-                                    body={<OrderDetail 
-                                            lineItems={order.lineItems}
-                                            total={order.total}/>} 
+                        details={<OrderDetailButton
+                                    lineItems={order.lineItems}
+                                    total={order.total}
                                 />}
                         top={false}
                     />
