@@ -60,14 +60,15 @@ class UserService {
         return await this.usersRepository.findPizzeriasByPartialName(name)
     }
 
+    
     async findPizzeriasByPartialNameSortedByMostCheap(name) {
         return await this.usersRepository.findPizzeriasByPartialNameSortedByMostCheap(name)
     }
 
-    async editConsumerData(actualName, name, telephone, email) {
+    async editConsumerData(actualName, name, telephone, email, image) {
         const consumer = await this.findConsumerByName(actualName)
         await this.assertThereIsNotUserWithEmailWithoutCountingTheConsumer(consumer, email)
-        consumer.updateData(name, telephone, email)
+        consumer.updateData(name, telephone, email, image)
 
         await this.usersRepository.update(consumer)
     }

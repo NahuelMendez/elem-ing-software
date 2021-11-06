@@ -18,7 +18,7 @@ describe('Api consumer data edition', () => {
     })
 
     it(`can edit consumer data with valid data`, async () => {
-        const newConsumerData = {...kentRegistrationData, name: 'kent', email: 'kent-beck@gmail.com',telephone: 1122334455}
+        const newConsumerData = {...kentRegistrationData, name: 'kent', email: 'kent-beck@gmail.com',telephone: 1122334455, image: 'http://img.com/user.jpg'}
 
         const response = await editConsumerData(requester, newConsumerData, tokenConsumer)
 
@@ -83,6 +83,17 @@ describe('Api consumer data edition', () => {
         })
     })
 
+    it('cannot edit consumer data if the image is not of type string', async () => {
+        const newConsumerData = {...kentRegistrationData, image: 1223}
+
+        const response = await editConsumerData(requester, newConsumerData, tokenConsumer)
+
+        expect(response.status).toBe(BAD_REQUEST)
+        expect(response.body).toEqual({
+            error: '"image" must be a string'
+        })
+    })
+
     it('cannot edit consumer data if a name is not provided', async () => {
         const newConsumerData = {...kentRegistrationData, name: undefined}
 
@@ -117,7 +128,7 @@ describe('Api consumer data edition', () => {
     })
 
     it('when consumer data is updated the token is also updated', async () => {
-        const newConsumerData = {...kentRegistrationData, name: 'kent', email: 'kent-beck@gmail.com',telephone: 1122334455}
+        const newConsumerData = {...kentRegistrationData, name: 'kent', email: 'kent-beck@gmail.com',telephone: 1122334455, image: 'http://img.com/user.jpg'}
 
         const responseEdit = await editConsumerData(requester, newConsumerData, tokenConsumer)
         
@@ -127,7 +138,8 @@ describe('Api consumer data edition', () => {
         expect(response.body).toEqual({
             username: newConsumerData.name,
             telephone: newConsumerData.telephone,
-            email: newConsumerData.email
+            email: newConsumerData.email,
+            image: newConsumerData.image
         })
     })
 

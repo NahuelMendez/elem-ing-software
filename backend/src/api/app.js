@@ -157,7 +157,8 @@ const createApp = () => {
             .then(consumer => response.status(OK).json({
                 username: consumer.getName(),
                 telephone: consumer.getTelephone(),
-                email: consumer.getEmail()
+                email: consumer.getEmail(),
+                image: consumer.getImage()
             }))
     })
 
@@ -187,9 +188,9 @@ const createApp = () => {
 
     app.put(consumerPath, editConsumerDataRequestValidation, authenticateConsumer, (request, response) => {
         const { user } = request
-        const {name , telephone , email } = request.body
+        const {name , telephone , email, image } = request.body
         
-        usersService.editConsumerData(user.username ,name ,telephone ,email)
+        usersService.editConsumerData(user.username ,name ,telephone ,email, image)
             .then(() => 
                 response
                     .header("Authorization", jwt.sign({ username: name, email: email, role: user.role }, 'secret'))
