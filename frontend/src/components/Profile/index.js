@@ -44,7 +44,8 @@ const Profile = () => {
         <ConsumerInfo 
           username={consumer.username}
           email={consumer.email}
-          telephone={consumer.telephone} />
+          telephone={consumer.telephone}
+          profilePicture={consumer.image} />
         <OrdersHistory ordersHistory={ordersHistory}/>
       </main>
     </div>
