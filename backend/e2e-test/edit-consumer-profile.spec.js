@@ -116,6 +116,7 @@ describe('Consumer - profile data', () => {
         await page.waitForNavigation(`/profile`);
 
         await expectTextContent(page, '[name="consumer-email"]', "Email: " + consumerData.name + "anotherEmail@gmail.com");
+        await page.waitForSelector('img[src="https://wallpaperaccess.com/full/2213424.jpg"]');
     })
 
     it(`When a consumer update tries his data with an empty field, the modal should show an alert for empty field`, async () => {
