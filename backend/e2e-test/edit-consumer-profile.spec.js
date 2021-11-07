@@ -12,9 +12,10 @@ const {
 const { createConsumerRegistrationData } = require('../test/testObjects')
 
 const editProfileFormSelector = '.pizzap-modal [name="edit-profile-form"]';
-const inputUsernameEditProfileSelector = editProfileFormSelector + ' input[name="username"]';
+const inputUsernameEditProfileSelector = editProfileFormSelector + ' input[name="name"]';
 const inputEmailEditProfileSelector = editProfileFormSelector + ' input[name="email"]';
 const inputTelephoneEditProfileSelector = editProfileFormSelector + ' input[name="telephone"]';
+const inputImageEditProfileSelector = editProfileFormSelector + ' input[name="image"]';
 const confirmButtonSelector = editProfileFormSelector + ' button[type="submit"]';
 
 
@@ -47,7 +48,8 @@ describe('Consumer - profile data', () => {
         await page.waitForSelector(editProfileFormSelector)
         await expectInputValue(page, inputUsernameEditProfileSelector, consumerData.name);
         await expectInputValue(page, inputEmailEditProfileSelector, consumerData.email);
-        await expectInputValue(page, inputTelephoneEditProfileSelector, consumerData.telephone)
+        await expectInputValue(page, inputTelephoneEditProfileSelector, consumerData.telephone);
+        await expectInputValue(page, inputImageEditProfileSelector, "");
     })
 
     it(`When a cosumer edit the profile form and close the modal, then his personal data shouldn't be changed`, async () => {
@@ -87,6 +89,7 @@ describe('Consumer - profile data', () => {
         await page.waitForSelector('.pizzap-modal');
         await clearInputField(page, inputEmailEditProfileSelector);
         await page.type(inputEmailEditProfileSelector, anotherConsumerData.email);
+        await page.type(inputImageEditProfileSelector, "https://wallpaperaccess.com/full/2213424.jpg");
         await page.waitForSelector(confirmButtonSelector)
         await page.click(confirmButtonSelector);
 
@@ -106,15 +109,17 @@ describe('Consumer - profile data', () => {
         await page.waitForSelector(confirmButtonSelector);
         await clearInputField(page, inputEmailEditProfileSelector);
         await page.type(inputEmailEditProfileSelector, consumerData.name + "anotherEmail@gmail.com");
+        await page.type(inputImageEditProfileSelector, "https://wallpaperaccess.com/full/2213424.jpg");
         await page.click(confirmButtonSelector);
 
         
         await page.waitForNavigation(`/profile`);
 
         await expectTextContent(page, '[name="consumer-email"]', "Email: " + consumerData.name + "anotherEmail@gmail.com");
+        page.waitForSelector('img[src="https://wallpaperaccess.com/full/2213424.jpg"]');
     })
 
-    it(`When a consumer update tries his data with an empty field, the modal should show an alert for empty field`, async () => {
+    it.only(`When a consumer update tries his data with an empty field, the modal should show an alert for empty field`, async () => {
         const consumerData = createConsumerRegistrationData({});
         await registerAndLoginConsumer(page, consumerData);
         await goto(page, `/profile`)
