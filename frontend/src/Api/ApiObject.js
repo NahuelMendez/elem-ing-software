@@ -69,7 +69,9 @@ const api = {
       headers: {
         'Authorization': localStorage.getItem("token")
       }
-    })
+    }),
+
+  getPizzeriaOrders: () => axios.get(`${baseURL}/api/pizzeria/order`, createHeadesrWithToken())
 
 };
 
