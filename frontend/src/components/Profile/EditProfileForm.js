@@ -6,7 +6,7 @@ const FormFieldWithError = ({ name, label, type = 'text' }) =>
   <div className="mb-4 text-gray-700">
     <label className="block mb-1" htmlFor="forms-validationInputCode_error">{label}</label>
     <Field id="name" name={name} type={type} className="w-full h-10 px-3 text-base placeholder-gray-600 border border-red-700 rounded-lg focus:shadow-outline" />
-    <ErrorMessage name={name} component="div" className="bold text-red-500 text-xs" />
+    <ErrorMessage name={name} component="div" className="bold text-red-500 text-xs error-message-input" />
   </div>
 
 const FormAlert = ({ text }) =>
@@ -17,10 +17,10 @@ const FormAlert = ({ text }) =>
 const EditProfileForm = ({ username, email, telephone, profilePicture, handleSubmit }) => {
 
   const schema = yup.object().shape({
-    telephone: yup.string().min(1, "El telefono no puede estar vacio"),
-    name: yup.string().min(1, "El nombre de usuario no puede estar vacio"),
-    email: yup.string().email("Debe ingresar un email válido").min(1, "El email no puede estar vacio"),
-    image: yup.string().url("Debe ingresar una url válida"),
+    telephone: yup.string().trim().required("El telefono no puede estar vacio"),
+    name: yup.string().trim().required("El nombre de usuario no puede estar vacio"),
+    email: yup.string().email("Debe ingresar un email válido").trim().required("El email no puede estar vacio"),
+    image: yup.string().url("Debe ingresar una url válida").trim().required("La foto de perfil no puede estar vacia"),
   });
 
   const [submitError, setSubmitError] = useState(null)
