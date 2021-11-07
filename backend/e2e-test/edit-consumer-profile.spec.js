@@ -116,10 +116,9 @@ describe('Consumer - profile data', () => {
         await page.waitForNavigation(`/profile`);
 
         await expectTextContent(page, '[name="consumer-email"]', "Email: " + consumerData.name + "anotherEmail@gmail.com");
-        page.waitForSelector('img[src="https://wallpaperaccess.com/full/2213424.jpg"]');
     })
 
-    it.only(`When a consumer update tries his data with an empty field, the modal should show an alert for empty field`, async () => {
+    it(`When a consumer update tries his data with an empty field, the modal should show an alert for empty field`, async () => {
         const consumerData = createConsumerRegistrationData({});
         await registerAndLoginConsumer(page, consumerData);
         await goto(page, `/profile`)
@@ -138,12 +137,13 @@ describe('Consumer - profile data', () => {
 
         await page.click(confirmButtonSelector);
 
-        await page.waitForSelector('[name="input-error-message"]')
-        const errorMessages = await page.$$eval('[name="input-error-message"]', elements => elements.map(element => element.innerText))
+        await page.waitForSelector('.error-message-input')
+        const errorMessages = await page.$$eval('.error-message-input', elements => elements.map(element => element.innerText))
         
         expect(errorMessages).toContain('El nombre de usuario no puede estar vacio')
         expect(errorMessages).toContain('El email no puede estar vacio')
         expect(errorMessages).toContain('El telefono no puede estar vacio')
+        expect(errorMessages).toContain('La foto de perfil no puede estar vacia')
     })
 
 })
