@@ -1,7 +1,7 @@
 const OrderDetail = ({ lineItems, total }) => {
 
     return (
-        <div className="mt-4">
+        <div name="order-detail" className="mt-4">
             {lineItems.map((item) => 
                 <table className="border-bottom margin-2 text-left order-table-dtl">
                     <tr>

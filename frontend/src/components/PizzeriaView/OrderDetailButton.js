@@ -8,7 +8,7 @@ const OrderDetailButton = ({ orderNum, lineItems, total }) => {
 
     return (
         <>
-            <button onClick={() => setClosedModal(false)}>
+            <button name="order-detail-button" onClick={() => setClosedModal(false)}>
                 <b>. . .</b>
             </button>
 
