@@ -26,7 +26,7 @@ describe('Pizzeria menu', () => {
         await browser.close()
     })
 
-    it(`when pizzeria don't recieve orders should show no orders message on orders recieved page`, async () => {
+    it(`when a pizzeria don't recieve orders should show no orders message on orders recieved page`, async () => {
         const pizzeriaData = createPizzeriaRegistrationData({})
         await registerAsPizzeriaAndGoToMenu(page, pizzeriaData)
 
