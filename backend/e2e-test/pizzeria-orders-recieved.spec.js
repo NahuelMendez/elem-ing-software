@@ -6,7 +6,6 @@ const {
     clickHomeCircularThing,
     goto,
     registerAndLoginConsumer,
-    registerPizzeriaWithAmountOfProducts,
     clickAndWait,
     submitLogin
 } = require('./helpers/helpers')
@@ -101,7 +100,7 @@ describe('Pizzeria menu', () => {
         await expectTextContent(page, '[name="orders-table"]', pizzaData.price)
     })
 
-    it.only(`when a pizzeria clicks de details button of orders table should show the details of that order`, async () => {
+    it(`when a pizzeria clicks de details button of orders table should show the details of that order`, async () => {
         const pizzeriaData = createPizzeriaRegistrationData({})
         const pizzaData = createPizzaData({})
         await registerAsPizzeriaAndGoToMenu(page, pizzeriaData)
@@ -116,6 +115,7 @@ describe('Pizzeria menu', () => {
         await page.click('.product-container .button-add > img')
         await page.waitForSelector('[name="confirm-button"]')
         await page.evaluate(() => document.querySelector('[name="confirm-button"]').click())
+        await goto(page, `/pizzeria/${pizzeriaData.name}`)
 
         await page.waitForSelector('.product-container .button-add > img')
         await page.click('.product-container .button-add > img')
@@ -130,16 +130,13 @@ describe('Pizzeria menu', () => {
         await goto(page, '/order')
         await page.waitForSelector('[name="orders-table"]')
 
-        await page.click('[name="order-detail-button"]')
-
-        await page.waitForSelector('[name="order-detail"]')
-        await page.click('[name="order-detail"]')
-
-        const productsData = await page.$$eval('[name="orders-recieved"]', elements => elements.map(element => element.innerHTML))
+        const productsData = await page.$$eval('[name="orders-recieved"] > * ', elements => elements.map(element => element.innerHTML))
 
         expect(productsData).toHaveLength(2)
 
-        expect(productsData[0]).toContain(pizzaData.name)
+        expect(productsData[0]).toContain(consumerData.name)
+        expect(productsData[0]).toContain(consumerData.telephone)
+        expect(productsData[0]).toContain(consumerData.email)
     })
 
 })
