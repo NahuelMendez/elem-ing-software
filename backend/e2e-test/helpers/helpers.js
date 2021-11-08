@@ -172,6 +172,15 @@ async function placeOrder(page, { pizzeriaName, unitsOfProducts }) {
     await page.waitForSelector('.notebook-container .alert-confirm')
 }
 
+const searchInputSelector = 'form > input[name="search-input"]'
+const searchButtonSelector = 'form > img[alt="search-icon"]'
+
+
+async function searchPizzerias(page, pizzeriaPartialName) {
+    await page.type(searchInputSelector, pizzeriaPartialName)
+    await clickAndWait(page, searchButtonSelector)
+}
+
 module.exports = {
     goto,
     clickAndWait,
@@ -195,6 +204,7 @@ module.exports = {
     addProduct,
     chooseToRegisterAsPizzeria,
     chooseToRegisterAsConsumer,
+    searchPizzerias,
     expectH1,
     expectTextContent,
     expectTextContents,

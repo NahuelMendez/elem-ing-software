@@ -1,56 +1,54 @@
 import { useState } from 'react';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
+import * as yup from 'yup';
 
-const FormFieldWithError = ({name, label, type='text'}) =>
+const FormFieldWithError = ({ name, label, type = 'text' }) =>
   <div className="mb-4 text-gray-700">
     <label className="block mb-1" htmlFor="forms-validationInputCode_error">{label}</label>
     <Field id="name" name={name} type={type} className="w-full h-10 px-3 text-base placeholder-gray-600 border border-red-700 rounded-lg focus:shadow-outline" />
-    <ErrorMessage name={name} render={message => <div name="input-error-message" class="bold text-red-500">{message}</div>}/>
+    <ErrorMessage name={name} component="div" className="bold text-red-500 text-xs error-message-input" />
   </div>
 
-const FormAlert = ({text}) =>
+const FormAlert = ({ text }) =>
   <>
-    { text ? <div name="form-alert" className="rounded p-1 bg-red-500 text-white" role="alert">{ text }</div> : null }
+    {text ? <div name="form-alert" className="rounded p-1 bg-red-500 text-white" role="alert">{text}</div> : null}
   </>
 
-const EditProfileForm = ({ username, email, telephone, handleSubmit }) => {
+const EditProfileForm = ({ username, email, telephone, profilePicture, handleSubmit }) => {
 
-    const [submitError, setSubmitError] = useState(null)
+  const schema = yup.object().shape({
+    telephone: yup.string().trim().required("El telefono no puede estar vacio"),
+    name: yup.string().trim().required("El nombre de usuario no puede estar vacio"),
+    email: yup.string().email("Debe ingresar un email válido").trim().required("El email no puede estar vacio"),
+    image: yup.string().url("Debe ingresar una url válida").trim().required("La foto de perfil no puede estar vacia"),
+  });
 
-    return (
-        <Formik
-            initialValues = { { username, email, telephone } }
-            onSubmit = {
-              async (values, { setErrors }) => {
-                const errors = {}
+  const [submitError, setSubmitError] = useState(null)
 
-                if (values.username.trim() === '') errors.username = 'El nombre de usuario no puede estar vacio'
-                if (values.email.trim() === '') errors.email = 'El email no puede estar vacio'
-                if (values.telephone.trim() === '') errors.telephone = 'El telefono no puede estar vacio'
-                
+  return (
+    <Formik
+      initialValues={{ name: username, email, telephone, image: profilePicture }}
+      validationSchema={schema}
+      onSubmit={
+        async (values) => {
+          handleSubmit(values).catch(error => {
+            setSubmitError(error.response.data.error)
+          })
+        }
+      }
+    >
+      <Form name="edit-profile-form" >
+        <FormFieldWithError name="name" label="Nombre de Usuario" />
+        <FormFieldWithError name="email" label="Email" />
+        <FormFieldWithError name="telephone" label="Telefono" />
+        <FormFieldWithError name="image" label="Foto de perfil" />
 
-                if (Object.keys(errors).length > 0) {
-                    setErrors(errors)
-                }
-                else {
-                    handleSubmit(values).catch(error => {
-                      console.log("ERROR", error)
-                      setSubmitError(error.response.data.error)})
-                }            
-              }
-            }
-            >
-            <Form name="edit-profile-form" >
-                <FormFieldWithError name="username" label="Nombre de Usuario" />
-                <FormFieldWithError name="email" label="Email" />
-                <FormFieldWithError name="telephone" label="Telefono" type="text"/>
+        <FormAlert text={submitError} />
 
-                <FormAlert text={submitError} />
-
-                <button type="submit" className="mt-4 button-principal" >Actualizar</button>
-            </Form>
-        </Formik>
-    );
+        <button type="submit" className="mt-4 button-principal" >Actualizar</button>
+      </Form>
+    </Formik>
+  );
 
 }
 

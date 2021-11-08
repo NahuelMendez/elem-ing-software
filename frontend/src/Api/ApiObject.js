@@ -60,8 +60,8 @@ const api = {
     return axios.get(`${baseURL}/api/order/bestseller`);
   },
 
-  updateConsumer: (editedProfile) => {
-    return axios.put(`${baseURL}/api/consumer`, { name: editedProfile.username, email: editedProfile.email, telephone: editedProfile.telephone }, createHeadesrWithToken());
+  updateConsumer: (data) => {
+    return axios.put(`${baseURL}/api/consumer`, data, createHeadesrWithToken());
   },
 
   getOrdersHistory: () =>
@@ -69,7 +69,9 @@ const api = {
       headers: {
         'Authorization': localStorage.getItem("token")
       }
-    })
+    }),
+
+  getPizzeriaOrders: () => axios.get(`${baseURL}/api/pizzeria/order`, createHeadesrWithToken())
 
 };
 
