@@ -18,13 +18,9 @@ const Product = ({ name, description, price, imageURL, deleteProduct, editMode }
   const { pizzeriaName } = useParams();
   const [showDelete, setShowDelete] = useState(false)
 
-    const handleClick = () => {
-        setShowDelete(true)
-    }
-
-    const handleClose = () => {
-        setShowDelete(false)
-    }
+  const handleClose = () => {
+      setShowDelete(false)
+  }
 
   const handleAddToNotebook = () => {
     dispatch(addProduct({
@@ -41,7 +37,7 @@ const Product = ({ name, description, price, imageURL, deleteProduct, editMode }
           {editMode ?
             <div>
               <EditProductButton onClick={() => setShowEditionForm(true)} />
-              <DeleteProductButton handleClick={handleClick}/>
+              <DeleteProductButton handleClick={() => setShowDelete(true)}/>
             </div>
             :
             <button type="btn" className="w-8 pt-2 pr-2 h-8 button-add" onClick={handleAddToNotebook}>
