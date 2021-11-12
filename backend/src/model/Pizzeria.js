@@ -24,6 +24,8 @@ class Pizzeria extends User {
 
     getProductsInMenu() { return this.products }
 
+    getAddress() { return this.address }
+
     addToMenu(product) {
         this.assertHasNoProductNamedAs(product);
 

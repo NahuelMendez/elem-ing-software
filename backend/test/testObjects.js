@@ -30,6 +30,7 @@ const pizzeriasRegistrationData = {
         name: 'Banchero',
         telephone: 1112345678,
         email: 'banchero@gmail.com',
+        address: 'Av. Corrientes 1300, CABA, Bs. As.',
         password: 'password',
         rol: 'pizzeria'
     },
@@ -38,6 +39,7 @@ const pizzeriasRegistrationData = {
         name: 'Guerrin',
         telephone: 1112345678,
         email: 'guerrin@gmail.com',
+        address: 'Av. Corrientes 1368, CABA, Bs.As.',
         password: 'password',
         rol: 'pizzeria'
     }

@@ -24,11 +24,11 @@ class UserService {
         return ! consumer.hasEmail(email)
     }
 
-    async registerPizzeria({name, telephone, email, password}) {
+    async registerPizzeria({name, telephone, email, address, password}) {
         await this.assertThereIsNoPizzeriaNamed(name)
         await this.assertThereIsNotUserWithEmail(email)
 
-        const newPizzeria = new Pizzeria({name, telephone, email, password})
+        const newPizzeria = new Pizzeria({name, telephone, email, address, password})
         return await this.usersRepository.save(newPizzeria)
     }
 

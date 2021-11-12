@@ -4,7 +4,7 @@ const urlRegex = new RegExp(/^(?:(?:https?|ftp):\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:
 
 class User {
 
-    constructor({name, telephone, email, password}) {
+    constructor({name, telephone, email, address, password=''}) {
         this.assertNameIsNotBlank(name)
         this.assertIsValidPassword(password)
         this.assertIsValidEmail(email)
@@ -12,6 +12,7 @@ class User {
         this.name = name.trim()
         this.telephone = telephone
         this.email = email
+        this.address = address
         this.password = password
         this.image = ''
     }
