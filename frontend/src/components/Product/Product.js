@@ -76,7 +76,7 @@ const Product = ({ name, description, price, imageURL, deleteProduct, editMode }
       {showDelete && <Modal 
           title={"Borrar producto"} 
             body={
-              <div>
+              <div name="delete-product">
                 <div className="mt-8 mb-4">
                   <h5>¿Esta seguro que quiere borrar el producto?</h5>
                 </div>

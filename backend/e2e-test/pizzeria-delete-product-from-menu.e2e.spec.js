@@ -7,7 +7,12 @@ const {
 
 const { createPizzeriaRegistrationData, createPizzaData } = require('../test/testObjects')
 
-jest.setTimeout(10000)
+jest.setTimeout(15000)
+
+const deleteProductButton = '.card-container  .delete-product-btn'
+const deleteProductButtonImg = deleteProductButton + ' > img'
+const deleteProductModal = '.pizzap-modal [name="delete-product"]'
+const modalAcceptButton = deleteProductModal + ' button[name="accept"]'
 
 describe('Pizzeria - delete product from menu', () => {
     let browser
@@ -29,18 +34,21 @@ describe('Pizzeria - delete product from menu', () => {
         await addProduct(page, firstProduct)
         await goto(page, '/home')
 
-        await page.waitForSelector('.card-container > .delete-product-btn > img')
+        await page.waitForSelector(deleteProductButtonImg)
     })
 
-    it(`when a pizzeria clicks the delete button of a product card, the product is removed from the menu`, async () => {
+    it(`when a pizzeria clicks the delete button of a product card, a modal appears and the accept button is selected, the product is removed from the menu`, async () => {
         const pizzeriaData = createPizzeriaRegistrationData({})
         const pizzaData = createPizzaData({})
         await registerAsPizzeriaAndGoToMenu(page, pizzeriaData)
         await addProduct(page, pizzaData)
         await goto(page, '/home')
 
-        await page.waitForSelector('.card-container > .delete-product-btn > img')
-        await page.click('.card-container > .delete-product-btn > img')
+        await page.waitForSelector(deleteProductButtonImg)
+        await page.click(deleteProductButton)
+
+        await page.waitForSelector(deleteProductModal)
+        await page.click(modalAcceptButton)
 
         const productCards = await page.$$eval('.card-container', element => element)
         

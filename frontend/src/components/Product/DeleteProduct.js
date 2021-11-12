@@ -8,7 +8,7 @@ const DeleteProduct = ({productName, deleteProduct}) => {
 
     return (
         <>
-            <button type="btn" className="w-24 mt-4 button-principal" onClick={handleClick}>
+            <button name="accept" type="btn" className="w-24 mt-4 button-principal" onClick={handleClick}>
                 Si
             </button>
         </>
