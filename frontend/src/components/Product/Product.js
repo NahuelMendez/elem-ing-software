@@ -82,7 +82,7 @@ const Product = ({ name, description, price, imageURL, deleteProduct, editMode }
                 </div>
                 <div class="flex justify-around">
                   <DeleteProduct productName={name} deleteProduct={deleteProduct} />
-                  <button type="btn" className="w-24 mt-4 button-principal" onClick={handleClose}>No</button>
+                  <button name="cancel" type="btn" className="w-24 mt-4 button-principal" onClick={handleClose}>No</button>
                 </div>
               </div>
             } 

@@ -14,6 +14,7 @@ const deleteProductButton = '.card-container  .delete-product-btn'
 const deleteProductButtonImg = deleteProductButton + ' > img'
 const deleteProductModal = '.pizzap-modal [name="delete-product"]'
 const modalAcceptButton = deleteProductModal + ' button[name="accept"]'
+const modalCancelButton = deleteProductModal + ' button[name="cancel"]'
 
 describe('Pizzeria - delete product from menu', () => {
     let browser
@@ -56,6 +57,23 @@ describe('Pizzeria - delete product from menu', () => {
         )
     })
 
+    it(`when a pizzeria clicks the delete button of a product card, a modal appears and the cancel button is selected, no changes are made`, async () => {
+        const pizzeriaData = createPizzeriaRegistrationData({})
+        const pizzaData = createPizzaData({})
+        await registerAsPizzeriaAndGoToMenu(page, pizzeriaData)
+        await addProduct(page, pizzaData)
+        await goto(page, '/home')
+
+        await page.waitForSelector(deleteProductButtonImg)
+        await page.click(deleteProductButton)
+
+        await page.waitForSelector(deleteProductModal)
+        await page.click(modalCancelButton)
+
+        const productCards = await page.$$('.card-container', element => element)
+        expect(productCards).toHaveLength(1)
+    })
+
     it(`when a pizzeria clicks the delete button of a product card, a modal appears and the accept button is selected, the product is removed from the menu`, async () => {
         const pizzeriaData = createPizzeriaRegistrationData({})
         const pizzaData = createPizzaData({})
@@ -70,7 +88,6 @@ describe('Pizzeria - delete product from menu', () => {
         await page.click(modalAcceptButton)
 
         const productCards = await page.$$eval('.card-container', element => element)
-        
         expect(productCards).toHaveLength(0)
     })
 
