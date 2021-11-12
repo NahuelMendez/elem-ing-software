@@ -9,9 +9,9 @@ const {
 
 const { createPizzeriaRegistrationData, createPizzaData } = require('../test/testObjects')
 
-jest.setTimeout(10000)
+jest.setTimeout(15000)
 
-const editProductButtonSelector = '.card-container > div > .edit-product-btn > img'
+const editProductButtonSelector = '.card-container .edit-product-btn img'
 const editProductModalFormSelector = '.pizzap-modal [name="edit-product-form"]'
 const nameInputSelector = editProductModalFormSelector + ' input[name="name"]'
 const descriptionInputSelector = editProductModalFormSelector + ' input[name="description"]'

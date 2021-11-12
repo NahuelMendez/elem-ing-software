@@ -8,6 +8,8 @@ const {
 
 const { createPizzeriaRegistrationData, createPizzaData } = require('../test/testObjects')
 
+jest.setTimeout(15000)
+
 describe('Pizzeria home', () => {
     let browser
     let page

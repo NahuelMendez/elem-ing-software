@@ -51,8 +51,8 @@ describe('Pizzeria - delete product from menu', () => {
 
         await page.waitForSelector(deleteProductModal)
         await expectTextContent(
-            page, 
-            deleteProductModal + ' h5[name="title"]', 
+            page,
+            deleteProductModal + ' h5[name="title"]',
             '¿Esta seguro que quiere borrar el producto?'
         )
     })

@@ -9,7 +9,7 @@ const {
 
 const { createPizzeriaRegistrationData, createConsumerRegistrationData } = require('../test/testObjects')
 
-jest.setTimeout(10000)
+jest.setTimeout(15000)
 
 const searchInputSelector = 'form > input[name="search-input"]'
 const searchButtonSelector = 'form > img[alt="search-icon"]'
