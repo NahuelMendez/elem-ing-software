@@ -37,6 +37,8 @@ class User {
 
     getEmail() { return this.email }
 
+    getAddress() { return this.address }
+
     getRoleName() { throw new Error('Subclass responsibility') }
 
     assertNameIsNotBlank(name) {

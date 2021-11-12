@@ -32,11 +32,11 @@ class UserService {
         return await this.usersRepository.save(newPizzeria)
     }
 
-    async registerConsumer({name, telephone, email, password}) {
+    async registerConsumer({name, telephone, email, address, password}) {
         await this.assertThereIsNoConsumerNamed(name)
         await this.assertThereIsNotUserWithEmail(email)
 
-        const newConsumer = new Consumer({name, telephone, email, password})
+        const newConsumer = new Consumer({name, telephone, email, address, password})
         return await this.usersRepository.save(newConsumer)
     }
 

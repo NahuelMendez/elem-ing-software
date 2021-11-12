@@ -50,6 +50,7 @@ const consumersRegistrationData = {
         name: 'Kent Beck',
         telephone: 1112345678,
         email: 'kent@gmail.com',
+        address: 'Av. Corrientes 1300, CABA, Bs. As.',
         password: 'password',
         rol: 'consumer'
     },
@@ -58,6 +59,7 @@ const consumersRegistrationData = {
         name: 'Martin Fowler',
         telephone: 1112345678,
         email: 'martin@gmail.com',
+        address: 'Av. Corrientes 1300, CABA, Bs. As.',
         password: 'password',
         rol: 'consumer'
     }
