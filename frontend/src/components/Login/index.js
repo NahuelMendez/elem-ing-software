@@ -34,7 +34,7 @@ const Login = () => {
       </h1>
       <form onSubmit={handleSubmit} className="w-1/5">
         <div className="flex w-full flex-col mb-3">
-          <label className="mb-2" htmlFor="email">Nombre de usuario</label>
+          <label className="mb-2" htmlFor="email">Email</label>
           <input
             type="text"
             id="email"
