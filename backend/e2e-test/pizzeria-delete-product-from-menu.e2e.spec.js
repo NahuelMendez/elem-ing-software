@@ -2,7 +2,8 @@ const puppeteer = require('puppeteer')
 const {
     goto,
     registerAsPizzeriaAndGoToMenu,
-    addProduct
+    addProduct,
+    expectTextContent
 } = require('./helpers/helpers')
 
 const { createPizzeriaRegistrationData, createPizzaData } = require('../test/testObjects')
@@ -35,6 +36,24 @@ describe('Pizzeria - delete product from menu', () => {
         await goto(page, '/home')
 
         await page.waitForSelector(deleteProductButtonImg)
+    })
+
+    it(`when a pizzeria clicks the delete button of a product card, a modal is shown asking if you want to delete a product`, async () => {
+        const pizzeriaData = createPizzeriaRegistrationData({})
+        const pizzaData = createPizzaData({})
+        await registerAsPizzeriaAndGoToMenu(page, pizzeriaData)
+        await addProduct(page, pizzaData)
+        await goto(page, '/home')
+
+        await page.waitForSelector(deleteProductButtonImg)
+        await page.click(deleteProductButton)
+
+        await page.waitForSelector(deleteProductModal)
+        await expectTextContent(
+            page, 
+            deleteProductModal + ' h5[name="title"]', 
+            '¿Esta seguro que quiere borrar el producto?'
+        )
     })
 
     it(`when a pizzeria clicks the delete button of a product card, a modal appears and the accept button is selected, the product is removed from the menu`, async () => {
