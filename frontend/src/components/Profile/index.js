@@ -25,7 +25,7 @@ const Profile = () => {
   }
 
   return (
-    <div className="pb-4">
+    <div className="mb-4">
       <NavBar />
       <main className="flex flex-inline">
         <ConsumerInfo
