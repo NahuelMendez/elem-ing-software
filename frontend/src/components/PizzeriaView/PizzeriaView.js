@@ -24,14 +24,15 @@ const PizzeriaView = () => {
   return (
     <div className="pb-4">
       <NavBar />
-      <PizzeriaInfo pizzeriaName={pizzeriaName} />
-
-      <div className="flex w-full">
-        {menu.length === 0 ?
-          <h3 name="not-found-products" className="text-center mt-8">No se ingresaron productos en el menú</h3> :
-          <ViewProducts products={menu} editMode={false} />
-        }
-        <Notebook />
+      <div className="w-full flex flex-column items-center">
+        <PizzeriaInfo pizzeriaName={pizzeriaName} />
+        <div className="flex justify-end">
+          {menu.length === 0 ?
+            <h3 name="not-found-products" className="text-center mt-8">No se ingresaron productos en el menú</h3> :
+            <ViewProducts products={menu} editMode={false} />
+          }
+          <Notebook />
+        </div>
       </div>
     </div>
   );
