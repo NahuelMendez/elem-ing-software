@@ -25,7 +25,6 @@ const NavBar = () => {
   const getConsumer = () => {
     api.getConsumer()
       .then(response => {
-        console.log('get consumer', response.data)
         dispatch(setConsumerInfo(response.data));
       })
       .catch(err => {
