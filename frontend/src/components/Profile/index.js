@@ -10,9 +10,9 @@ const Profile = () => {
   const [ordersHistory, setOrdersHistory] = useState([]);
   const { username, image, telephone, email } = useSelector(consumerInfoState);
 
-  useEffect(() =>
-    getOrdersHistory()
-    , [])
+  useEffect(() => {
+    getOrdersHistory();
+  }, []);
 
   const getOrdersHistory = () => {
     api.getOrdersHistory()
@@ -25,7 +25,7 @@ const Profile = () => {
   }
 
   return (
-    <div className="pb-4">
+    <div className="mb-4">
       <NavBar />
       <main className="flex flex-inline">
         <ConsumerInfo
