@@ -11,11 +11,8 @@ const Profile = () => {
 
   useEffect(() =>{
     getConsumer();
+    getOrdersHistory();
   }, []);
-
-  useEffect(() =>
-    getOrdersHistory()
-  , [])
 
   const getConsumer = () => {
     api.getConsumer()
@@ -38,9 +35,9 @@ const Profile = () => {
   }
 
   return (
-    <div className="pb-4">
+    <div className="mb-4">
       <NavBar />
-      <main className="flex flex-inline">
+      <main className="flex justify-around w-100">
         <ConsumerInfo 
           username={consumer.username}
           email={consumer.email}

@@ -106,29 +106,6 @@ code {
   align-items: center;
 }
 
-.cmr-info-container {
-  align-items: center;
-  display: grid;
-  grid-template-columns: 20% 60% 20%;
-}
-
-.cmr-info-body-container {
-  display: flex;
-  grid-column: 2/3;
-}
-
-.cmr-info-body {
-  display: table;
-  align-self: center;
-  border: solid 1px grey;
-}
-
-.cmr-info-dtl {
-  margin-top: 15px;
-  font-size: larger;
-  text-align: justify;
-}
-
 .oders-table-top {
   border: solid 1px black;
   height: 35px;
@@ -159,4 +136,11 @@ code {
 
 .right-t-top {
   border-top-right-radius: 8px;
+}
+
+table {
+  border-collapse: collapse;
+  border-radius: 10px;
+  border-style: hidden; 
+  box-shadow: 0 0 0 1px rgb(180, 179, 179);
 }

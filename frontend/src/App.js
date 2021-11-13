@@ -1,7 +1,6 @@
 import {
   BrowserRouter as Router,
-  Route,
-  Redirect
+  Route
 } from "react-router-dom";
 import Login from "./components/Login";
 import MyMenu from "./components/MyMenu";
@@ -12,14 +11,9 @@ import SearchResult from "./components/SearchResult";
 import PizzeriaView from "./components/PizzeriaView/PizzeriaView";
 import PizzeriaOrders from "./components/PizzeriaView/PizzeriaOrders";
 
-const loggedIn = localStorage.getItem('token') !== null
-
 function App() {
   return (
     <Router>
-      <Route exact path="/">
-        {loggedIn ? <Redirect to="/home" /> : <Redirect to="/login" />}
-      </Route>
       <Route path="/home" component={MainView} />
       <Route path="/perfil" component={Profile} />
       <Route path="/login" component={Login} />
