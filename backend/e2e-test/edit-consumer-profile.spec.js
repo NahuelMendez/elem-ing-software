@@ -99,7 +99,7 @@ describe('Consumer - profile data', () => {
 
         await page.waitForSelector('[name="form-alert"]');
 
-        await expectTextContent(page, '[name="form-alert"]', `A user with email ${anotherConsumerData.email} is already registered`)
+        await expectTextContent(page, '[name="form-alert"]', "El email ya esta siendo usado")
     })
 
     it(`When a consumer update his data correctly, the modal close and should can see the updated personal info`, async () => {

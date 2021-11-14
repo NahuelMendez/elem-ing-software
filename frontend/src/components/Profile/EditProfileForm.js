@@ -2,6 +2,16 @@ import { useState } from 'react';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as yup from 'yup';
 
+const getTraduction = (text) => {
+  if (text && text.indexOf('A user with email') != -1) {
+    return "El email ya esta siendo usado";
+  } else if (text == 'invalid token or unauthorized user') {
+    return "Error de autorizacion";
+  } else if (text == '"name" must be a string') {
+    return "El nombre debe ser un texto";
+  }
+}
+
 const FormFieldWithError = ({ name, label, type = 'text' }) =>
   <div className="mb-4 text-gray-700">
     <label className="block mb-1" htmlFor="forms-validationInputCode_error">{label}</label>
@@ -9,10 +19,16 @@ const FormFieldWithError = ({ name, label, type = 'text' }) =>
     <ErrorMessage name={name} component="div" className="bold text-red-500 text-xs error-message-input" />
   </div>
 
-const FormAlert = ({ text }) =>
-  <>
-    {text ? <div name="form-alert" className="rounded p-1 bg-red-500 text-white" role="alert">{text}</div> : null}
-  </>
+const FormAlert = ({ text, email}) => {
+
+  const resultText = getTraduction(text)
+
+  return (
+    <>
+      {text ? <div name="form-alert" className="rounded p-1 bg-red-500 text-white" role="alert">{resultText}</div> : null}
+    </>
+  );
+}
 
 const EditProfileForm = ({ username, email, telephone, address, profilePicture, handleSubmit }) => {
 
@@ -45,7 +61,7 @@ const EditProfileForm = ({ username, email, telephone, address, profilePicture, 
         <FormFieldWithError name="address" label="Direccion" />
         <FormFieldWithError name="image" label="Foto de perfil" />
 
-        <FormAlert text={submitError} />
+        <FormAlert text={submitError}/>
 
         <button type="submit" className="mt-4 button-principal" >Actualizar</button>
       </Form>
