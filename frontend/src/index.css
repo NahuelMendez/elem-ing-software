@@ -160,3 +160,16 @@ code {
 .right-t-top {
   border-top-right-radius: 8px;
 }
+
+.ranking-image-container{
+  width: 150px;
+  height: 150px;
+}
+
+.ranking-image {
+  width: auto;
+  height: 150px;
+  overflow: hidden;
+  margin-top: 15px;
+  object-fit: scale-down;
+}
