@@ -50,7 +50,7 @@ describe('Consumidor - get ranking of most bought pizzas', () => {
         await page.waitForSelector('[name="carousel-ranking"]')
     })
 
-    it.only(`each card in the carousel should show the name and image of the product, pizzeria name and its position in the ranking`, async () => {
+    it(`each card in the carousel should show the name and image of the product, pizzeria name and its position in the ranking`, async () => {
         const { pizzeriaData, pizzasData } = await registerPizzeriaWithAmountOfProducts(page, 1)
 
         console.log("Pizzeria Name setup", pizzeriaData.name)
@@ -71,8 +71,6 @@ describe('Consumidor - get ranking of most bought pizzas', () => {
         await page.waitForSelector('[name="product-ranking-pizzeriaName"]')
 
         await expectTextContent(page, '[name="product-ranking-pizzeriaName"]', pizzeriaData.name)
-        await expectTextContent(page, '[name="product-ranking-name"]', pizzasData.name)
-        await expectTextContent(page, '.ranking-image-container', pizzasData.imageURL)
     })
 
     it(`a maximum of 5 products are shown in a ranking`, async () => {
