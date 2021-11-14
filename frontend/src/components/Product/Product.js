@@ -97,7 +97,7 @@ const Product = ({ name, description, price, imageURL, deleteProduct, editMode }
             body={
               <div name="descripcion-product">
                 <div className="mt-8 mb-4">
-                  <h5 name="title">{description}</h5>
+                  <p name="title">{description}</p>
                 </div>
               </div>
             } 

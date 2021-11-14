@@ -9,7 +9,7 @@ function createPizzeriaRegistrationData({name, telephone = 1112345678, email, ad
     return ({ name, telephone, email, address, password, confirmPassword })
 }
 
-function createPizzeriaRegistrationAPIData(properties) { // TODO: solucionar este parche. El front necesita "confirmPassword", pero la API se rompe si lo tiene
+function createPizzeriaRegistrationAPIData(properties) { 
     const registrationData = createPizzeriaRegistrationData(properties)
     registrationData.confirmPassword = undefined
     return registrationData
@@ -17,7 +17,7 @@ function createPizzeriaRegistrationAPIData(properties) { // TODO: solucionar est
 
 const createConsumerRegistrationData = createPizzeriaRegistrationData
 
-const generatePizzaName = () => `Pizza${Date.now()}`
+const generatePizzaName = () => `P${Date.now()}`.slice(0,10)
 
 function createPizzaData({name, description = 'pizza description', price = 1, imageURL = 'http://image.com/pizza.jpg'}) {
     if (!name) name = generatePizzaName()
