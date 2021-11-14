@@ -14,6 +14,7 @@ import { useParams } from 'react-router';
 const Product = ({ name, description, price, imageURL, deleteProduct, editMode }) => {
 
   const [showEditionForm, setShowEditionForm] = useState(false)
+  const [showDescription, setShowDescription] = useState(false)
   const dispatch = useDispatch()
   const { pizzeriaName } = useParams();
   const [showDelete, setShowDelete] = useState(false)
@@ -51,7 +52,10 @@ const Product = ({ name, description, price, imageURL, deleteProduct, editMode }
 
         <div className="card-body">
           <h2 className="card-tittle">{name}</h2>
-          <p className="card-text text-secondary">{description}</p>
+          <div className="d-flex">
+            <p className="card-text text-secondary text-truncate">{description}</p>
+            {description.length > 24 ? <button className="mb-3 fw-bold" onClick={() => setShowDescription(true)}>+</button> : ""}
+          </div>
           <p><b>${price}</b></p>
         </div>
       </div>
@@ -87,6 +91,17 @@ const Product = ({ name, description, price, imageURL, deleteProduct, editMode }
               </div>
             } 
           handleClose={handleClose}
+      />}
+      {showDescription && <Modal 
+          title={"Descripción"} 
+            body={
+              <div name="descripcion-product">
+                <div className="mt-8 mb-4">
+                  <h5 name="title">{description}</h5>
+                </div>
+              </div>
+            } 
+          handleClose={() => setShowDescription(false)}
       />}
     </>
   );
