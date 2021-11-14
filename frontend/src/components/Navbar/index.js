@@ -16,7 +16,7 @@ const NavBar = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const { image } = useSelector(consumerInfoState);
-  const hasProfilePicture = image !== undefined
+  const hasProfilePicture = image !== ''
 
   useEffect(() => {
     getConsumer();
