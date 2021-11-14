@@ -6,7 +6,7 @@ import api from "../../Api/ApiObject";
 import { useDispatch, useSelector } from "react-redux"
 import { setSearchResults } from "../../slices/searchSlice";
 import userIMG from "../../assets/user.png";
-import homeIcon from "../../assets/home-icon.png"
+import homeIcon from "../../assets/homeicon.png"
 import { consumerInfoState, setConsumerInfo } from "../../slices/consumerSlice";
 
 const NavBar = () => {
@@ -62,7 +62,7 @@ const NavBar = () => {
     <div className="navBar bg-principal flex justify-between">
       <div>
         <a href="/home">
-          <img src={homeIcon} name="goto-home-button" />
+          <img className={"icon-img"} src={homeIcon} name="goto-home-button" />
         </a>
       </div>
       {showProfileOptions &&
