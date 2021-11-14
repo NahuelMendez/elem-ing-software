@@ -139,6 +139,7 @@ describe('Api consumer data edition', () => {
             username: newConsumerData.name,
             telephone: newConsumerData.telephone,
             email: newConsumerData.email,
+            address: newConsumerData.address,
             image: newConsumerData.image
         })
     })

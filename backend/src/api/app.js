@@ -158,6 +158,7 @@ const createApp = () => {
                 username: consumer.getName(),
                 telephone: consumer.getTelephone(),
                 email: consumer.getEmail(),
+                address: consumer.getAddress(),
                 image: consumer.getImage()
             }))
     })
@@ -211,8 +212,8 @@ const createApp = () => {
         return pizzerias.map (pizzeria => ({name: pizzeria.getName()}))
     }
 
-    const register = ({name, telephone, email, password, rol}) => {
-        const user = {name: name, telephone: telephone, email: email, password: password}
+    const register = ({name, telephone, email, address, password, rol}) => {
+        const user = {name, telephone, email, address, password}
         
         if (rol === 'pizzeria') {
             return usersService.registerPizzeria(user)
