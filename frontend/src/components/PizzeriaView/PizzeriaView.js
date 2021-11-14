@@ -28,7 +28,7 @@ const PizzeriaView = () => {
 
       <div className="flex w-full">
         {menu.length === 0 ?
-          <h3 className="text-center mt-8">No se ingresaron productos en el menú</h3> :
+          <h3 name="not-found-products" className="text-center mt-8">No se ingresaron productos en el menú</h3> :
           <ViewProducts products={menu} editMode={false} />
         }
         <Notebook />

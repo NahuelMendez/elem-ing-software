@@ -8,7 +8,7 @@ const MainView = () => {
   return (
     <div>
       <NavBar />
-      {role === "pizzeria" ? <MenuContainer /> : <Ranking/>}
+      {role === "pizzeria" ? <MenuContainer /> : <Ranking />}
     </div>
   )
 }

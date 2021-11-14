@@ -14,86 +14,90 @@ describe('Consumer data edition', () => {
     })
 
     it ('can edit consumer data with valid data', async () => {
-        const validData = {name: 'Kent', telephone: 1122334455, email: 'kent-beck@gmail.com', image: 'http://img.com/user.jpg'}
+        const validData = {name: 'Kent', telephone: 1122334455, email: 'kent-beck@gmail.com', address: 'new address 123', image: 'http://img.com/user.jpg'}
 
-        await userService.editConsumerData(kentRegistrationData.name, validData.name, validData.telephone, validData.email, validData.image)
+        await userService.editConsumerData(kentRegistrationData.name, validData.name, validData.telephone, validData.email, validData.address, validData.image)
 
         const consumer = await userService.findConsumerByName(validData.name)
 
         expect(consumer.getName()).toEqual(validData.name)
         expect(consumer.getTelephone()).toEqual(validData.telephone)
         expect(consumer.getEmail()).toEqual(validData.email)
+        expect(consumer.getAddress()).toEqual(validData.address)
         expect(consumer.getImage()).toEqual(validData.image)
     })
 
     it ('can edit consumer data with the same name', async () => {
-        const validData = {name: kentRegistrationData.name, telephone: 1122334455, email: 'kent-beck@gmail.com', image: 'http://img.com/user.jpg'}
+        const validData = {name: kentRegistrationData.name, telephone: 1122334455, email: 'kent-beck@gmail.com', address: 'new address 123', image: 'http://img.com/user.jpg'}
 
-        await userService.editConsumerData(kentRegistrationData.name, validData.name, validData.telephone, validData.email, validData.image)
+        await userService.editConsumerData(kentRegistrationData.name, validData.name, validData.telephone, validData.email, validData.address, validData.image)
 
         const consumer = await userService.findConsumerByName(kentRegistrationData.name)
 
         expect(consumer.getName()).toEqual(validData.name)
         expect(consumer.getTelephone()).toEqual(validData.telephone)
         expect(consumer.getEmail()).toEqual(validData.email)
+        expect(consumer.getAddress()).toEqual(validData.address)
         expect(consumer.getImage()).toEqual(validData.image)
     })
 
     it ('can edit consumer data with the same email', async () => {
-        const validData = {name: 'Kent', telephone: 1122334455, email: kentRegistrationData.email, image: 'http://img.com/user.jpg'}
+        const validData = {name: 'Kent', telephone: 1122334455, email: kentRegistrationData.email, address: kentRegistrationData.address, image: 'http://img.com/user.jpg'}
 
-        await userService.editConsumerData(kentRegistrationData.name, validData.name, validData.telephone, validData.email, validData.image)
+        await userService.editConsumerData(kentRegistrationData.name, validData.name, validData.telephone, validData.email, validData.address, validData.image)
 
         const consumer = await userService.findConsumerByName(validData.name)
 
         expect(consumer.getName()).toEqual(validData.name)
         expect(consumer.getTelephone()).toEqual(validData.telephone)
         expect(consumer.getEmail()).toEqual(kentRegistrationData.email)
+        expect(consumer.getAddress()).toEqual(validData.address)
         expect(consumer.getImage()).toEqual(validData.image)
     })
 
     it ('cannot edit consumer data when the new email is associated with another user', async () => {
         await userService.registerConsumer(martinRegistrationData)
 
-        const validData = {name: 'Kent', telephone: 1122334455, email: 'martin@gmail.com', image: 'http://img.com/user.jpg'}
+        const validData = {name: 'Kent', telephone: 1122334455, email: 'martin@gmail.com', address: 'another address 123', image: 'http://img.com/user.jpg'}
 
         await expect(
-            userService.editConsumerData(kentRegistrationData.name, validData.name, validData.telephone, validData.email, validData.image)
+            userService.editConsumerData(kentRegistrationData.name, validData.name, validData.telephone, validData.email, validData.address, validData.image)
         ).rejects.toThrow(`A user with email ${validData.email} is already registered`)
 
         await assertPersonalDataDidNotChange(kentRegistrationData)
     })
 
     it ('cannot edit consumer data when name is blank', async () => {
-        const invalidData = {name: ' ', telephone: 1122334455, email: 'kent-beck@gmail.com', image: 'http://img.com/user.jpg'}
+        const invalidData = {name: ' ', telephone: 1122334455, email: 'kent-beck@gmail.com', address: 'another address 123', image: 'http://img.com/user.jpg'}
 
         await expect(
-            userService.editConsumerData(kentRegistrationData.name, invalidData.name, invalidData.telephone, invalidData.email, invalidData.image)
+            userService.editConsumerData(kentRegistrationData.name, invalidData.name, invalidData.telephone, invalidData.email, invalidData.address, invalidData.image)
         ).rejects.toThrow("User's name cannot be blank")
 
         await assertPersonalDataDidNotChange(kentRegistrationData)
     })
 
     it ('cannot edit consumer data with invalid image', async () => {
-        const invalidData = {name: 'Kent', telephone: 1122334455, email: 'kent-beck@gmail.com', image: 'invalid image'}
+        const invalidData = {name: 'Kent', telephone: 1122334455, email: 'kent-beck@gmail.com', address: 'another address 123', image: 'invalid image'}
 
         await expect(
-            userService.editConsumerData(kentRegistrationData.name, invalidData.name, invalidData.telephone, invalidData.email, invalidData.image)
+            userService.editConsumerData(kentRegistrationData.name, invalidData.name, invalidData.telephone, invalidData.email, invalidData.address, invalidData.image)
         ).rejects.toThrow('Invalid user image url')
 
         await assertPersonalDataDidNotChange(kentRegistrationData)
     })
 
     it ('can edit consumer data if an image is not provided', async () => {
-        const validData = {name: 'Kent', telephone: 1122334455, email: 'kent-beck@gmail.com'}
+        const validData = {name: 'Kent', telephone: 1122334455, email: 'kent-beck@gmail.com', address: 'another address 123' }
 
-        await userService.editConsumerData(kentRegistrationData.name, validData.name, validData.telephone, validData.email)
+        await userService.editConsumerData(kentRegistrationData.name, validData.name, validData.telephone, validData.email, validData.address, )
         
         const consumer = await userService.findConsumerByName(validData.name)
 
         expect(consumer.getName()).toEqual(validData.name)
         expect(consumer.getTelephone()).toEqual(validData.telephone)
         expect(consumer.getEmail()).toEqual(validData.email)
+        expect(consumer.getAddress()).toEqual(validData.address)
         expect(consumer.getImage()).toEqual('')
     })
 
@@ -118,6 +122,7 @@ describe('Consumer data edition', () => {
         expect(consumer.getName()).toEqual(consumerData.name)
         expect(consumer.getTelephone()).toEqual(consumerData.telephone)
         expect(consumer.getEmail()).toEqual(consumerData.email)
+        expect(consumer.getAddress()).toEqual(consumerData.address)
     }
 
 })

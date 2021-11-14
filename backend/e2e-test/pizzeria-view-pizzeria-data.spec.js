@@ -9,6 +9,8 @@ const {
 
 const { createPizzeriaRegistrationData, createPizzaData } = require('../test/testObjects')
 
+jest.setTimeout(15000)
+
 describe('Pizzeria data visualization', () => {
     let browser
     let page
@@ -32,6 +34,7 @@ describe('Pizzeria data visualization', () => {
         await expectTextContent(page, '.pizz-info-dtl > ul > li:nth-child(1)', pizzeriaData.name)
         await expectTextContent(page, '.pizz-info-dtl > ul > li:nth-child(2)', pizzeriaData.telephone.toString())
         await expectTextContent(page, '.pizz-info-dtl > ul > li:nth-child(3)', pizzeriaData.email)
+        await expectTextContent(page, '.pizz-info-dtl > ul > li:nth-child(4)', pizzeriaData.address)
     })
 
     it('when a user visits the route /pizzeria/:pizzeria_name with the name of a not registered pizzeria, the page should contain an error message', async () => {
@@ -46,7 +49,7 @@ describe('Pizzeria data visualization', () => {
 
         await goto(page, `/pizzeria/${pizzeriaData.name}`)
 
-        await expectTextContent(page, '.not-found-products', 'No se ingresaron productos en el menú')
+        await expectTextContent(page, '[name="not-found-products"]', 'No se ingresaron productos en el menú')
     })
 
     it('when a user visits the route /pizzeria/:pizzeria_name with the name of a registered pizzeria, the page should contain the info of the products wich offers', async () => {

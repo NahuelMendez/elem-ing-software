@@ -29,6 +29,7 @@ describe('Consumer profile API', () => {
             username: kentRegistrationData.name,
             telephone: kentRegistrationData.telephone,
             email: kentRegistrationData.email,
+            address: kentRegistrationData.address,
             image: ''
         })
     })

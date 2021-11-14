@@ -1,12 +1,12 @@
 const {submitPizzeriaRegistration} = require("../e2e-test/helpers/helpers");
 const generatePizzeriaName = () => `P${Date.now()}`
 
-function createPizzeriaRegistrationData({name, telephone = 1112345678, email, password = 'pass123', confirmPassword}) {
+function createPizzeriaRegistrationData({name, telephone = 1112345678, email, address = 'Calle False 123, Bs. As.', password = 'pass123', confirmPassword}) {
     if (!name) name = generatePizzeriaName()
     if (!email) email = `${name.replace(" ", "_")}@d.c`
     if (!confirmPassword) confirmPassword = password
 
-    return ({ name, telephone, email, password, confirmPassword })
+    return ({ name, telephone, email, address, password, confirmPassword })
 }
 
 function createPizzeriaRegistrationAPIData(properties) { // TODO: solucionar este parche. El front necesita "confirmPassword", pero la API se rompe si lo tiene
@@ -30,6 +30,7 @@ const pizzeriasRegistrationData = {
         name: 'Banchero',
         telephone: 1112345678,
         email: 'banchero@gmail.com',
+        address: 'Av. Corrientes 1300, CABA, Bs. As.',
         password: 'password',
         rol: 'pizzeria'
     },
@@ -38,6 +39,7 @@ const pizzeriasRegistrationData = {
         name: 'Guerrin',
         telephone: 1112345678,
         email: 'guerrin@gmail.com',
+        address: 'Av. Corrientes 1368, CABA, Bs.As.',
         password: 'password',
         rol: 'pizzeria'
     }
@@ -48,6 +50,7 @@ const consumersRegistrationData = {
         name: 'Kent Beck',
         telephone: 1112345678,
         email: 'kent@gmail.com',
+        address: 'Av. Corrientes 1300, CABA, Bs. As.',
         password: 'password',
         rol: 'consumer'
     },
@@ -56,6 +59,7 @@ const consumersRegistrationData = {
         name: 'Martin Fowler',
         telephone: 1112345678,
         email: 'martin@gmail.com',
+        address: 'Av. Corrientes 1300, CABA, Bs. As.',
         password: 'password',
         rol: 'consumer'
     }

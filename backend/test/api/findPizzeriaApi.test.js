@@ -27,7 +27,8 @@ describe('Api find Pizzeria', () => {
         expect(response.body).toEqual({
             username: bancheroRegistrationData.name,
             telephone: bancheroRegistrationData.telephone,
-            email: bancheroRegistrationData.email
+            email: bancheroRegistrationData.email,
+            address: bancheroRegistrationData.address
         })
     })
 
