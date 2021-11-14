@@ -23,8 +23,9 @@ async function addProduct(requester, pizzeriaRegistrationData, productData, toke
         .set('Authorization', token)
 }
 
-async function deleteProduct(requester, pizzeriaRegistrationData, pizzaData) {
-    return await requester.delete(deleteProductPath(pizzeriaRegistrationData.name, pizzaData.name)).send()
+async function deleteProduct(requester, pizzeriaRegistrationData, pizzaData, token) {
+    return await requester.delete(deleteProductPath(pizzeriaRegistrationData.name, pizzaData.name))
+        .set('Authorization', token)
 }
 
 async function getMenu(requester, pizzeriaRegistrationData) {
