@@ -17,7 +17,7 @@ function createPizzeriaRegistrationAPIData(properties) {
 
 const createConsumerRegistrationData = createPizzeriaRegistrationData
 
-const generatePizzaName = () => `P${Date.now()}`.slice(0,10)
+const generatePizzaName = () => `P${Date.now()}`.slice(0,12)
 
 function createPizzaData({name, description = 'pizza description', price = 1, imageURL = 'http://image.com/pizza.jpg'}) {
     if (!name) name = generatePizzaName()

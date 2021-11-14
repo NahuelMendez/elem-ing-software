@@ -101,7 +101,7 @@ describe('Pizzeria product edition', () => {
         await page.type(imageURLInputSelector, '.png')
 
         await page.click(confirmButtonSelector)
-        await page.waitForNavigation('/home')
+        await page.waitForNavigation({waitUntil: 'networkidle2'})
 
         await expectTextContent(page, '.card-tittle', pizzaData.name + '!!!')
         await expectTextContent(page, '.card-text', pizzaData.description + '!!!')
@@ -119,6 +119,7 @@ describe('Pizzeria product edition', () => {
         const nameField = await page.$(nameInputSelector)
         nameField.value = ''
 
+        await clearInputField(page, nameInputSelector)
         await page.type(nameInputSelector, anotherPizzaData.name)
         await page.click(confirmButtonSelector)
         
