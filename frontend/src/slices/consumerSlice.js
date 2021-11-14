@@ -7,7 +7,8 @@ export const slice = createSlice({
       username: '',
       email: '',
       telephone: '',
-      image: ''
+      image: '',
+      address: ''
     }
   },
   reducers: {

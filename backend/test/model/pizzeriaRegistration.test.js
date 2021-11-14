@@ -19,6 +19,7 @@ describe('Pizzeria registration', () => {
         expect(registeredPizzeria.getName()).toEqual(bancheroRegistrationData.name)
         expect(registeredPizzeria.getTelephone()).toEqual(bancheroRegistrationData.telephone)
         expect(registeredPizzeria.getEmail()).toEqual(bancheroRegistrationData.email)
+        expect(registeredPizzeria.getAddress()).toEqual(bancheroRegistrationData.address)
         expect(registeredPizzeria.getRoleName()).toEqual('pizzeria')
     })
 

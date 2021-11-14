@@ -8,11 +8,11 @@ import OrdersHistory from "./OrdersHistory"
 
 const Profile = () => {
   const [ordersHistory, setOrdersHistory] = useState([]);
-  const { username, image, telephone, email } = useSelector(consumerInfoState);
+  const { username, image, telephone, email, address } = useSelector(consumerInfoState);
 
-  useEffect(() => {
-    getOrdersHistory();
-  }, []);
+  useEffect(() =>
+    getOrdersHistory()
+    , [])
 
   const getOrdersHistory = () => {
     api.getOrdersHistory()
@@ -32,6 +32,7 @@ const Profile = () => {
           username={username}
           email={email}
           telephone={telephone}
+          address={address}
           profilePicture={image} />
         <OrdersHistory ordersHistory={ordersHistory} />
       </main>
