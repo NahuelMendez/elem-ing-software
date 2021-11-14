@@ -4,10 +4,13 @@ import EditProfileButton from "../Profile/EditProfileButton"
 import Modal from "../Modal";
 import EditProfileForm from "./EditProfileForm";
 import api from "../../Api/ApiObject";
+import { useDispatch } from "react-redux";
+import { setConsumerInfo } from "../../slices/consumerSlice";
 
 const ConsumerInfo = ({ username, email, telephone, address, profilePicture }) => {
 
   const [showEditForm, setShowEditForm] = useState(false);
+  const dispatch = useDispatch();
 
   const handleSubmit = (editedProfile) => {
     return api.updateConsumer(editedProfile)
@@ -17,7 +20,8 @@ const ConsumerInfo = ({ username, email, telephone, address, profilePicture }) =
         localStorage.setItem("role", role)
         localStorage.setItem("username", username)
         localStorage.setItem("token", res.headers.authorization)
-        window.location.reload()
+        dispatch(setConsumerInfo({ username: editedProfile.name, ...editedProfile }))
+        setShowEditForm(false)
       })
   }
 
