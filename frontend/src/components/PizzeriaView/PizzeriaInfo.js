@@ -39,7 +39,7 @@ const PizzeriaInfo = ({ pizzeriaName }) => {
                                 <li>{pizzeria.username}</li>
                                 <li>{pizzeria.telephone}</li>
                                 <li>{pizzeria.email}</li>
-                                <li>asd{pizzeria.address}</li>
+                                <li>{pizzeria.address}</li>
                             </ul>
                         </div>
                     </div>
