@@ -9,7 +9,7 @@ const {
 
 const { createPizzeriaRegistrationData, createConsumerRegistrationData } = require('../test/testObjects')
 
-jest.setTimeout(15000)
+jest.setTimeout(17000)
 
 const searchInputSelector = 'form > input[name="search-input"]'
 const searchButtonSelector = 'form > img[alt="search-icon"]'
@@ -45,7 +45,7 @@ describe('Pizzeria search by partial name', () => {
         await page.type(searchInputSelector, 'something')
         await clickAndWait(page, searchButtonSelector)
 
-        expectPath(page, '/busquedas')
+        expectPath(page, '/search')
     })
 
     it('when a user on his home page clicks the search icon without filling the search input nothing happens', async () => {
