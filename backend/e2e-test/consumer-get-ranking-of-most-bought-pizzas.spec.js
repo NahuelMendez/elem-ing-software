@@ -9,7 +9,7 @@ const {
 
 const { createConsumerRegistrationData } = require('../test/testObjects')
 
-jest.setTimeout(15000)
+jest.setTimeout(25000)
 
 describe('Consumidor - get ranking of most bought pizzas', () => {
     let browser
@@ -50,13 +50,16 @@ describe('Consumidor - get ranking of most bought pizzas', () => {
         await page.waitForSelector('[name="carousel-ranking"]')
     })
 
-    it(`each card in the carousel should show the name of the product, pizzeria name and its position in the ranking`, async () => {
-        const { pizzeriaData } = await registerPizzeriaWithAmountOfProducts(page, 1)
+    it.only(`each card in the carousel should show the name and image of the product, pizzeria name and its position in the ranking`, async () => {
+        const { pizzeriaData, pizzasData } = await registerPizzeriaWithAmountOfProducts(page, 1)
+
+        console.log("Pizzeria Name setup", pizzeriaData.name)
 
         await registerAndLoginConsumer(page, createConsumerRegistrationData({}))
         await placeOrder(page, { pizzeriaName: pizzeriaData.name, unitsOfProducts: 1 })
 
         await goto(page, `/home`)
+        await page.waitForNavigation({timeout: 10000})
 
         await page.waitForSelector('[name="carousel-ranking"]')
 
@@ -66,7 +69,10 @@ describe('Consumidor - get ranking of most bought pizzas', () => {
         await page.waitForSelector('[name="product-ranking-name"]')
 
         await page.waitForSelector('[name="product-ranking-pizzeriaName"]')
+
         await expectTextContent(page, '[name="product-ranking-pizzeriaName"]', pizzeriaData.name)
+        await expectTextContent(page, '[name="product-ranking-name"]', pizzasData.name)
+        await expectTextContent(page, '.ranking-image-container', pizzasData.imageURL)
     })
 
     it(`a maximum of 5 products are shown in a ranking`, async () => {
