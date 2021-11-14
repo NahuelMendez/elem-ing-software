@@ -125,7 +125,7 @@ const createApp = () => {
         }
     }
         
-    app.delete(menuPath + '/:productName', (request, response) => {
+    app.delete(menuPath + '/:productName', authenticatePizzeria, (request, response) => {
         const {pizzeriaName, productName} = request.params
 
         menuService.removeProduct(pizzeriaName, productName)
