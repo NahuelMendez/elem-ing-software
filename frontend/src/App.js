@@ -15,13 +15,12 @@ function App() {
   return (
     <Router>
       <Route path="/home" component={MainView} />
-      <Route path="/perfil" component={Profile} />
+      <Route path="/profile" component={Profile} />
       <Route path="/login" component={Login} />
       <Route path="/menu" component={MyMenu} />
       <Route path="/register" component={RegisterView} />
-      <Route path="/busquedas" component={SearchResult} />
+      <Route path="/search" component={SearchResult} />
       <Route path="/pizzeria/:pizzeriaName" component={PizzeriaView} />
-      <Route path="/profile" component={Profile} />
       <Route path="/order" component={PizzeriaOrders} />
     </Router>
   );

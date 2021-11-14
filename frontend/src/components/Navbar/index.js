@@ -32,7 +32,7 @@ const NavBar = () => {
           results: res.data
         }))
       })
-      history.push('/busquedas')
+      history.push('/search')
     }
   }
 
