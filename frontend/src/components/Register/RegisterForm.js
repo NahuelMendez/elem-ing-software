@@ -34,6 +34,7 @@ const RegisterForm = ({ role }) => {
             name: "",
             telephone: "",
             email: "",
+            address: "",
             password: ""
           })
           setConfirmPassword("")
@@ -89,6 +90,19 @@ const RegisterForm = ({ role }) => {
               placeholder="E-mail"
               value={data.email}
               name="email"
+              aria-describedby="validationTooltipUsernamePrepend" required
+              onChange={handleChange}
+            />
+          </div>
+          <div className="flex flex-col w-full mb-2">
+            <label htmlFor="floatingInput">Direccion</label>
+            <input
+              type="text"
+              className="input w-full"
+              id="floatingInput"
+              placeholder="Direccion"
+              value={data.address}
+              name="address"
               aria-describedby="validationTooltipUsernamePrepend" required
               onChange={handleChange}
             />

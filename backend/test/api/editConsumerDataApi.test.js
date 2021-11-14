@@ -128,7 +128,7 @@ describe('Api consumer data edition', () => {
     })
 
     it('when consumer data is updated the token is also updated', async () => {
-        const newConsumerData = {...kentRegistrationData, name: 'kent', email: 'kent-beck@gmail.com',telephone: 1122334455, image: 'http://img.com/user.jpg'}
+        const newConsumerData = {...kentRegistrationData, name: 'kent', email: 'kent-beck@gmail.com',telephone: 1122334455, address: 'new address 123', image: 'http://img.com/user.jpg'}
 
         const responseEdit = await editConsumerData(requester, newConsumerData, tokenConsumer)
         
@@ -139,6 +139,7 @@ describe('Api consumer data edition', () => {
             username: newConsumerData.name,
             telephone: newConsumerData.telephone,
             email: newConsumerData.email,
+            address: newConsumerData.address,
             image: newConsumerData.image
         })
     })

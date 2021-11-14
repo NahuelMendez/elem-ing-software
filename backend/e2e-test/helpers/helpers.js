@@ -24,10 +24,11 @@ async function submitPizzeriaRegistration(page, formData) {
 
 const submitConsumerRegistration = submitPizzeriaRegistration
 
-async function fillPizzeriaRegistrationForm(page, { name, telephone, email, password, confirmPassword }) {
+async function fillPizzeriaRegistrationForm(page, { name, telephone, email, address, password, confirmPassword }) {
     await page.type('input[name="name"]', name)
     await page.type('input[name="telephone"]', `${telephone}`)
     await page.type('input[name="email"]', email)
+    await page.type('input[name="address"]', address)
     await page.type('input[name="password"]', password)
     await page.type('input[name="confirmPassword"]', confirmPassword)
 }

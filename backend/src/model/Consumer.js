@@ -6,7 +6,7 @@ class Consumer extends User {
         return 'consumer'
     }
 
-    updateData(name, telephone, email, image) {
+    updateData(name, telephone, email, address, image) {
         this.assertNameIsNotBlank(name)
         this.assertIsValidEmail(email)
         this.assertIsValidImageURL(image)
@@ -14,6 +14,7 @@ class Consumer extends User {
         this.name = name.trim()
         this.telephone = telephone
         this.email = email
+        this.address = address
         this.image = image ? image : ''
     }
 
