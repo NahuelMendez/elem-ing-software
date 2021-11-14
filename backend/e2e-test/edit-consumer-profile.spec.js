@@ -15,6 +15,7 @@ const editProfileFormSelector = '.pizzap-modal [name="edit-profile-form"]';
 const inputUsernameEditProfileSelector = editProfileFormSelector + ' input[name="name"]';
 const inputEmailEditProfileSelector = editProfileFormSelector + ' input[name="email"]';
 const inputTelephoneEditProfileSelector = editProfileFormSelector + ' input[name="telephone"]';
+const inputAddressEditProfileSelector = editProfileFormSelector + ' input[name="address"]';
 const inputImageEditProfileSelector = editProfileFormSelector + ' input[name="image"]';
 const confirmButtonSelector = editProfileFormSelector + ' button[type="submit"]';
 
@@ -49,6 +50,7 @@ describe('Consumer - profile data', () => {
         await expectInputValue(page, inputUsernameEditProfileSelector, consumerData.name);
         await expectInputValue(page, inputEmailEditProfileSelector, consumerData.email);
         await expectInputValue(page, inputTelephoneEditProfileSelector, consumerData.telephone);
+        await expectInputValue(page, inputAddressEditProfileSelector, consumerData.address);
         await expectInputValue(page, inputImageEditProfileSelector, "");
     })
 
@@ -63,6 +65,7 @@ describe('Consumer - profile data', () => {
         await page.waitForSelector('.pizzap-modal [name="modal-close-btn"]');
         await page.type(inputUsernameEditProfileSelector, "abcd");
         await page.type(inputEmailEditProfileSelector, "abcd@gmail.com");
+        await page.type(inputAddressEditProfileSelector, "adsasdasdsd");
         await page.type(inputTelephoneEditProfileSelector, "12344321");
            
         await page.click('[name="modal-close-btn"]');
@@ -70,6 +73,7 @@ describe('Consumer - profile data', () => {
         await expectTextContent(page, '[name="consumer-name"]', consumerData.name);
         await expectTextContent(page, '[name="consumer-email"]', consumerData.email);
         await expectTextContent(page, '[name="consumer-telephone"]', consumerData.telephone.toString());
+        await expectTextContent(page, '[name="consumer-address"]', consumerData.address.toString());
     })
 
     it(`When a consumer try to change his email for another that already exist should show a field with error`, async () => {
@@ -135,6 +139,8 @@ describe('Consumer - profile data', () => {
         await page.type(inputEmailEditProfileSelector, "");
         await clearInputField(page, inputTelephoneEditProfileSelector);
         await page.type(inputTelephoneEditProfileSelector, "");
+        await clearInputField(page, inputAddressEditProfileSelector);
+        await page.type(inputAddressEditProfileSelector, "");
 
         await page.click(confirmButtonSelector);
 
@@ -144,6 +150,7 @@ describe('Consumer - profile data', () => {
         expect(errorMessages).toContain('El nombre de usuario no puede estar vacio')
         expect(errorMessages).toContain('El email no puede estar vacio')
         expect(errorMessages).toContain('El telefono no puede estar vacio')
+        expect(errorMessages).toContain('La direccion no puede estar vacia')
         expect(errorMessages).toContain('La foto de perfil no puede estar vacia')
     })
 

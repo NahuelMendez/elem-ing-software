@@ -49,6 +49,7 @@ const ConsumerInfo = ({ username, email, telephone, address, profilePicture }) =
               username={username}
               email={email}
               telephone={telephone}
+              address={address}
               profilePicture={profilePicture}
               handleSubmit={handleSubmit} />
           }

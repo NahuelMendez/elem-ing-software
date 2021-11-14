@@ -189,12 +189,12 @@ const createApp = () => {
 
     app.put(consumerPath, editConsumerDataRequestValidation, authenticateConsumer, (request, response) => {
         const { user } = request
-        const {name , telephone , email, image } = request.body
+        const {name , telephone , email, address, image } = request.body
         
-        usersService.editConsumerData(user.username ,name ,telephone ,email, image)
+        usersService.editConsumerData(user.username ,name ,telephone ,email, address, image)
             .then(() => 
                 response
-                    .header("Authorization", jwt.sign({ username: name, email: email, role: user.role }, 'secret'))
+                    .header("Authorization", jwt.sign({ username: name, email: email, address, role: user.role }, 'secret'))
                     .status(OK)
                     .json('the data was successfully modified'))
             .catch( error => response.status(BAD_REQUEST).json({error: error.message}))
