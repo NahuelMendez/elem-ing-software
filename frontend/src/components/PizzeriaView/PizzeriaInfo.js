@@ -4,7 +4,7 @@ import userIMG from "../../assets/user.png"
 
 const PizzeriaInfo = ({ pizzeriaName }) => {
 
-    const [pizzeria, setPizzeria] = useState({ username: '', telephone: '', email: '' });
+    const [pizzeria, setPizzeria] = useState({ username: '', telephone: '', email: '', address: '' });
     const [error, setError] = useState("");
 
     const getPizzeria = () => {
@@ -39,6 +39,7 @@ const PizzeriaInfo = ({ pizzeriaName }) => {
                                 <li>{pizzeria.username}</li>
                                 <li>{pizzeria.telephone}</li>
                                 <li>{pizzeria.email}</li>
+                                <li>asd{pizzeria.address}</li>
                             </ul>
                         </div>
                     </div>

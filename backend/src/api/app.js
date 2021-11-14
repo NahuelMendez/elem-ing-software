@@ -103,7 +103,8 @@ const createApp = () => {
             .then( pizzeria => response.status(OK).json({
                 username: pizzeria.name,
                 telephone: pizzeria.telephone,
-                email: pizzeria.email
+                email: pizzeria.email,
+                address: pizzeria.getAddress()
             }))
             .catch( error => response.status(NOT_FOUND).json({error : error.message}) )
     })
