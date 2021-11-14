@@ -117,7 +117,7 @@ describe('Consumer - profile data', () => {
         await page.click(confirmButtonSelector);
 
         
-        await page.waitForNavigation(`/profile`);
+        await goto(page, `/profile`)
 
         await expectTextContent(page, '[name="consumer-email"]', "Email: " + consumerData.name + "anotherEmail@gmail.com");
         await page.waitForSelector('img[src="https://wallpaperaccess.com/full/2213424.jpg"]');
