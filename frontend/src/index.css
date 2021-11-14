@@ -45,6 +45,12 @@ code {
   margin-top: 25px;
 }
 
+.icon-data-img {
+  max-width: 30px;
+  max-height: 30px;
+  margin-right: 15px;
+}
+
 .card-container {
   width: 250px;
   height: 400px;

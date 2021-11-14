@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import api from "../../Api/ApiObject";
 import userIMG from "../../assets/user.png"
+import locationIcon from "../../assets/location-icon.png"
+import emailIcon from "../../assets/email-icon.png"
+import telephoneIcon from "../../assets/telephone-icon.png"
 
 const PizzeriaInfo = ({ pizzeriaName }) => {
 
@@ -37,9 +40,9 @@ const PizzeriaInfo = ({ pizzeriaName }) => {
                         <div className="pizz-info-dtl">
                             <ul>
                                 <li>{pizzeria.username}</li>
-                                <li>{pizzeria.telephone}</li>
-                                <li>{pizzeria.email}</li>
-                                <li>{pizzeria.address}</li>
+                                <li className="d-flex mb-3"><img className={"icon-data-img"} src={telephoneIcon}/>{pizzeria.telephone}</li>
+                                <li className="d-flex mb-3"><img className={"icon-data-img"} src={emailIcon}/>{pizzeria.email}</li>
+                                <li className="d-flex mb-3"><img className={"icon-data-img"} src={locationIcon}/>{pizzeria.address}</li>
                             </ul>
                         </div>
                     </div>
