@@ -49,7 +49,7 @@ const Notebook = () => {
   }
 
   return (
-    <div className="card border-gray-500 border w-1/5 p-4 flex flex-col justify-between notebook-container">
+    <div className="border-gray-500 border w-5/6 ml-4 mt-4 p-4 flex flex-col justify-between notebook-container">
       <div>
         {
           productsToShow.map((i, index) => (
