@@ -14,12 +14,13 @@ const FormAlert = ({ text }) =>
     {text ? <div name="form-alert" className="rounded p-1 bg-red-500 text-white" role="alert">{text}</div> : null}
   </>
 
-const EditProfileForm = ({ username, email, telephone, profilePicture, handleSubmit }) => {
+const EditProfileForm = ({ username, email, telephone, address, profilePicture, handleSubmit }) => {
 
   const schema = yup.object().shape({
     telephone: yup.string().trim().required("El telefono no puede estar vacio"),
     name: yup.string().trim().required("El nombre de usuario no puede estar vacio"),
     email: yup.string().email("Debe ingresar un email válido").trim().required("El email no puede estar vacio"),
+    address: yup.string().required('La direccion no puede estar vacia'),
     image: yup.string().url("Debe ingresar una url válida").trim().required("La foto de perfil no puede estar vacia"),
   });
 
@@ -27,7 +28,7 @@ const EditProfileForm = ({ username, email, telephone, profilePicture, handleSub
 
   return (
     <Formik
-      initialValues={{ name: username, email, telephone, image: profilePicture }}
+      initialValues={{ name: username, email, telephone, address, image: profilePicture }}
       validationSchema={schema}
       onSubmit={
         async (values) => {
@@ -41,6 +42,7 @@ const EditProfileForm = ({ username, email, telephone, profilePicture, handleSub
         <FormFieldWithError name="name" label="Nombre de Usuario" />
         <FormFieldWithError name="email" label="Email" />
         <FormFieldWithError name="telephone" label="Telefono" />
+        <FormFieldWithError name="address" label="Direccion" />
         <FormFieldWithError name="image" label="Foto de perfil" />
 
         <FormAlert text={submitError} />

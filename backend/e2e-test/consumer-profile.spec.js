@@ -54,6 +54,7 @@ describe('Consumer - profile data', () => {
         await expectTextContent(page, '[name="consumer-name"]', consumerData.name);
         await expectTextContent(page, '[name="consumer-email"]', consumerData.email);
         await expectTextContent(page, '[name="consumer-telephone"]', consumerData.telephone.toString());
+        await expectTextContent(page, '[name="consumer-address"]', consumerData.address.toString());
     })
 
 })

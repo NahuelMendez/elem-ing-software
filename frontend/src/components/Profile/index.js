@@ -42,6 +42,7 @@ const Profile = () => {
           username={consumer.username}
           email={consumer.email}
           telephone={consumer.telephone}
+          address={consumer.address}
           profilePicture={consumer.image} />
         <OrdersHistory ordersHistory={ordersHistory}/>
       </main>

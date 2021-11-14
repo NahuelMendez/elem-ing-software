@@ -5,7 +5,7 @@ import Modal from "../Modal";
 import EditProfileForm from "./EditProfileForm";
 import api from "../../Api/ApiObject";
 
-const ConsumerInfo = ({ username, email, telephone, profilePicture }) => {
+const ConsumerInfo = ({ username, email, telephone, address, profilePicture }) => {
 
   const [showEditForm, setShowEditForm] = useState(false);
 
@@ -36,6 +36,7 @@ const ConsumerInfo = ({ username, email, telephone, profilePicture }) => {
               <li className="mb-3" name="consumer-name"><b>Nombre:</b> {username}</li>
               <li className="mb-3" name="consumer-telephone"><b>Telefono:</b> {telephone}</li>
               <li className="mb-3" name="consumer-email"><b>Email:</b> {email}</li>
+              <li className="mb-3" name="consumer-address"><b>Direccion:</b> {address}</li>
             </ul>
           </div>
         </div>
@@ -48,6 +49,7 @@ const ConsumerInfo = ({ username, email, telephone, profilePicture }) => {
               username={username}
               email={email}
               telephone={telephone}
+              address={address}
               profilePicture={profilePicture}
               handleSubmit={handleSubmit} />
           }
