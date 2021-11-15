@@ -1,7 +1,15 @@
+import { useHistory } from "react-router"
+
 const RankingCard = ({ name, pizzeriaName, rankingNumber, pizzaImage }) => {
 
+  const history = useHistory()
+
+  const redirectToPizzeria = () => {
+    history.push(`/pizzeria/${pizzeriaName}`)
+  }
+
   return (
-    <div className="card mt-0 mr-0 w-2/3 h-64 product-container ranking-card">
+    <div onClick={redirectToPizzeria} className="card mt-0 mr-0 w-2/3 h-64 product-container ranking-card">
       <div className="flex justify-end">
         <div className="ranking-image-container">
           <img className="ranking-image" src={pizzaImage}></img>

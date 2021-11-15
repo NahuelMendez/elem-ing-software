@@ -5,7 +5,8 @@ const {
     expectTextContent,
     registerAndLoginConsumer,
     placeOrder,
-    registerAndLoginPizzeria
+    registerAndLoginPizzeria,
+    expectPath
 } = require('./helpers/helpers')
 
 const { createConsumerRegistrationData } = require('../test/testObjects')
@@ -132,6 +133,26 @@ describe('Consumidor - get ranking of most bought pizzas', () => {
         ]
 
         await expectBestsellers(page, expectedBestsellersEntries)
+    })
+
+    it(`when an user clicks the ranking card product should redirect to the pizzeria order page`, async () => {
+        const { pizzeriaData } = await registerPizzeriaWithAmountOfProducts(page, 1)
+
+        await registerAndLoginConsumer(page, createConsumerRegistrationData({}))
+        await placeOrder(page, { pizzeriaName: pizzeriaData.name, unitsOfProducts: 1 })
+
+        await goto(page, `/home`)
+
+        await page.waitForSelector('[name="carousel-ranking"]')
+
+        await page.waitForSelector('[name="ranking-number"]')
+        await expectTextContent(page, '[name="ranking-number"]', "1")
+
+        await page.waitForSelector('.ranking-card')
+        await page.click('.ranking-card')
+
+        expectPath(page, `/pizzeria/${pizzeriaData.name}`)
+
     })
 })
 
