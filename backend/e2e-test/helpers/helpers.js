@@ -179,7 +179,7 @@ async function placeOrder(page, { pizzeriaName, unitsOfProducts }) {
 }
 
 const searchInputSelector = 'form > input[name="search-input"]'
-const searchButtonSelector = 'form > img[alt="search-icon"]'
+const searchButtonSelector = 'button[name="search-action"]'
 
 
 async function searchPizzerias(page, pizzeriaPartialName) {

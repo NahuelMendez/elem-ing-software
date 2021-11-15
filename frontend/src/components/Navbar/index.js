@@ -80,7 +80,9 @@ const NavBar = () => {
       {role !== 'pizzeria' &&
         <form onSubmit={handleSearch} className="flex justify-center w-5/6 items-center">
           <input name="search-input" onChange={handleChangeSearch} className="input w-2/5" placeholder="Buscar" />
-          <img onClick={handleSearch} src={searchIcon} className="h-6 w-auto cursor-pointer" alt="search-icon" name="search-action" />
+          <button src="btn" onClick={handleSearch} name="search-action" >
+            <img className="h-6 w-auto cursor-pointer" src={searchIcon} alt="search-icon"></img>
+          </button>
         </form>
       }
       <div onClick={handleShowProfileOptions} className="cursor-pointer rounded-full mr-2 h-20 w-20 my-2 flex items-center justify-center border border-gray-500">
