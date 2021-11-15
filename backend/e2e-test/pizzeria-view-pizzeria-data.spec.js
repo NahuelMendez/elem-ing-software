@@ -9,7 +9,7 @@ const {
 
 const { createPizzeriaRegistrationData, createPizzaData } = require('../test/testObjects')
 
-jest.setTimeout(15000)
+jest.setTimeout(30000)
 
 describe('Pizzeria data visualization', () => {
     let browser

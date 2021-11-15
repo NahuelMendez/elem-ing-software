@@ -31,7 +31,7 @@ describe('Pizzeria menu', () => {
         expect(productsData).toHaveLength(0)
     })
 
-    it.only(`when an authenticated pizzeria add a product to its menu, it appears on it's home page`, async () => {
+    it(`when an authenticated pizzeria add a product to its menu, it appears on it's home page`, async () => {
         const pizzeriaData = createPizzeriaRegistrationData({})
         const pizzaData = createPizzaData({})
         await registerAsPizzeriaAndGoToMenu(page, pizzeriaData)

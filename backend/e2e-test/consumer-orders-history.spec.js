@@ -11,7 +11,7 @@ const { createConsumerRegistrationData } = require('../test/testObjects')
 
 const ordersHistorySelector = '[name="orders-history"]'
 
-jest.setTimeout(15000)
+jest.setTimeout(30000)
 
 describe('Consumer - orders history', () => {
     let browser
