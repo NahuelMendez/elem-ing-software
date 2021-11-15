@@ -47,7 +47,7 @@ const SearchResult = () => {
         <NavBar />
       </div>
       <div className="w-5/6" >
-        {results.length === 0 && <p className="text-lg mt-8 text-gray-500">No se encontraron pizzerías que coincidan.</p>}
+        {results.length === 0 && <p className="text-lg text-center mt-8 text-gray-500">No se encontraron pizzerías que coincidan.</p>}
         {results.length > 0 && <OrderByDropdown handleChange={handleOrderByChange}/>}
         <div className="flex flex-wrap justify-center">
         {results && results.map((pizzeria, index) => (
