@@ -27,7 +27,7 @@ const ConsumerInfo = ({ username, email, telephone, address, profilePicture }) =
 
   return (
     <>
-      <div className="flex flex-column items-center w-1/4 border border-color-gray-500 rounded-md mt-8 h-screen">
+      <div className="flex flex-column items-center w-1/4 border border-color-gray-500 rounded-md mt-8 h-screen ml-8">
         <div className="w-full flex justify-end pt-2 pr-2">
           <EditProfileButton onClick={() => setShowEditForm(true)} />
         </div>
