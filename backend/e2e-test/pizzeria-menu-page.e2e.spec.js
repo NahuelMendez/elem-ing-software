@@ -31,7 +31,7 @@ describe('Pizzeria menu', () => {
         expect(productsData).toHaveLength(0)
     })
 
-    it(`when an authenticated pizzeria add a product to its menu, it appears on it's home page`, async () => {
+    it.only(`when an authenticated pizzeria add a product to its menu, it appears on it's home page`, async () => {
         const pizzeriaData = createPizzeriaRegistrationData({})
         const pizzaData = createPizzaData({})
         await registerAsPizzeriaAndGoToMenu(page, pizzeriaData)
@@ -39,6 +39,7 @@ describe('Pizzeria menu', () => {
         await addProduct(page, pizzaData)
 
         await goto(page, '/home')
+        await page.waitForSelector('.card-container')
 
         const productsData = await page.$$eval('.card-container', elements => elements.map(element => element.innerHTML))
 

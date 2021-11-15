@@ -55,10 +55,6 @@ code {
   transform: scale(1.05);
 }
 
-.card:active{
-  transform: scale(0.95);
-}
-
 .delete-product-btn {
   align-self: flex-end;
   width: 65px;
