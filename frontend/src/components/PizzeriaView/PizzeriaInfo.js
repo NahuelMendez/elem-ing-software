@@ -32,7 +32,7 @@ const PizzeriaInfo = ({ pizzeriaName }) => {
         <div className="piz-info-body-container border border-gray-500 pl-4">
           <div className="piz-info-body">
             <div className="flex flex-column items-center my-2">
-              <div className="cursor-pointer rounded-full h-20 w-20 flex items-center justify-center border border-gray-500">
+              <div className="pizz-info-image cursor-pointer rounded-full h-20 w-20 flex items-center justify-center border border-gray-500">
                 <img className="rounded-full h-20 w-20 border border-black-500" src={userIMG}></img>
               </div>
               <p className="p-0 m-0 text-center font-bold text-lg">{pizzeria.username}</p>
