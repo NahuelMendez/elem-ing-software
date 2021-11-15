@@ -11,7 +11,7 @@ const {
 } = require('./helpers/helpers')
 
 const { createPizzeriaRegistrationData, createPizzaData, createConsumerRegistrationData } = require('../test/testObjects')
-jest.setTimeout(15000)
+jest.setTimeout(30000)
 describe('Pizzeria menu', () => {
     let browser
     let page
