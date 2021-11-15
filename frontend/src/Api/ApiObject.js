@@ -32,7 +32,7 @@ const api = {
   },
 
   deleteProduct: (pizzeriaName, productName) => {
-    return axios.delete(`${baseURL}/api/pizzeria/${pizzeriaName}/menu/${productName}`);
+    return axios.delete(`${baseURL}/api/pizzeria/${pizzeriaName}/menu/${productName}`, createHeadesrWithToken());
   },
 
   updateProduct: (nameOfProductToUpdate, productData) => {

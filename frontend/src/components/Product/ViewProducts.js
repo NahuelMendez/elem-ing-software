@@ -3,7 +3,7 @@ import Product from "./Product";
 const ViewProducts = ({ products, deleteProduct, editMode }) => {
 
   return (
-    <div className="w-2/3 flex flex-wrap">
+    <div className="w-full flex flex-wrap">
       {products.map((product, index) =>
         <Product
           key={index}

@@ -4,7 +4,7 @@ import userIMG from "../../assets/user.png"
 
 const PizzeriaInfo = ({ pizzeriaName }) => {
 
-  const [pizzeria, setPizzeria] = useState({ username: '', telephone: '', email: '' });
+  const [pizzeria, setPizzeria] = useState({ username: '', telephone: '', email: '', address: '' });
   const [error, setError] = useState("");
 
   const getPizzeria = () => {
@@ -28,22 +28,21 @@ const PizzeriaInfo = ({ pizzeriaName }) => {
     );
   } else {
     return (
-      <div className="w-3/4 flex justify-start mt-8">
-        <div className="w-4/5">
-          <div className="piz-info-body-container">
-            <div className="piz-info-body">
-              <div>
-                <div className="flex justify-center px-4 pt-4 cmr-info-image">
-                  <img className="rounded-full h-20 w-20 border border-black-500" src={userIMG} />
-                </div>
-                <p className="text-center font-bold text-lg">{pizzeria.username}</p>
+      <div className="piz-info-container mt-8">
+        <div className="piz-info-body-container border border-gray-500 pl-4">
+          <div className="piz-info-body">
+            <div className="flex flex-column items-center my-2">
+              <div className="cursor-pointer rounded-full h-20 w-20 flex items-center justify-center border border-gray-500">
+                <img className="rounded-full h-20 w-20 border border-black-500" src={userIMG}></img>
               </div>
-              <div className="pizz-info-dtl flex flex-column text-lg justify-center">
-                <ul>
-                  <li>{pizzeria.telephone}</li>
-                  <li>{pizzeria.email}</li>
-                </ul>
-              </div>
+              <p className="p-0 m-0 text-center font-bold text-lg">{pizzeria.username}</p>
+            </div>
+            <div className="pizz-info-dtl">
+              <ul>
+                <li>{pizzeria.telephone}</li>
+                <li>{pizzeria.email}</li>
+                <li>{pizzeria.address}</li>
+              </ul>
             </div>
           </div>
         </div>

@@ -19,6 +19,7 @@ describe('Consumer registration', () => {
         expect(registeredConsumer.getName()).toEqual(kentRegistrationData.name)
         expect(registeredConsumer.getTelephone()).toEqual(kentRegistrationData.telephone)
         expect(registeredConsumer.getEmail()).toEqual(kentRegistrationData.email)
+        expect(registeredConsumer.getAddress()).toEqual(kentRegistrationData.address)
         expect(registeredConsumer.getRoleName()).toEqual('consumer')
     })
 

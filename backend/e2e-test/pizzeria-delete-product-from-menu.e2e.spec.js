@@ -87,6 +87,7 @@ describe('Pizzeria - delete product from menu', () => {
         await page.waitForSelector(deleteProductModal)
         await page.click(modalAcceptButton)
 
+        await goto(page, '/home')
         const productCards = await page.$$eval('.card-container', element => element)
         expect(productCards).toHaveLength(0)
     })
