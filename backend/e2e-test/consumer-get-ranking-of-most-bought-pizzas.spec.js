@@ -4,7 +4,8 @@ const {
     registerPizzeriaWithAmountOfProducts,
     expectTextContent,
     registerAndLoginConsumer,
-    placeOrder
+    placeOrder,
+    registerAndLoginPizzeria
 } = require('./helpers/helpers')
 
 const { createConsumerRegistrationData } = require('../test/testObjects')
@@ -50,8 +51,8 @@ describe('Consumidor - get ranking of most bought pizzas', () => {
         await page.waitForSelector('[name="carousel-ranking"]')
     })
 
-    it(`each card in the carousel should show the name of the product, pizzeria name and its position in the ranking`, async () => {
-        const { pizzeriaData } = await registerPizzeriaWithAmountOfProducts(page, 1)
+    it(`each card in the carousel should show the name and image of the product, pizzeria name and its position in the ranking`, async () => {
+        const { pizzeriaData, pizzasData } = await registerPizzeriaWithAmountOfProducts(page, 1)
 
         await registerAndLoginConsumer(page, createConsumerRegistrationData({}))
         await placeOrder(page, { pizzeriaName: pizzeriaData.name, unitsOfProducts: 1 })
@@ -64,9 +65,21 @@ describe('Consumidor - get ranking of most bought pizzas', () => {
         await expectTextContent(page, '[name="ranking-number"]', "1")
 
         await page.waitForSelector('[name="product-ranking-name"]')
-
         await page.waitForSelector('[name="product-ranking-pizzeriaName"]')
+        await page.waitForSelector('[name="product-ranking-name"]')
+        await page.waitForSelector('.ranking-image')
+
         await expectTextContent(page, '[name="product-ranking-pizzeriaName"]', pizzeriaData.name)
+
+        const cardImage = await page.$$eval(
+            'img.ranking-image',
+            elements => elements.map(
+                element => element.src)[0])          
+
+        expect(cardImage).toEqual(pizzasData[0].imageURL)
+
+        await expectTextContent(page, '[name="product-ranking-name"]', pizzasData[0].name)
+
     })
 
     it(`a maximum of 5 products are shown in a ranking`, async () => {
