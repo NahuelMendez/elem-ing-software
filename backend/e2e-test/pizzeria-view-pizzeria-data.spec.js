@@ -31,10 +31,9 @@ describe('Pizzeria data visualization', () => {
         await goto(page, `/pizzeria/${pizzeriaData.name}`)
 
         await page.waitForSelector('.pizz-info-image > img')
-        await expectTextContent(page, '.pizz-info-dtl > ul > li:nth-child(1)', pizzeriaData.name)
-        await expectTextContent(page, '.pizz-info-dtl > ul > li:nth-child(2)', pizzeriaData.telephone.toString())
-        await expectTextContent(page, '.pizz-info-dtl > ul > li:nth-child(3)', pizzeriaData.email)
-        await expectTextContent(page, '.pizz-info-dtl > ul > li:nth-child(4)', pizzeriaData.address)
+        await expectTextContent(page, '.pizz-info-dtl > ul > li:nth-child(1)', pizzeriaData.telephone.toString())
+        await expectTextContent(page, '.pizz-info-dtl > ul > li:nth-child(2)', pizzeriaData.email)
+        await expectTextContent(page, '.pizz-info-dtl > ul > li:nth-child(3)', pizzeriaData.address)
     })
 
     it('when a user visits the route /pizzeria/:pizzeria_name with the name of a not registered pizzeria, the page should contain an error message', async () => {

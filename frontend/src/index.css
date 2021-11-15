@@ -69,10 +69,6 @@ code {
   transform: scale(1.05);
 }
 
-.card:active{
-  transform: scale(0.95);
-}
-
 .delete-product-btn {
   align-self: flex-end;
   width: 65px;
@@ -80,26 +76,18 @@ code {
 }
 
 .piz-info-container {
-  align-items: center;
   display: grid;
-  grid-template-columns: 20% 60% 20%;
+  grid-template-columns: 15% 65% 20%;
 }
 
 .piz-info-body-container {
   display: flex;
   grid-column: 2/3;
-  border: solid 1px grey;
 }
 
 .piz-info-body {
   display: flex;
   align-self: center;
-}
-
-.pizz-info-dtl {
-  margin-top: 15px;
-  font-size: larger;
-  text-align: justify;
 }
 
 .error-piz-nf {
@@ -157,4 +145,9 @@ table {
   border-radius: 10px;
   border-style: hidden; 
   box-shadow: 0 0 0 1px rgb(180, 179, 179);
+}
+
+.container-menu-notebook{
+  display: grid;
+  grid-template-columns: 20% 60% 20%;
 }

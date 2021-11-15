@@ -193,4 +193,18 @@ describe("Api edit a product of pizzeria's menu", () => {
             error: '"product price" is required'
         })
     })
+
+    it('cannot add a product if a name has more than thirteen characters', async () => {
+        const token = await loginToken(requester, bancheroRegistrationData)
+        await addProduct(requester, bancheroRegistrationData, mozzarella, token)
+
+        const badPizza = { ...mozzarella, name: "12345678901234" }
+
+        const response = await updatedProduct(requester, bancheroRegistrationData, mozzarella, badPizza, token)
+
+        expect(response.status).toBe(BAD_REQUEST)
+        expect(response.body).toEqual({
+            error: '"product name" length must be less than or equal to 13 characters long'
+        })
+    })
 })
