@@ -10,7 +10,11 @@ const {
 
 const { createConsumerRegistrationData } = require('../test/testObjects')
 
+<<<<<<< HEAD
 jest.setTimeout(25000)
+=======
+jest.setTimeout(30000)
+>>>>>>> a79d14536a13bb16158cd371a1959537f17d00ba
 
 describe('Consumidor - get ranking of most bought pizzas', () => {
     let browser

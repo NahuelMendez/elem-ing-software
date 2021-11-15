@@ -88,11 +88,16 @@ async function registerAsPizzeriaAndGoToMenu(page, pizzeriaData) {
 
 async function registerPizzeriaWithAmountOfProducts(page, amountOfProducts) {
     const pizzeriaData = createPizzeriaRegistrationData({})
-    const pizzasData = Array.from(Array(amountOfProducts)).map(() => createPizzaData({}))
+    const pizzasData = Array.from(Array(amountOfProducts)).map(
+        () => {
+        amountOfProducts--
+        return createPizzaData({name: 'Pizza' + amountOfProducts})
+    })
 
     await registerAsPizzeriaAndGoToMenu(page, pizzeriaData)
 
     for (let pizzaData of pizzasData) {
+        await clearInputField(page, ' input[name="name"]')
         await addProduct(page, pizzaData)
     }
 

@@ -24,7 +24,7 @@ const loginSchema = Joi.object({
 
 const productSchema =
     Joi.object({
-        name: Joi.string().required().label('product name'),
+        name: Joi.string().required().max(13).label('product name'),
         description: Joi.string().label('product description'),
         price: Joi.number().required().label('product price'),
         imageURL: Joi.string().required().label('product imageURL')
