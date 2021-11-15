@@ -49,7 +49,7 @@ const Notebook = () => {
   }
 
   return (
-    <div className="card border-gray-500 border w-1/5 p-4 flex flex-col justify-between notebook-container">
+    <div className="border-gray-500 border w-5/6 ml-4 mt-4 p-4 flex flex-col justify-between notebook-container">
       <div>
         {
           productsToShow.map((i, index) => (
@@ -61,7 +61,7 @@ const Notebook = () => {
               <div>
                 <p className="text-xs m-0 unit-product text-gray-500">x{i.cant}</p>
               </div>
-              <img onClick={() => handleDeleteProduct(i)} src={deleteIcon} className="delete-product h-6 w-auto cursor-pointer" alt="delete-icon" />
+              <img name="delete-product" onClick={() => handleDeleteProduct(i)} src={deleteIcon} className="delete-product h-6 w-auto cursor-pointer" alt="delete-icon" />
             </div>
           ))
         }

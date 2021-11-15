@@ -34,11 +34,10 @@ describe("Consumer order", () => {
     })
 
     it("a registered consumer can place an order", async () => {
-        const lineItems = [{ productName: pepperoniPizza.getName(), quantity: 1 }]
         const orderData = {
             consumerName: registeredConsumer.getName(),
             pizzeriaName: registeredPizzeria.getName(),
-            lineItems
+            lineItems: [{ product: pepperoniPizza, quantity: 1 }]
         }
 
         await orderService.placeOrder(orderData)
@@ -47,7 +46,7 @@ describe("Consumer order", () => {
         expect(foundOrders).toHaveLength(1)
 
         expectToContainOrderWith(
-            { consumer: registeredConsumer,  pizzeria: registeredPizzeria, lineItems },
+            { consumer: registeredConsumer,  pizzeria: registeredPizzeria, lineItems: orderData.lineItems },
             foundOrders
         )
     })
@@ -58,7 +57,7 @@ describe("Consumer order", () => {
         const orderData = {
             consumerName: notRegisteredConsumerName,
             pizzeriaName: registeredPizzeria.getName(),
-            lineItems: [{ productName: pepperoniPizza.getName(), quantity: 1 }]
+            lineItems: [{ product: pepperoniPizza, quantity: 1 }]
         }
 
         await expect(
@@ -74,7 +73,7 @@ describe("Consumer order", () => {
         const orderData = {
             consumerName: registeredConsumer.getName(),
             pizzeriaName: notRegisteredPizzeriaName,
-            lineItems: [{ productName: pepperoniPizza.getName(), quantity: 1 }]
+            lineItems: [{ product: pepperoniPizza, quantity: 1 }]
         }
 
         await expect(
@@ -103,7 +102,7 @@ describe("Consumer order", () => {
         const orderData = {
             consumerName: registeredConsumer.getName(),
             pizzeriaName: registeredPizzeria.getName(),
-            lineItems: [{ productName: pepperoniPizza.getName(), quantity: 0 }]
+            lineItems: [{ product: pepperoniPizza, quantity: 0 }]
         }
 
         await expect(

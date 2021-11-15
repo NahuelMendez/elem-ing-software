@@ -24,19 +24,19 @@ class UserService {
         return ! consumer.hasEmail(email)
     }
 
-    async registerPizzeria({name, telephone, email, password}) {
+    async registerPizzeria({name, telephone, email, address, password}) {
         await this.assertThereIsNoPizzeriaNamed(name)
         await this.assertThereIsNotUserWithEmail(email)
 
-        const newPizzeria = new Pizzeria({name, telephone, email, password})
+        const newPizzeria = new Pizzeria({name, telephone, email, address, password})
         return await this.usersRepository.save(newPizzeria)
     }
 
-    async registerConsumer({name, telephone, email, password}) {
+    async registerConsumer({name, telephone, email, address, password}) {
         await this.assertThereIsNoConsumerNamed(name)
         await this.assertThereIsNotUserWithEmail(email)
 
-        const newConsumer = new Consumer({name, telephone, email, password})
+        const newConsumer = new Consumer({name, telephone, email, address, password})
         return await this.usersRepository.save(newConsumer)
     }
 
@@ -65,10 +65,10 @@ class UserService {
         return await this.usersRepository.findPizzeriasByPartialNameSortedByMostCheap(name)
     }
 
-    async editConsumerData(actualName, name, telephone, email, image) {
+    async editConsumerData(actualName, name, telephone, email, address, image) {
         const consumer = await this.findConsumerByName(actualName)
         await this.assertThereIsNotUserWithEmailWithoutCountingTheConsumer(consumer, email)
-        consumer.updateData(name, telephone, email, image)
+        consumer.updateData(name, telephone, email, address, image)
 
         await this.usersRepository.update(consumer)
     }

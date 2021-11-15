@@ -8,7 +8,8 @@ const {
 
 const { createPizzeriaRegistrationData, createPizzaData } = require('../test/testObjects')
 
-jest.setTimeout(10000)
+jest.setTimeout(30000)
+
 describe('Consumidor - delete product from notebook', () => {
     let browser
     let page

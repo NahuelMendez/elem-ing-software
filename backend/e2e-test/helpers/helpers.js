@@ -24,10 +24,11 @@ async function submitPizzeriaRegistration(page, formData) {
 
 const submitConsumerRegistration = submitPizzeriaRegistration
 
-async function fillPizzeriaRegistrationForm(page, { name, telephone, email, password, confirmPassword }) {
+async function fillPizzeriaRegistrationForm(page, { name, telephone, email, address, password, confirmPassword }) {
     await page.type('input[name="name"]', name)
     await page.type('input[name="telephone"]', `${telephone}`)
     await page.type('input[name="email"]', email)
+    await page.type('input[name="address"]', address)
     await page.type('input[name="password"]', password)
     await page.type('input[name="confirmPassword"]', confirmPassword)
 }
@@ -87,11 +88,16 @@ async function registerAsPizzeriaAndGoToMenu(page, pizzeriaData) {
 
 async function registerPizzeriaWithAmountOfProducts(page, amountOfProducts) {
     const pizzeriaData = createPizzeriaRegistrationData({})
-    const pizzasData = Array.from(Array(amountOfProducts)).map(() => createPizzaData({}))
+    const pizzasData = Array.from(Array(amountOfProducts)).map(
+        () => {
+        amountOfProducts--
+        return createPizzaData({name: 'Pizza' + amountOfProducts})
+    })
 
     await registerAsPizzeriaAndGoToMenu(page, pizzeriaData)
 
     for (let pizzaData of pizzasData) {
+        await clearInputField(page, ' input[name="name"]')
         await addProduct(page, pizzaData)
     }
 
@@ -173,7 +179,7 @@ async function placeOrder(page, { pizzeriaName, unitsOfProducts }) {
 }
 
 const searchInputSelector = 'form > input[name="search-input"]'
-const searchButtonSelector = 'form > img[alt="search-icon"]'
+const searchButtonSelector = 'button[name="search-action"]'
 
 
 async function searchPizzerias(page, pizzeriaPartialName) {

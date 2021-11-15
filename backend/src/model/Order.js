@@ -30,8 +30,12 @@ class Order {
         return this.pizzeria.isNamed(pizzeriaName)
     }
 
-    hasLineItems(lineItems) {
-        return this.lineItems == lineItems
+    hasLineItems(expectedLineItems) {
+        return expectedLineItems.every(expectedLineItem =>
+            this.lineItems.some(({ product, quantity }) => 
+                product.equals(expectedLineItem.product) &&
+                quantity === expectedLineItem.quantity)
+        )
     }
 
     getPizzeria() {

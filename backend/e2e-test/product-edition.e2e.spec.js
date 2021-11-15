@@ -9,9 +9,9 @@ const {
 
 const { createPizzeriaRegistrationData, createPizzaData } = require('../test/testObjects')
 
-jest.setTimeout(10000)
+jest.setTimeout(15000)
 
-const editProductButtonSelector = '.card-container > div > .edit-product-btn > img'
+const editProductButtonSelector = '.card-container .edit-product-btn img'
 const editProductModalFormSelector = '.pizzap-modal [name="edit-product-form"]'
 const nameInputSelector = editProductModalFormSelector + ' input[name="name"]'
 const descriptionInputSelector = editProductModalFormSelector + ' input[name="description"]'
@@ -101,7 +101,7 @@ describe('Pizzeria product edition', () => {
         await page.type(imageURLInputSelector, '.png')
 
         await page.click(confirmButtonSelector)
-        await page.waitForNavigation('/home')
+        await page.waitForNavigation({waitUntil: 'networkidle2'})
 
         await expectTextContent(page, '.card-tittle', pizzaData.name + '!!!')
         await expectTextContent(page, '.card-text', pizzaData.description + '!!!')
@@ -119,6 +119,7 @@ describe('Pizzeria product edition', () => {
         const nameField = await page.$(nameInputSelector)
         nameField.value = ''
 
+        await clearInputField(page, nameInputSelector)
         await page.type(nameInputSelector, anotherPizzaData.name)
         await page.click(confirmButtonSelector)
         

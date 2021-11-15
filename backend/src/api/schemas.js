@@ -4,6 +4,7 @@ const userSchema = Joi.object({
     name: Joi.string().required(),
     telephone: Joi.required(),
     email: Joi.string().required(),
+    address: Joi.string().required(),
     password: Joi.string().required(),
     rol: Joi.valid('consumer', 'pizzeria').required()
 })
@@ -12,6 +13,7 @@ const editConsumerDataSchema = Joi.object({
     name: Joi.string().required(),
     telephone: Joi.required(),
     email: Joi.string().required(),
+    address: Joi.string().required(),
     image: Joi.string()
 })
 
@@ -22,7 +24,7 @@ const loginSchema = Joi.object({
 
 const productSchema =
     Joi.object({
-        name: Joi.string().required().label('product name'),
+        name: Joi.string().required().max(13).label('product name'),
         description: Joi.string().label('product description'),
         price: Joi.number().required().label('product price'),
         imageURL: Joi.string().required().label('product imageURL')

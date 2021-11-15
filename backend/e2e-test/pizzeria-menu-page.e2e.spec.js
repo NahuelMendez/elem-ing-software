@@ -39,6 +39,7 @@ describe('Pizzeria menu', () => {
         await addProduct(page, pizzaData)
 
         await goto(page, '/home')
+        await page.waitForSelector('.card-container')
 
         const productsData = await page.$$eval('.card-container', elements => elements.map(element => element.innerHTML))
 

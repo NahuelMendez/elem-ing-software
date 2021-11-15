@@ -4,10 +4,13 @@ import EditProfileButton from "../Profile/EditProfileButton"
 import Modal from "../Modal";
 import EditProfileForm from "./EditProfileForm";
 import api from "../../Api/ApiObject";
+import { useDispatch } from "react-redux";
+import { setConsumerInfo } from "../../slices/consumerSlice";
 
-const ConsumerInfo = ({ username, email, telephone, profilePicture }) => {
+const ConsumerInfo = ({ username, email, telephone, address, profilePicture }) => {
 
   const [showEditForm, setShowEditForm] = useState(false);
+  const dispatch = useDispatch();
 
   const handleSubmit = (editedProfile) => {
     return api.updateConsumer(editedProfile)
@@ -17,26 +20,28 @@ const ConsumerInfo = ({ username, email, telephone, profilePicture }) => {
         localStorage.setItem("role", role)
         localStorage.setItem("username", username)
         localStorage.setItem("token", res.headers.authorization)
-        window.location.reload()
+        dispatch(setConsumerInfo({ username: editedProfile.name, ...editedProfile }))
+        setShowEditForm(false)
       })
   }
 
   return (
     <>
-      <div className="cmr-info-container">
-        <div className="cmr-info-body-container">
-          <div className="cmr-info-body">
-            <div className="flex justify-center p-4 cmr-info-image">
-              <img className="rounded-full h-20 w-20 border border-black-500" src={profilePicture ? profilePicture : userIMG} />
-            </div>
-            <div className="cmr-info-dtl">
-              <ul>
-                <li className="mb-3" name="consumer-name"><b>Nombre:</b> {username}</li>
-                <li className="mb-3" name="consumer-telephone"><b>Telefono:</b> {telephone}</li>
-                <li className="mb-3" name="consumer-email"><b>Email:</b> {email}</li>
-              </ul>
-            </div>
-            <EditProfileButton onClick={() => setShowEditForm(true)} />
+      <div className="flex flex-column items-center w-1/4 border border-color-gray-500 rounded-md mt-8 h-screen ml-8">
+        <div className="w-full flex justify-end pt-2 pr-2">
+          <EditProfileButton onClick={() => setShowEditForm(true)} />
+        </div>
+        <div className="w-11/12">
+          <div className="flex justify-center p-4">
+            <img className="rounded-full h-28 w-28 border border-black-500" src={profilePicture ? profilePicture : userIMG} />
+          </div>
+          <div className="cmr-info-dtl flex flex-col items-center">
+            <ul className="p-0">
+              <li className="mb-3" name="consumer-name"><b>Nombre:</b> {username}</li>
+              <li className="mb-3" name="consumer-telephone"><b>Telefono:</b> {telephone}</li>
+              <li className="mb-3" name="consumer-email"><b>Email:</b> {email}</li>
+              <li className="mb-3" name="consumer-address"><b>Direccion:</b> {address}</li>
+            </ul>
           </div>
         </div>
       </div>
@@ -48,9 +53,11 @@ const ConsumerInfo = ({ username, email, telephone, profilePicture }) => {
               username={username}
               email={email}
               telephone={telephone}
+              address={address}
               profilePicture={profilePicture}
               handleSubmit={handleSubmit} />
-          } />
+          }
+        />
       }
     </>
   );

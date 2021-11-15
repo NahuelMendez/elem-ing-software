@@ -45,9 +45,17 @@ const Ranking = () => {
             containerClass="carousel-container"
             removeArrowOnDeviceType={["tablet", "mobile"]}
           >
-            {rankingResult.map((rankPosition, index) => (
-              <RankingCard key={index} name={rankPosition.product.name} pizzeriaName={rankPosition.pizzeria.name} rankingNumber={index + 1} />
-            ))}
+            {rankingResult.map((rankPosition, index) => {
+              console.log(rankPosition.product)
+              return (
+              <RankingCard 
+                key={index} 
+                name={rankPosition.product.name} 
+                pizzeriaName={rankPosition.pizzeria.name} 
+                rankingNumber={index + 1} 
+                pizzaImage={rankPosition.product.imageURL}
+              />
+            )})}
           </Carousel>
         </div>
       }

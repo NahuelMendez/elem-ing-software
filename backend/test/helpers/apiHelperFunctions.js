@@ -23,8 +23,9 @@ async function addProduct(requester, pizzeriaRegistrationData, productData, toke
         .set('Authorization', token)
 }
 
-async function deleteProduct(requester, pizzeriaRegistrationData, pizzaData) {
-    return await requester.delete(deleteProductPath(pizzeriaRegistrationData.name, pizzaData.name)).send()
+async function deleteProduct(requester, pizzeriaRegistrationData, pizzaData, token) {
+    return await requester.delete(deleteProductPath(pizzeriaRegistrationData.name, pizzaData.name))
+        .set('Authorization', token)
 }
 
 async function getMenu(requester, pizzeriaRegistrationData) {
@@ -54,7 +55,7 @@ async function getOrderHistory(requester, token) {
 
 async function editConsumerData(requester, consumer, token) {
     return await requester.put(consumerPath)
-            .send({name: consumer.name, email: consumer.email, telephone: consumer.telephone, image: consumer.image})
+            .send({name: consumer.name, email: consumer.email, telephone: consumer.telephone, address: consumer.address, image: consumer.image})
             .set('Authorization', token)
 }
 

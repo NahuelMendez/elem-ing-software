@@ -11,7 +11,7 @@ const { createConsumerRegistrationData } = require('../test/testObjects')
 
 const ordersHistorySelector = '[name="orders-history"]'
 
-jest.setTimeout(15000)
+jest.setTimeout(30000)
 
 describe('Consumer - orders history', () => {
     let browser
@@ -30,7 +30,7 @@ describe('Consumer - orders history', () => {
         await registerAndLoginConsumer(page, createConsumerRegistrationData({}))
         await goto(page, `/profile`)
 
-        await expectTextContent(page, ordersHistorySelector, 'Aun no realizaste pedidos');
+        await expectTextContent(page, ordersHistorySelector, 'Aún no realizaste pedidos');
     })
 
     it(`given a consumer that has placed some orders, when he goes to his profile page, it should have a card for every placed order containing the pizzeria's name and the total price`, async () => {
@@ -52,10 +52,11 @@ describe('Consumer - orders history', () => {
 })
 
 async function findOrdersListItems(page) {
-    await page.waitForSelector(ordersHistorySelector + ' ul > li')
+    await page.waitForSelector(ordersHistorySelector + ' tr')
 
     return page
-            .$$(ordersHistorySelector + ' ul > li')
+            .$$(ordersHistorySelector + ' tr')
+            .then(elements => elements.slice(1))
             .then(ordersListItems =>
                 Promise.all(
                     ordersListItems.map(orderListItem =>

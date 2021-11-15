@@ -9,13 +9,13 @@ const {
 
 const { createPizzeriaRegistrationData, createConsumerRegistrationData } = require('../test/testObjects')
 
-jest.setTimeout(10000)
+jest.setTimeout(40000)
 
 const searchInputSelector = 'form > input[name="search-input"]'
-const searchButtonSelector = 'form > img[alt="search-icon"]'
+const searchButtonSelector = 'button[name="search-action"]'
 
-const pizzeriaCardContainerSelector = '#root > div > .flex-wrap'
-const pizzeriaCardSelector = '#root > div > .flex-wrap > a'
+const pizzeriaCardContainerSelector = '#root > div  .flex-wrap'
+const pizzeriaCardSelector = '.flex-wrap > a'
 
 describe('Pizzeria search by partial name', () => {
     let browser
@@ -45,13 +45,14 @@ describe('Pizzeria search by partial name', () => {
         await page.type(searchInputSelector, 'something')
         await clickAndWait(page, searchButtonSelector)
 
-        expectPath(page, '/busquedas')
+        expectPath(page, '/search')
     })
 
     it('when a user on his home page clicks the search icon without filling the search input nothing happens', async () => {
         const consumerData = createConsumerRegistrationData({})
         await registerAndLoginConsumer(page, consumerData)
 
+        await page.waitForSelector(searchButtonSelector)
         await page.click(searchButtonSelector)
 
         expectPath(page, '/home')
@@ -79,9 +80,10 @@ describe('Pizzeria search by partial name', () => {
         await registerAndLoginConsumer(page, consumerData)
 
         await page.type(searchInputSelector, 'ke')
-        await page.click(searchButtonSelector)
+        await clickAndWait(page, searchButtonSelector)
 
         await page.waitForSelector(pizzeriaCardContainerSelector)
+        await page.waitForSelector(pizzeriaCardSelector)
 
         const result = await page.$$eval(
             pizzeriaCardSelector,
@@ -113,7 +115,7 @@ describe('Pizzeria search by partial name', () => {
         await registerAndLoginConsumer(page, consumerData)
 
         await page.type(searchInputSelector, pizzeriaRegistrationData.name)
-        await page.click(searchButtonSelector)
+        await clickAndWait(page, searchButtonSelector)
         await page.waitForSelector(pizzeriaCardContainerSelector)
 
         await clickAndWait(page, pizzeriaCardSelector)
