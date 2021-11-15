@@ -100,7 +100,7 @@ describe('Pizzeria menu', () => {
         await expectTextContent(page, '[name="orders-table"]', pizzaData.price)
     })
 
-    it(`when a pizzeria clicks de details button of orders table should show the details of that order`, async () => {
+    it.only(`when a pizzeria clicks de details button of orders table should show the details of that order`, async () => {
         const pizzeriaData = createPizzeriaRegistrationData({})
         const pizzaData = createPizzaData({})
         await registerAsPizzeriaAndGoToMenu(page, pizzeriaData)

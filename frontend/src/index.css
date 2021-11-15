@@ -153,7 +153,7 @@ code {
   object-fit: scale-down;
 }
 
-table {
+table:not(.order-table-dtl) {
   border-collapse: collapse;
   border-radius: 10px;
   border-style: hidden; 

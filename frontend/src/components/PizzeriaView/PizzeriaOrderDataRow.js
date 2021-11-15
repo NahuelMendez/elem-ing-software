@@ -5,28 +5,28 @@ const PizzeriaOrderDataRow = ({ orderNum, customerName, telephone, email, total,
 
     return (
         <>
-            <div className={top ? "container mt-10" : "container"} >
-                <div className="row shadow-2xl">
-                    <div className={top ? ordersTableTop + " left-t-top" : orderTableCell}>
+            <table className={top ? "container mt-10" : "container"} >
+                <tr className="row shadow-2xl">
+                    <td className={top ? ordersTableTop + " left-t-top" : orderTableCell}>
                         {orderNum}
-                    </div>
-                    <div className={top ? ordersTableTop : orderTableCell}>
+                    </td>
+                    <td className={top ? ordersTableTop : orderTableCell}>
                         {customerName}
-                    </div>
-                    <div className={top ? ordersTableTop : orderTableCell}>
+                    </td>
+                    <td className={top ? ordersTableTop : orderTableCell}>
                         {telephone}
-                    </div>
-                    <div className={top ? ordersTableTop : orderTableCell}>
+                    </td>
+                    <td className={top ? ordersTableTop : orderTableCell}>
                         {email}
-                    </div>
-                    <div className={top ? ordersTableTop : orderTableCell}>
+                    </td>
+                    <td className={top ? ordersTableTop : orderTableCell}>
                         {total}
-                    </div>
-                    <div className={top ? ordersTableTop + " right-t-top" : orderTableCell}>
+                    </td>
+                    <td className={top ? ordersTableTop + " right-t-top" : orderTableCell}>
                         {details}
-                    </div>
-                </div>
-            </div>
+                    </td>
+                </tr>
+            </table>
         </>
     );
 }
